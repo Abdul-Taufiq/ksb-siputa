@@ -145,19 +145,26 @@
 
 
                 @if (auth()->user()->jabatan != 'Pembukuan')
-                    {{-- Email --}}
+                    {{-- USER --}}
                     <li
-                        class="nav-item {{ request()->is('user-email-reset*', 'user-email-pengajuan*') ? 'active menu-is-opening menu-open' : '' }}">
+                        class="nav-item {{ request()->is('user-email-reset*', 'user-email-pengajuan*', 'user-siadit*', 'siadit-perubahan*', 'user-ecoll*', 'reset-ecoll*', 'slik-pengajuan*', 'slik-reset*', 'pefindo-pengajuan*', 'pefindo-reset*', 'mso-pengajuan*', 'mso-reset*') ? 'active menu-is-opening menu-open' : '' }}">
                         <a href="#"
-                            class="nav-link  {{ request()->is('user-email-reset*', 'user-email-pengajuan*') ? 'active aria-expanded= "true"' : 'collapsed' }}">
-                            <i class="nav-icon fa-solid fa-envelope-open-text"></i>
+                            class="nav-link  {{ request()->is('user-email-reset*', 'user-email-pengajuan*', 'user-siadit*', 'siadit-perubahan*', 'user-ecoll*', 'reset-ecoll*', 'slik-pengajuan*', 'slik-reset*', 'pefindo-pengajuan*', 'pefindo-reset*', 'mso-pengajuan*', 'mso-reset*') ? 'active aria-expanded= "true"' : 'collapsed' }}">
+                            <i class="fa fa-address-book nav-icon" aria-hidden="true"></i>
                             <p>
-                                Email
+                                Form User
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
                         <ul
-                            class="nav nav-treeview  {{ request()->is('user-email-reset*', 'user-email-pengajuan*') ? 'style="display: block;"' : '' }}">
+                            class="nav nav-treeview  {{ request()->is('user-email-reset*', 'user-email-pengajuan*', 'user-siadit*', 'siadit-perubahan*', 'user-ecoll*', 'reset-ecoll*', 'slik-pengajuan*', 'slik-reset*', 'pefindo-pengajuan*', 'pefindo-reset*', 'mso-pengajuan*', 'mso-reset*') ? 'style="display: block;"' : '' }}">
+
+                            {{-- email --}}
+                            <hr style="margin-left: 12px; margin-right: 15px;">
+                            <p
+                                style="font-weight: bold; font-family: JetBrains Mono; font-size: 15px; margin-left: 20px;">
+                                Email &rarr;
+                            </p>
                             <li class="nav-item">
                                 <a href="/user-email-pengajuan"
                                     class="nav-link {{ Request::is('user-email-pengajuan*') ? 'active' : '' }}">
@@ -172,26 +179,13 @@
                                     <p>Reset Password</p>
                                 </a>
                             </li>
-                        </ul>
-                    </li>
-                    {{-- end Email --}}
-                @endif
 
-                {{-- SIADIT --}}
-                <li
-                    class="nav-item {{ request()->is('user-siadit*', 'siadit-perubahan*') ? 'active menu-is-opening menu-open' : '' }}">
-                    <a href="#"
-                        class="nav-link  {{ request()->is('user-siadit*', 'siadit-perubahan*') ? 'active aria-expanded= "true"' : 'collapsed' }}">
-                        {{-- <i class="nav-icon fa-solid fa-envelope-open-text"></i> --}}
-                        <i class="nav-icon fa-regular fa-credit-card"></i>
-                        <p>
-                            Si-ADiT
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul
-                        class="nav nav-treeview  {{ request()->is('user-siadit*', 'siadit-perubahan*') ? 'style="display: block;"' : '' }}">
-                        @if (auth()->user()->jabatan != 'Pembukuan')
+                            {{-- siadit --}}
+                            <hr style="margin-left: 12px; margin-right: 5px;">
+                            <p
+                                style="font-weight: bold; font-family: JetBrains Mono; font-size: 15px; margin-left: 20px;">
+                                Si-ADiT &rarr;
+                            </p>
                             <li class="nav-item">
                                 <a href="/user-siadit"
                                     class="nav-link {{ Request::is('user-siadit*') ? 'active' : '' }}">
@@ -199,35 +193,13 @@
                                     <p>Pengajuan User</p>
                                 </a>
                             </li>
-                        @endif
-                        @if (auth()->user()->jabatan != 'SDM')
-                            <li class="nav-item">
-                                <a href="/siadit-perubahan"
-                                    class="nav-link {{ Request::is('siadit-perubahan*') ? 'active' : '' }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Revisi Data Kredit</p>
-                                </a>
-                            </li>
-                        @endif
-                    </ul>
-                </li>
-                {{-- end Email --}}
 
-
-                @if (auth()->user()->jabatan != 'Pembukuan')
-                    {{-- MBS --}}
-                    <li
-                        class="nav-item {{ request()->is('mso-pengajuan*', 'mso-reset*') ? 'active menu-is-opening menu-open' : '' }}">
-                        <a href="#"
-                            class="nav-link  {{ request()->is('mso-pengajuan*', 'mso-reset*') ? 'active aria-expanded= "true"' : 'collapsed' }}">
-                            <i class="fa fa-id-card nav-icon" aria-hidden="true"></i>
-                            <p>
-                                MBS
-                                <i class="fas fa-angle-left right"></i>
+                            {{-- MBS --}}
+                            <hr style="margin-left: 12px; margin-right: 5px;">
+                            <p
+                                style="font-weight: bold; font-family: JetBrains Mono; font-size: 15px; margin-left: 20px;">
+                                MBS &rarr;
                             </p>
-                        </a>
-                        <ul
-                            class="nav nav-treeview  {{ request()->is('mso-pengajuan*', 'mso-reset*') ? 'style="display: block;"' : '' }}">
                             <li class="nav-item">
                                 <a href="/mso-pengajuan"
                                     class="nav-link {{ Request::is('mso-pengajuan*') ? 'active' : '' }}">
@@ -242,27 +214,13 @@
                                     <p>Reset Password</p>
                                 </a>
                             </li>
-                        </ul>
-                    </li>
-                    {{-- end MBS --}}
-                @endif
 
-
-                @if (auth()->user()->jabatan != 'Pembukuan')
-                    {{-- ecoll --}}
-                    <li
-                        class="nav-item {{ request()->is('user-ecoll*', 'reset-ecoll*') ? 'active menu-is-opening menu-open' : '' }}">
-                        <a href="#"
-                            class="nav-link  {{ request()->is('user-ecoll*', 'reset-ecoll*') ? 'active aria-expanded= "true"' : 'collapsed' }}">
-                            {{-- <i class="fa fa-id-card nav-icon" aria-hidden="true"></i> --}}
-                            <i class="fa fa-address-book nav-icon" aria-hidden="true"></i>
-                            <p>
-                                User Ecoll
-                                <i class="fas fa-angle-left right"></i>
+                            {{-- Ecoll --}}
+                            <hr style="margin-left: 12px; margin-right: 5px;">
+                            <p
+                                style="font-weight: bold; font-family: JetBrains Mono; font-size: 15px; margin-left: 20px;">
+                                Ecoll &rarr;
                             </p>
-                        </a>
-                        <ul
-                            class="nav nav-treeview  {{ request()->is('user-ecoll*', 'reset-ecoll*') ? 'style="display: block;"' : '' }}">
                             <li class="nav-item">
                                 <a href="/user-ecoll"
                                     class="nav-link {{ Request::is('user-ecoll*') ? 'active' : '' }}">
@@ -277,24 +235,13 @@
                                     <p>Reset Password</p>
                                 </a>
                             </li>
-                        </ul>
-                    </li>
-                    {{-- end ecoll --}}
 
-
-                    {{-- User SLIK --}}
-                    <li
-                        class="nav-item {{ request()->is('slik-pengajuan*', 'slik-reset*') ? 'active menu-is-opening menu-open' : '' }}">
-                        <a href="#"
-                            class="nav-link  {{ request()->is('slik-pengajuan*', 'slik-reset*') ? 'active aria-expanded= "true"' : 'collapsed' }}">
-                            <i class="fa fa-window-restore nav-icon" aria-hidden="true"></i>
-                            <p>
-                                User SLIK
-                                <i class="fas fa-angle-left right"></i>
+                            {{-- Slik --}}
+                            <hr style="margin-left: 12px; margin-right: 5px;">
+                            <p
+                                style="font-weight: bold; font-family: JetBrains Mono; font-size: 15px; margin-left: 20px;">
+                                SLIK &rarr;
                             </p>
-                        </a>
-                        <ul
-                            class="nav nav-treeview  {{ request()->is('slik-pengajuan*', 'slik-reset*') ? 'style="display: block;"' : '' }}">
                             <li class="nav-item">
                                 <a href="/slik-pengajuan"
                                     class="nav-link {{ Request::is('slik-pengajuan*') ? 'active' : '' }}">
@@ -303,29 +250,18 @@
                                 </a>
                             </li>
                             {{-- <li class="nav-item">
-                            <a href="/slik-reset" class="nav-link {{ Request::is('slik-reset*') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Reset Password</p>
-                            </a>
-                        </li> --}}
-                        </ul>
-                    </li>
-                    {{-- end User SLIK --}}
+                                    <a href="/slik-reset" class="nav-link {{ Request::is('slik-reset*') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Reset Password</p>
+                                    </a>
+                                </li> --}}
 
-
-                    {{-- User Pefindo --}}
-                    <li
-                        class="nav-item {{ request()->is('pefindo-pengajuan*', 'pefindo-reset*') ? 'active menu-is-opening menu-open' : '' }}">
-                        <a href="#"
-                            class="nav-link  {{ request()->is('pefindo-pengajuan*', 'pefindo-reset*') ? 'active aria-expanded= "true"' : 'collapsed' }}">
-                            <i class="fa fa-window-maximize nav-icon" aria-hidden="true"></i>
-                            <p>
-                                User Pefindo
-                                <i class="fas fa-angle-left right"></i>
+                            {{-- Pefindo --}}
+                            <hr style="margin-left: 12px; margin-right: 5px;">
+                            <p
+                                style="font-weight: bold; font-family: JetBrains Mono; font-size: 15px; margin-left: 20px;">
+                                Pefindo &rarr;
                             </p>
-                        </a>
-                        <ul
-                            class="nav nav-treeview  {{ request()->is('pefindo-pengajuan*', 'pefindo-reset*') ? 'style="display: block;"' : '' }}">
                             <li class="nav-item">
                                 <a href="/pefindo-pengajuan"
                                     class="nav-link {{ Request::is('pefindo-pengajuan*') ? 'active' : '' }}">
@@ -340,14 +276,15 @@
                                     <p>Reset Password</p>
                                 </a>
                             </li>
+                            <hr style="margin-left: 12px; margin-right: 5px;">
+
                         </ul>
                     </li>
-                    {{-- end User Pefindo --}}
+                    {{-- end USER --}}
                 @endif
 
 
-
-                @if (auth()->user()->jabatan != 'SDM')
+                @if (auth()->user()->jabatan != 'SDM' && auth()->user()->jabatan != 'Analis Area')
                     {{-- Pembatalan transaksi --}}
                     <li class="nav-item {{ request()->is('pembatalan*') ? 'active menu-is-opening menu-open' : '' }}">
                         <a href="#"
@@ -422,7 +359,8 @@
 
 
                     {{-- Perubuhan Transaksi --}}
-                    <li class="nav-item {{ request()->is('perubahan*') ? 'active menu-is-opening menu-open' : '' }}">
+                    <li
+                        class="nav-item {{ request()->is('perubahan*', 'siadit-perubahan*') ? 'active menu-is-opening menu-open' : '' }}">
                         <a href="#"
                             class="nav-link  {{ request()->is('perubahan*') ? 'active aria-expanded= "true"' : 'collapsed' }}">
                             <i class="fa fa-edit nav-icon" aria-hidden="true"></i>
@@ -454,10 +392,93 @@
                                     <p>Master Kredit</p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="/siadit-perubahan"
+                                    class="nav-link {{ Request::is('siadit-perubahan*') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Revisi Data SI-ADIT</p>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     {{-- End Perubahan Transaksi --}}
                 @endif
+
+
+                {{-- Pengajuan Inventaris --}}
+                <li class="nav-item {{ request()->is('inventaris*') ? 'active menu-is-opening menu-open' : '' }}">
+                    <a href="#"
+                        class="nav-link  {{ request()->is('inventaris*') ? 'active aria-expanded= "true"' : 'collapsed' }}">
+                        <i class="fa-solid fa-boxes-stacked nav-icon"></i>
+                        <p>
+                            Pengajuan Inventaris
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview  {{ request()->is('inventaris*') ? 'style="display: block;"' : '' }}">
+                        <li class="nav-item">
+                            <a href="/inventaris-pengajuan"
+                                class="nav-link {{ Request::is('inventaris-pengajuan*') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Pengajuan u/ Baru</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/inventaris-pengganti"
+                                class="nav-link {{ Request::is('inventaris-pengganti*') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Pengajuan u/ Pengganti</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                {{-- End Pengajuan Inventaris --}}
+
+                {{-- Service IT --}}
+                <li
+                    class="nav-item {{ request()->is('pemeliharaan*', 'tsi*') ? 'active menu-is-opening menu-open' : '' }}">
+                    <a href="#"
+                        class="nav-link  {{ request()->is('pemeliharaan*', 'tsi*') ? 'active aria-expanded= "true"' : 'collapsed' }}">
+                        <i class="fa-solid fa-microchip nav-icon" aria-hidden="true"></i>
+                        <p>
+                            Bantuan TSI
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul
+                        class="nav nav-treeview  {{ request()->is('pemeliharaan*', 'tsi*') ? 'style="display: block;"' : '' }}">
+                        <li class="nav-item">
+                            <a href="/pemeliharaan-perangkat"
+                                class="nav-link {{ Request::is('pemeliharaan-perangkat*') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Pemeliharaan/Trouble</p>
+                            </a>
+                        </li>
+                        {{-- <li class="nav-item">
+                            <a href="/tsi-pemeliharaan-pengajuan"
+                                class="nav-link {{ Request::is('tsi-pemeliharaan-pengajuan*') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Permohonan Bantuan</p>
+                            </a>
+                        </li> --}}
+                        <li class="nav-item">
+                            <a href="/tsi-barang-elektro"
+                                class="nav-link {{ Request::is('tsi-barang-elektro*') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Barang Elektronik</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="/pemeliharaan-history"
+                                class="nav-link {{ Request::is('pemeliharaan-history*') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>History Pemeliharaan</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                {{-- End Service IT --}}
 
                 {{-- Log Activity --}}
                 <li class="nav-item {{ request()->is('log-activity*') ? 'menu-open' : '' }}">

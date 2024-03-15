@@ -111,6 +111,8 @@ class PSlikController extends Controller
                     switch (auth()->user()->jabatan) {
                         case 'Kasi Operasional':
                         case 'Kasi Komersial':
+                        case 'Analis Area':
+                        case 'Kepala Kantor Kas':
                             $status .= '<a class="btn btn-success btn-sm disabled">Terkirim</a>';
                             break;
 
@@ -258,13 +260,26 @@ class PSlikController extends Controller
         $LogAksi = '(+) Pengajuan User SLIK';
         $this->LogActivity($data, $LogAksi);
         // Send Email
-        $userPenerima = User::where('id_cabang', auth()->user()->id_cabang)
-            ->where('jabatan', 'Pimpinan Cabang')->first();
-        // pemberitahuan database
-        $url = route('slik-pengajuan.index');
-        $title = 'Terdapat Form Pengajuan Baru!';
-        $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-        $this->SendEmail($data, $userPenerima, $url, $title, $message);
+        if (auth()->user()->jabatan == 'Analis Area') {
+            $data->update([
+                'nama_pincab' => 'Ditarik Oleh User SDM',
+                'status_pincab' => '--',
+                'tgl_status_pincab' => null,
+            ]);
+
+            $userPenerima = User::where('jabatan', 'SDM')->get();
+            $url = route('user-email-pengajuan.index');
+            $title = 'Terdapat Form Pengajuan Baru!';
+            $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
+            $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+        } else {
+            $userPenerima = User::where('id_cabang', auth()->user()->id_cabang)
+                ->where('jabatan', 'Pimpinan Cabang')->first();
+            $url = route('user-email-pengajuan.index');
+            $title = 'Terdapat Form Pengajuan Baru!';
+            $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
+            $this->SendEmail($data, $userPenerima, $url, $title, $message);
+        }
 
         return redirect('slik-pengajuan')->with('AlertSuccess', "Pengajuan Berhasil Dikirim!");
     }
@@ -395,10 +410,10 @@ class PSlikController extends Controller
 
             case 'TSI':
                 $data->update([
-                    'nama_dirops' => $nama,
-                    'status_dirops' => 'Approve',
-                    'tgl_status_dirops' => now(),
-                    'catatan_dirops' => $request->catatan,
+                    'nama_tsi' => $nama,
+                    'status_tsi' => 'Approve',
+                    'tgl_status_tsi' => now(),
+                    'catatan_tsi' => $request->catatan,
                     'tgl_status_akhir' => now(),
                     'status_akhir' => 'Selesai'
                 ]);
@@ -530,10 +545,10 @@ class PSlikController extends Controller
 
             case 'TSI':
                 $data->update([
-                    'nama_dirops' => $nama,
-                    'status_dirops' => 'Reject',
-                    'tgl_status_dirops' => now(),
-                    'catatan_dirops' => $request->catatan,
+                    'nama_tsi' => $nama,
+                    'status_tsi' => 'Reject',
+                    'tgl_status_tsi' => now(),
+                    'catatan_tsi' => $request->catatan,
                     'tgl_status_akhir' => now(),
                     'status_akhir' => 'Ditolak',
                     'tgl_status_akhir' => now()

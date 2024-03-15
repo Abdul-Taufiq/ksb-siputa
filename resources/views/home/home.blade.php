@@ -63,6 +63,7 @@
             @case('Kasi Operasional')
             @case('Kasi Komersial')
 
+            @case('Analis Area')
             @case('Kepala Kantor Kas')
                 @include('home.kaops')
             @break
@@ -84,7 +85,7 @@
 
             {{-- Pembukuan --}}
             @case('Pembukuan')
-                @include('home.dirops')
+                @include('home.pembukuan')
             @break
 
             {{-- TSI --}}

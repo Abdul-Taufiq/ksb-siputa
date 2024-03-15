@@ -4,12 +4,17 @@ use Illuminate\Support\Facades\{Artisan, Route, Auth};
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\{LoginController, UserController, HelperController, RegisterController, HomeController, LogActivityController, LogTrackingController};
 use App\Http\Controllers\Ecoll\{EcollPController, EcollRController};
+use App\Http\Controllers\Inventaris\InventarisController as InventarisPengajuanController;
+use App\Http\Controllers\Inventaris\InventarisPenggantiController;
 use App\Http\Controllers\MBS\{UserPController, ResetController};
 use App\Http\Controllers\Pefindo\{PefindoController, PefindoreController};
 use App\Http\Controllers\Pembatalan\{AkuntansiController, AntarBankController, AntarKantorController, InventarisController, KreditController, PDepositoController, PEcollController, TabunganController};
 use App\Http\Controllers\Perubahan\{CifController, DepositoController, KreditController as PerubahanKreditController};
 use App\Http\Controllers\Siadit\{PSiaditController, USiaditController};
 use App\Http\Controllers\Slik\{PSlikController};
+use App\Http\Controllers\TSI\BarangController;
+use App\Http\Controllers\TSI\PemeliharaanController;
+use App\Http\Controllers\TSI\PemeliharaanHistoryController;
 use App\Http\Controllers\User\{EmailRController, EmailPController};
 
 Route::get('/', function () {
@@ -158,6 +163,26 @@ Route::group(['middleware' => ['permission']], function () {
         Route::resource('perubahan-kredit', PerubahanKreditController::class)->parameters(['perubahan-kredit' => 'kredit']);
         Route::patch('/perubahan-kredit-approve/{idEncrypt}', [PerubahanKreditController::class, 'ResponApprove']);
         Route::patch('/perubahan-kredit-reject/{idEncrypt}', [PerubahanKreditController::class, 'ResponReject']);
+
+        // Pengajuan Inventaris
+        Route::resource('inventaris-pengajuan', InventarisPengajuanController::class)->parameters(['inventaris-pengajuan' => 'inventaris']);
+        Route::patch('/inventaris-pengajuan-approve/{idEncrypt}', [InventarisPengajuanController::class, 'ResponApprove']);
+        Route::patch('/inventaris-pengajuan-reject/{idEncrypt}', [InventarisPengajuanController::class, 'ResponReject']);
+
+        // Pengajuan Inventaris Pengganti
+        Route::resource('inventaris-pengganti', InventarisPenggantiController::class)->parameters(['inventaris-pengganti' => 'inventarisPengganti']);
+        Route::patch('/inventaris-pengganti-approve/{idEncrypt}', [InventarisPenggantiController::class, 'ResponApprove']);
+        Route::patch('/inventaris-pengganti-reject/{idEncrypt}', [InventarisPenggantiController::class, 'ResponReject']);
+
+        // Pemeliharaan Perangkat
+        Route::resource('pemeliharaan-perangkat', PemeliharaanController::class)->parameters(['pemeliharaan-perangkat' => 'pemeliharaan']);
+        Route::patch('/pemeliharaan-perangkat-approve/{idEncrypt}', [PemeliharaanController::class, 'ResponApprove']);
+        Route::patch('/pemeliharaan-perangkat-reject/{idEncrypt}', [PemeliharaanController::class, 'ResponReject']);
+
+        // TSI PErmohonan Bantuan
+        Route::resource('pemeliharaan-history', PemeliharaanHistoryController::class)->parameters(['pemeliharaan-history' => 'pemeliharaanHistory']);
+        Route::resource('tsi-barang-elektro', BarangController::class)->parameters(['tsi-barang-elektro' => 'barang']);
+
 
         // log activity
         Route::resource('log-activity', LogActivityController::class)->parameters(['log-activity' => 'logActivity']);
