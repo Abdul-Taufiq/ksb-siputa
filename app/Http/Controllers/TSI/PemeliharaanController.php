@@ -34,6 +34,7 @@ class PemeliharaanController extends Controller
                 case 'Kasi Komersial':
                 case 'Kepala Kantor Kas':
                 case 'Analis Area':
+                case 'Staf Area':
                 case 'Pimpinan Cabang':
                     if (!empty($request->kode)) {
                         $data = Pemeliharaan::where('kode_form', $kode)
@@ -109,6 +110,7 @@ class PemeliharaanController extends Controller
                         case 'Kasi Operasional':
                         case 'Kasi Komersial':
                         case 'Analis Area':
+                        case 'Staf Area':
                         case 'Kepala Kantor Kas':
                             $status .= '<a class="btn btn-success btn-sm disabled">Terkirim</a>';
                             break;
@@ -149,6 +151,7 @@ class PemeliharaanController extends Controller
                         case 'Kasi Operasional':
                         case 'Kasi Komersial':
                         case 'Analis Area':
+                        case 'Staf Area':
                         case 'Kepala Kantor Kas':
                             if ($data->status_pincab == "Approve" || $data->status_pincab == "Reject") {
                                 $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';

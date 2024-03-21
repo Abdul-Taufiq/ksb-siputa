@@ -168,11 +168,13 @@ Route::group(['middleware' => ['permission']], function () {
         Route::resource('inventaris-pengajuan', InventarisPengajuanController::class)->parameters(['inventaris-pengajuan' => 'inventaris']);
         Route::patch('/inventaris-pengajuan-approve/{idEncrypt}', [InventarisPengajuanController::class, 'ResponApprove']);
         Route::patch('/inventaris-pengajuan-reject/{idEncrypt}', [InventarisPengajuanController::class, 'ResponReject']);
+        Route::get('/inventaris-baru-cetak/{idEncrypt}', [InventarisPengajuanController::class, 'Print']);
 
         // Pengajuan Inventaris Pengganti
         Route::resource('inventaris-pengganti', InventarisPenggantiController::class)->parameters(['inventaris-pengganti' => 'inventarisPengganti']);
         Route::patch('/inventaris-pengganti-approve/{idEncrypt}', [InventarisPenggantiController::class, 'ResponApprove']);
         Route::patch('/inventaris-pengganti-reject/{idEncrypt}', [InventarisPenggantiController::class, 'ResponReject']);
+        Route::get('/inventaris-cetak/{idEncrypt}', [InventarisPenggantiController::class, 'Print']);
 
         // Pemeliharaan Perangkat
         Route::resource('pemeliharaan-perangkat', PemeliharaanController::class)->parameters(['pemeliharaan-perangkat' => 'pemeliharaan']);

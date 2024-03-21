@@ -76,12 +76,12 @@ class KreditController extends Controller
                             ->OrderBy('created_at', 'desc')->get();
                     } else {
                         if (!empty($request->min)) {
-                            $data = Kredit::where('status_pembukuan', "Edited")
+                            $data = Kredit::where('status_pembukuan', "SendedToDirops")
                                 ->orwhere('status_pembukuan', 'Approve')
                                 ->whereBetween('created_at', [$awal, $akhir])
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
-                            $data = Kredit::where('status_pembukuan', 'Approve')->orderBy('created_at', 'desc')->get();
+                            $data = Kredit::where('status_pembukuan', "SendedToDirops")->orwhere('status_pembukuan', 'Approve')->orderBy('created_at', 'desc')->get();
                         }
                     }
                     break;
@@ -596,8 +596,8 @@ class KreditController extends Controller
                 $status .= 'SendedToDirops';
                 $status .= '</button>';
                 $status .= '<div class="dropdown-menu" aria-labelledby="statusDropdown">';
-                $status .= '<a class="dropdown-item approve" href="/pembatalan-kredit-approve/' . encrypt($data->id_kredit) . '">Approve</a>';
-                $status .= '<a class="dropdown-item reject" href="/pembatalan-kredit-reject/' . encrypt($data->id_kredit) . '">Reject</a>';
+                $status .= '<a class="dropdown-item" href="/pembatalan-kredit-approve/' . encrypt($data->id_kredit)  . '" onclick="return confirm(\'Approve data sebagai Selesai?\')">Approve</a>';
+                $status .= '<a class="dropdown-item" href="/pembatalan-kredit-Reject/' . encrypt($data->id_kredit)  . '" onclick="return confirm(\'Reject data sebagai Selesai?\')">Reject</a>';
                 $status .= '</div>';
                 $status .= '</div>';
             } else {
@@ -688,6 +688,7 @@ class KreditController extends Controller
             'kode_form' => $data->kode_form,
             'keperluan' => "Pembatalan Transaksi (Kredit)",
             'status_akhir' => $status_akhir,
+            'pelanggaran' => ($status_akhir == 'Approved') ? $data->pelanggaran_dirops : null,
         ], function ($message) use ($userPenerima) {
             $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
             $message->to($userPenerima->email);

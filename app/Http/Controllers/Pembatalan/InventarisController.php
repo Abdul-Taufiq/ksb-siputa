@@ -76,12 +76,12 @@ class InventarisController extends Controller
                             ->OrderBy('created_at', 'desc')->get();
                     } else {
                         if (!empty($request->min)) {
-                            $data = Inventaris::where('status_pembukuan', "Edited")
+                            $data = Inventaris::where('status_pembukuan', "SendedToDirops")
                                 ->orwhere('status_pembukuan', 'Approve')
                                 ->whereBetween('created_at', [$awal, $akhir])
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
-                            $data = Inventaris::where('status_pembukuan', 'Approve')->orderBy('created_at', 'desc')->get();
+                            $data = Inventaris::where('status_pembukuan', "SendedToDirops")->orwhere('status_pembukuan', 'Approve')->orderBy('created_at', 'desc')->get();
                         }
                     }
                     break;
@@ -579,8 +579,8 @@ class InventarisController extends Controller
                 $status .= 'SendedToDirops';
                 $status .= '</button>';
                 $status .= '<div class="dropdown-menu" aria-labelledby="statusDropdown">';
-                $status .= '<a class="dropdown-item approve" href="/pembatalan-inventaris-approve/' . encrypt($data->id_inventaris) . '">Approve</a>';
-                $status .= '<a class="dropdown-item reject" href="/pembatalan-inventaris-reject/' . encrypt($data->id_inventaris) . '">Reject</a>';
+                $status .= '<a class="dropdown-item" href="/pembatalan-inventaris-approve/' . encrypt($data->id_inventaris)  . '" onclick="return confirm(\'Approve data sebagai Selesai?\')">Approve</a>';
+                $status .= '<a class="dropdown-item" href="/pembatalan-inventaris-Reject/' . encrypt($data->id_inventaris)  . '" onclick="return confirm(\'Reject data sebagai Selesai?\')">Reject</a>';
                 $status .= '</div>';
                 $status .= '</div>';
             } else {
@@ -671,6 +671,7 @@ class InventarisController extends Controller
             'kode_form' => $data->kode_form,
             'keperluan' => "Pembatalan Transaksi (Inventaris)",
             'status_akhir' => $status_akhir,
+            'pelanggaran' => ($status_akhir == 'Approved') ? $data->pelanggaran_dirops : null,
         ], function ($message) use ($userPenerima) {
             $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
             $message->to($userPenerima->email);

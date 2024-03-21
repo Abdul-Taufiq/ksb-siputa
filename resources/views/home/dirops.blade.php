@@ -42,7 +42,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $EmailP->wherenull('status_dirops')->count() }}
+                                                {{ $EmailP->wherenull('status_dirops')->where('status_sdm', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -98,7 +98,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $EmailR->wherenull('status_dirops')->count() }}
+                                                {{ $EmailR->wherenull('status_dirops')->where('status_sdm', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -155,7 +155,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $USiadit->wherenull('status_dirops')->count() }}
+                                                {{ $USiadit->wherenull('status_dirops')->where('status_sdm', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -212,7 +212,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $PSlik->wherenull('status_dirops')->count() }}
+                                                {{ $PSlik->wherenull('status_dirops')->where('status_sdm', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -269,7 +269,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $UserP->wherenull('status_dirops')->count() }}
+                                                {{ $UserP->wherenull('status_dirops')->where('status_sdm', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -326,7 +326,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $UserR->wherenull('status_dirops')->count() }}
+                                                {{ $UserR->wherenull('status_dirops')->where('status_sdm', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -383,7 +383,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $EcollP->wherenull('status_dirops')->count() }}
+                                                {{ $EcollP->wherenull('status_dirops')->where('status_sdm', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -440,7 +440,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $EcollR->wherenull('status_dirops')->count() }}
+                                                {{ $EcollR->wherenull('status_dirops')->where('status_sdm', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -497,7 +497,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $Pefindo->wherenull('status_dirops')->count() }}
+                                                {{ $Pefindo->wherenull('status_dirops')->where('status_sdm', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -554,7 +554,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $PefindoRe->wherenull('status_dirops')->count() }}
+                                                {{ $PefindoRe->wherenull('status_dirops')->where('status_sdm', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -634,7 +634,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $Akuntansi->wherenull('status_dirops')->count() }}
+                                                {{ $Akuntansi->wherenull('status_dirops')->where('status_pembukuan', 'SendedToDirops')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -691,7 +691,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $Antarbank->wherenull('status_dirops')->count() }}
+                                                {{ $Antarbank->wherenull('status_dirops')->where('status_pembukuan', 'SendedToDirops')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -748,7 +748,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $Antarkantor->wherenull('status_dirops')->count() }}
+                                                {{ $Antarkantor->wherenull('status_dirops')->where('status_pembukuan', 'SendedToDirops')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -805,7 +805,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $PDeposito->wherenull('status_dirops')->count() }}
+                                                {{ $PDeposito->wherenull('status_dirops')->where('status_pembukuan', 'SendedToDirops')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -862,7 +862,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $PEcoll->wherenull('status_dirops')->count() }}
+                                                {{ $PEcoll->wherenull('status_dirops')->where('status_pembukuan', 'SendedToDirops')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -919,7 +919,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $Inventaris->wherenull('status_dirops')->count() }}
+                                                {{ $Inventaris->wherenull('status_dirops')->where('status_pembukuan', 'SendedToDirops')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -976,7 +976,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $Kredit->wherenull('status_dirops')->count() }}
+                                                {{ $Kredit->wherenull('status_dirops')->where('status_pembukuan', 'SendedToDirops')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -1033,7 +1033,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $Tabungan->wherenull('status_dirops')->count() }}
+                                                {{ $Tabungan->wherenull('status_dirops')->where('status_pembukuan', 'SendedToDirops')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -1113,7 +1113,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $Cif->wherenull('status_dirops')->count() }}
+                                                {{ $Cif->wherenull('status_dirops')->where('status_pembukuan', 'SendedToDirops')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -1170,7 +1170,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $perKredit->wherenull('status_dirops')->count() }}
+                                                {{ $perKredit->wherenull('status_dirops')->where('status_pembukuan', 'SendedToDirops')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -1227,7 +1227,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $perDeposito->wherenull('status_dirops')->count() }}
+                                                {{ $perDeposito->wherenull('status_dirops')->where('status_pembukuan', 'SendedToDirops')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -1307,7 +1307,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $inv_baru->wherenull('status_dirops')->count() }}
+                                                {{ $inv_baru->wherenull('status_dirops')->where('status_pembukuan', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -1364,7 +1364,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $inv_pengganti->wherenull('status_dirops')->count() }}
+                                                {{ $inv_pengganti->wherenull('status_dirops')->where('status_pembukuan', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>

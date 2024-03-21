@@ -8,6 +8,7 @@ use App\Models\Inventaris\Inventaris;
 use App\Models\LogActivity;
 use App\Models\User;
 use App\Notifications\NotifikasiPengajuan;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,6 +39,7 @@ class InventarisController extends Controller
                 case 'Kasi Komersial':
                 case 'Kepala Kantor Kas':
                 case 'Analis Area':
+                case 'Staf Area':
                 case 'Pimpinan Cabang':
                     if (!empty($request->kode)) {
                         $data = Inventaris::where('kode_form', $kode)
@@ -120,6 +122,7 @@ class InventarisController extends Controller
                         case 'Kasi Operasional':
                         case 'Kasi Komersial':
                         case 'Analis Area':
+                        case 'Staf Area':
                         case 'Kepala Kantor Kas':
                             if ($data->status_akhir == 'Selesai') {
                                 $status .= '<a class="btn btn-success btn-sm disabled">Selesai</a>';
@@ -318,7 +321,7 @@ class InventarisController extends Controller
         $LogAksi = '(+) Pengajuan Inventaris Baru';
         $this->LogActivity($data, $LogAksi);
         // Send Email
-        if (auth()->user()->jabatan == 'Analis Area') {
+        if (auth()->user()->jabatan == 'Analis Area' || auth()->user()->jabatan == 'Staf Area') {
             $data->update([
                 'nama_pincab' => 'Ditarik Oleh User Pembukuan',
                 'status_pincab' => '--',
@@ -347,6 +350,21 @@ class InventarisController extends Controller
     {
         $barang = BarangBaru::where('id_inventaris_baru', $inventaris->id_inventaris_baru)->get();
         return view('Page.Inventaris.show', compact('inventaris', 'barang'), ['title' => 'Show Data']);
+    }
+
+
+    public function Print($idEncrypt)
+    {
+        $inventaris = Inventaris::where('id_inventaris_baru', $idEncrypt)->first();
+        $barang = BarangBaru::where('id_inventaris_baru', $inventaris->id_inventaris_baru)->get();
+        $pdf = Pdf::loadView(
+            'Page.Inventaris.print',
+            compact('inventaris', 'barang'),
+            ['title' => 'Print']
+        );
+        $pdf->setPaper('A4', 'potrait')
+            ->setOptions(['isHtml5ParserEnabled' => true, 'isPhpEnabled' => true]);
+        return $pdf->stream('Data Form.' . $inventaris->kode_form . '.pdf');
     }
 
 

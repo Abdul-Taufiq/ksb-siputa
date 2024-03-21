@@ -578,8 +578,8 @@ class TabunganController extends Controller
                 $status .= 'SendedToDirops';
                 $status .= '</button>';
                 $status .= '<div class="dropdown-menu" aria-labelledby="statusDropdown">';
-                $status .= '<a class="dropdown-item approve" href="/pembatalan-tabungan-approve/' . encrypt($data->id_tabungan) . '">Approve</a>';
-                $status .= '<a class="dropdown-item reject" href="/pembatalan-tabungan-reject/' . encrypt($data->id_tabungan) . '">Reject</a>';
+                $status .= '<a class="dropdown-item" href="/pembatalan-tabungan-approve/' . encrypt($data->id_tabungan)  . '" onclick="return confirm(\'Approve data sebagai Selesai?\')">Approve</a>';
+                $status .= '<a class="dropdown-item" href="/pembatalan-tabungan-Reject/' . encrypt($data->id_tabungan)  . '" onclick="return confirm(\'Reject data sebagai Selesai?\')">Reject</a>';
                 $status .= '</div>';
                 $status .= '</div>';
             } else {
@@ -670,6 +670,7 @@ class TabunganController extends Controller
             'kode_form' => $data->kode_form,
             'keperluan' => "Pembatalan Transaksi (Tabungan)",
             'status_akhir' => $status_akhir,
+            'pelanggaran' => ($status_akhir == 'Approved') ? $data->pelanggaran_dirops : null,
         ], function ($message) use ($userPenerima) {
             $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
             $message->to($userPenerima->email);

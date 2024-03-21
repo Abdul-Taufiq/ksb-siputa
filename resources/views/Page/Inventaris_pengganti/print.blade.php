@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Document</title>
+    <title>{{ $title }}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
     <!-- Theme style -->
@@ -14,7 +14,34 @@
     <style>
         body {
             font-family: 'JetBrains Mono';
-            font-size: 9pt;
+            font-size: 8pt;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table,
+        .table th,
+        .table td {
+            border: 1px solid;
+            text-align: center;
+            vertical-align: center;
+            height: 10px;
+        }
+
+        .spesial th,
+        .spesial td {
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+            vertical-align: center;
+            height: 15px;
+        }
+
+        .spesial {
+            width: 70%;
+
         }
     </style>
 </head>
@@ -22,10 +49,11 @@
 <body>
     <div class="card card-outline card-primary">
         <div class="card-header">
-            <h6><b>Data Pengajuan &rarr;</b></h6>
+            <h3><b>Data Pengajuan </b></h3>
+            <hr>
         </div>
         <div class="card-body">
-            <table class="table table-striped">
+            <table class="spesial">
                 <tr>
                     <th>Kode</th>
                     <td>{{ $inventarisPengganti->kode_form }}</td>
@@ -71,7 +99,8 @@
     <br>
     <div class="card card-outline card-secondary">
         <div class="card-header">
-            <h6><b>Data Barang Yang Akan Diganti &rarr;</b></h6>
+            <h3><b>Data Barang Yang Akan Diganti </b></h3>
+            <hr>
         </div>
         <div class="card-body">
             <table class="table table-striped">
@@ -88,7 +117,7 @@
                         <td>{{ $data->kode_inventaris }}</td>
                         <td>{{ $data->nilai_buku_terakhir }}</td>
                         <td>{{ $data->kondisi_akhir }}</td>
-                        <td>{{ $data->tgl_pembelian ? $data->tgl_pembelian->translatedFormat('d F Y, H:i') : ' ' }}
+                        <td>{{ $data->tgl_pembelian ? $data->tgl_pembelian->translatedFormat('d F Y') : ' ' }}
                         </td>
                     </tr>
                 @endforeach
@@ -97,9 +126,11 @@
         <div class="card card-outline card-secondary mb-0"></div>
     </div>
 
+    <br>
     <div class="card card-outline card-warning">
         <div class="card-header">
-            <h6><b>History Pemeliharaan Barang &rarr;</b></h6>
+            <h3><b>History Pemeliharaan Barang</b></h3>
+            <hr>
         </div>
         <div class="card-body">
             <table class="table table-striped">
@@ -128,9 +159,11 @@
         <div class="card card-outline card-warning mb-0"></div>
     </div>
 
+    <br>
     <div class="card card-outline card-success">
         <div class="card-header">
-            <h6><b>Data Barang (Perbandingan) &rarr;</b></h6>
+            <h3><b>Data Barang (Perbandingan) </b></h3>
+            <hr>
         </div>
         <div class="card-body">
             <table class="table table-striped">
@@ -166,12 +199,14 @@
         <div class="card card-outline card-success mb-0"></div>
     </div>
 
+    <br>
     <div class="card card-outline card-danger">
         <div class="card-header">
-            <h6><b>Tracking &rarr;</b></h6>
+            <h3><b>Tracking</b></h3>
+            <hr>
         </div>
         <div class="card-body">
-            <table class="table table-striped">
+            <table class="spesial">
                 <tr>
                     <th>Creator</th>
                     <td>

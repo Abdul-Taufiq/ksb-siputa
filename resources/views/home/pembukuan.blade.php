@@ -42,7 +42,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $Akuntansi->wherenull('status_pembukuan')->count() }}
+                                                {{ $Akuntansi->wherenull('status_pembukuan')->where('status_pincab', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -99,7 +99,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $Antarbank->wherenull('status_pembukuan')->count() }}
+                                                {{ $Antarbank->wherenull('status_pembukuan')->where('status_pincab', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -156,7 +156,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $Antarkantor->wherenull('status_pembukuan')->count() }}
+                                                {{ $Antarkantor->wherenull('status_pembukuan')->where('status_pincab', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -213,7 +213,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $PDeposito->wherenull('status_pembukuan')->count() }}
+                                                {{ $PDeposito->wherenull('status_pembukuan')->where('status_pincab', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -270,7 +270,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $PEcoll->wherenull('status_pembukuan')->count() }}
+                                                {{ $PEcoll->wherenull('status_pembukuan')->where('status_pincab', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -327,7 +327,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $Inventaris->wherenull('status_pembukuan')->count() }}
+                                                {{ $Inventaris->wherenull('status_pembukuan')->where('status_pincab', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -384,7 +384,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $Kredit->wherenull('status_pembukuan')->count() }}
+                                                {{ $Kredit->wherenull('status_pembukuan')->where('status_pincab', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -441,7 +441,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $Tabungan->wherenull('status_pembukuan')->count() }}
+                                                {{ $Tabungan->wherenull('status_pembukuan')->where('status_pincab', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -521,7 +521,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $Cif->wherenull('status_pembukuan')->count() }}
+                                                {{ $Cif->wherenull('status_pembukuan')->where('status_pincab', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -578,7 +578,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $perKredit->wherenull('status_pembukuan')->count() }}
+                                                {{ $perKredit->wherenull('status_pembukuan')->where('status_pincab', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -635,7 +635,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $perDeposito->wherenull('status_pembukuan')->count() }}
+                                                {{ $perDeposito->wherenull('status_pembukuan')->where('status_pincab', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -715,7 +715,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $inv_baru->wherenull('status_pembukuan')->count() }}
+                                                {{ $inv_baru->wherenull('status_pembukuan')->where('status_pincab', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -772,7 +772,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $inv_pengganti->wherenull('status_pembukuan')->count() }}
+                                                {{ $inv_pengganti->wherenull('status_pembukuan')->where('status_pincab', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>

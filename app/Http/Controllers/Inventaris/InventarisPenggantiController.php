@@ -8,6 +8,7 @@ use App\Models\LogActivity;
 use App\Models\TSI\PemeliharaanHistory;
 use App\Models\User;
 use App\Notifications\NotifikasiPengajuan;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{Auth, Crypt, DB, Mail, Notification};
@@ -34,6 +35,7 @@ class InventarisPenggantiController extends Controller
                 case 'Kasi Komersial':
                 case 'Kepala Kantor Kas':
                 case 'Analis Area':
+                case 'Staf Area':
                 case 'Pimpinan Cabang':
                     if (!empty($request->kode)) {
                         $data = InventarisPengganti::where('kode_form', $kode)
@@ -116,6 +118,7 @@ class InventarisPenggantiController extends Controller
                         case 'Kasi Operasional':
                         case 'Kasi Komersial':
                         case 'Analis Area':
+                        case 'Staf Area':
                         case 'Kepala Kantor Kas':
                             if ($data->status_akhir == 'Selesai') {
                                 $status .= '<a class="btn btn-success btn-sm disabled">Selesai</a>';
@@ -323,7 +326,7 @@ class InventarisPenggantiController extends Controller
         $LogAksi = '(+) Pengajuan Inventaris Pengganti Baru';
         $this->LogActivity($data, $LogAksi);
         // Send Email
-        if (auth()->user()->jabatan == 'Analis Area') {
+        if (auth()->user()->jabatan == 'Analis Area' || auth()->user()->jabatan == 'Staf Area') {
             $data->update([
                 'nama_pincab' => 'Ditarik Oleh User Pembukuan',
                 'status_pincab' => '--',
@@ -360,6 +363,31 @@ class InventarisPenggantiController extends Controller
         }
 
         return view('Page.inventaris_pengganti.show', compact('inventarisPengganti', 'barang', 'diganti', 'perbaikan_histories'), ['title' => 'Show Data']);
+    }
+
+
+
+    public function Print($idEncrypt)
+    {
+        $inventarisPengganti = InventarisPengganti::where('id_inventaris_pengganti', $idEncrypt)->first();
+        $diganti = Diganti::where('id_inventaris_pengganti', $idEncrypt)->get();
+        $barang = BarangBaruPengganti::where('id_inventaris_pengganti', $idEncrypt)->get();
+        $perbaikan_histories = [];
+
+        foreach ($diganti as $digantiItem) {
+            $perbaikan_history = PemeliharaanHistory::where('kode_inventaris', $digantiItem->kode_inventaris)->get();
+            $perbaikan_histories[] = $perbaikan_history;
+        }
+
+
+        $pdf = Pdf::loadView(
+            'Page.inventaris_pengganti.print',
+            compact('inventarisPengganti', 'barang', 'diganti', 'perbaikan_histories'),
+            ['title' => 'Print']
+        );
+        $pdf->setPaper('A4', 'potrait')
+            ->setOptions(['isHtml5ParserEnabled' => true, 'isPhpEnabled' => true]);
+        return $pdf->stream('Data Form.' . $inventarisPengganti->kode_form . '.pdf');
     }
 
 

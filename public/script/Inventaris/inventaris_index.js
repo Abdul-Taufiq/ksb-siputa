@@ -172,6 +172,7 @@ $(document).ready(function () {
         var modalId = "myModal" + Id;
         $("#myModal").attr("id", modalId); //merubah id dari modal
         $("#modalHeader").text("DETAIL DATA - " + kode_form);
+        $(".btnPrint").attr("id", Id);
         $("#frameDetail").attr("src", "/inventaris-pengajuan/" + Id); //merubah link frame
 
         // Tambahkan event listener untuk menangkap penutupan modal

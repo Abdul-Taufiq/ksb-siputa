@@ -63,6 +63,9 @@
                                             <option value="Permohonan User Baru"
                                                 {{ old('keperluan') == 'Permohonan User Baru' ? 'selected' : null }}>
                                                 Permohonan User Baru</option>
+                                            <option value="Penonaktifan User"
+                                                {{ old('keperluan') == 'Penonaktifan User' ? 'selected' : null }}>
+                                                Penonaktifan User</option>
                                         </select>
                                     </div>
                                 </div>
@@ -161,6 +164,9 @@
                                             <option value="Permohonan User Baru"
                                                 {{ old('keperluan') == 'Permohonan User Baru' ? 'selected' : null }}>
                                                 Permohonan User Baru</option>
+                                            <option value="Penonaktifan User"
+                                                {{ old('keperluan') == 'Penonaktifan User' ? 'selected' : null }}>
+                                                Penonaktifan User</option>
                                         </select>
                                     </div>
                                 </div>

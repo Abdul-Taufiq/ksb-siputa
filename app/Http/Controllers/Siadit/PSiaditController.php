@@ -697,6 +697,7 @@ class PSiaditController extends Controller
             'kode_form' => $data->kode_form,
             'keperluan' => $data->keperluan,
             'status_akhir' => $status_akhir,
+            'pelanggaran' => ($status_akhir == 'Approved') ? $data->pelanggaran_dirops : null,
         ], function ($message) use ($userPenerima) {
             $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
             $message->to($userPenerima->email);

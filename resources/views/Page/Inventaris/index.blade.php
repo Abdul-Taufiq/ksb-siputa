@@ -122,5 +122,32 @@
 @section('script')
     <script src="{{ asset('script/Inventaris/inventaris_index.js') }}"></script>
     <script src="{{ asset('script/Inventaris/inventaris_input.js') }}"></script>
+
+    {{-- SWA print IDI --}}
+    <script>
+        $(document).ready(function() {
+            $('.btnPrint').on('click', function() {
+                var Id = $(this).attr("id");
+                var idEncrypt = btoa(Id); // Mengenkripsi ID menggunakan Base64 encoding
+
+                console.log(idEncrypt);
+
+                Swal.fire({
+                    title: 'Konfirmasi Cetak Form?',
+                    text: 'Apakah Anda yakin ingin mencetak Form?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Cetak!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.open('/inventaris-baru-cetak/' + Id, '_blank');
+                    }
+                });
+            });
+        });
+    </script>
 @endsection
 @endsection

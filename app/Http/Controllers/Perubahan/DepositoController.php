@@ -78,12 +78,12 @@ class DepositoController extends Controller
                             ->OrderBy('created_at', 'desc')->get();
                     } else {
                         if (!empty($request->min)) {
-                            $data = Deposito::where('status_pembukuan', "Edited")
+                            $data = Deposito::where('status_pembukuan', "SendedToDirops")
                                 ->orwhere('status_pembukuan', 'Approve')
                                 ->whereBetween('created_at', [$awal, $akhir])
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
-                            $data = Deposito::where('status_pembukuan', 'Approve')->orderBy('created_at', 'desc')->get();
+                            $data = Deposito::where('status_pembukuan', "SendedToDirops")->orwhere('status_pembukuan', 'Approve')->orderBy('created_at', 'desc')->get();
                         }
                     }
                     break;
@@ -683,6 +683,7 @@ class DepositoController extends Controller
             'kode_form' => $data->kode_form,
             'keperluan' => "Perubahan Transaksi (Deposito)",
             'status_akhir' => $status_akhir,
+            'pelanggaran' => ($status_akhir == 'Approved') ? $data->pelanggaran_dirops : null,
         ], function ($message) use ($userPenerima) {
             $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
             $message->to($userPenerima->email);

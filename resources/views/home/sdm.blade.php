@@ -42,7 +42,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $EmailP->wherenull('status_sdm')->count() }}
+                                                {{ $EmailP->wherenull('status_sdm')->where('status_pincab', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -98,7 +98,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $EmailR->wherenull('status_sdm')->count() }}
+                                                {{ $EmailR->wherenull('status_sdm')->where('status_pincab', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -155,7 +155,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $USiadit->wherenull('status_sdm')->count() }}
+                                                {{ $USiadit->wherenull('status_sdm')->where('status_pincab', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -212,7 +212,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $PSlik->wherenull('status_sdm')->count() }}
+                                                {{ $PSlik->wherenull('status_sdm')->where('status_pincab', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -269,7 +269,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $UserP->wherenull('status_sdm')->count() }}
+                                                {{ $UserP->wherenull('status_sdm')->where('status_pincab', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -326,7 +326,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $UserR->wherenull('status_sdm')->count() }}
+                                                {{ $UserR->wherenull('status_sdm')->where('status_pincab', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -383,7 +383,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $EcollP->wherenull('status_sdm')->count() }}
+                                                {{ $EcollP->wherenull('status_sdm')->where('status_pincab', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -440,7 +440,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $EcollR->wherenull('status_sdm')->count() }}
+                                                {{ $EcollR->wherenull('status_sdm')->where('status_pincab', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -497,7 +497,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $Pefindo->wherenull('status_sdm')->count() }}
+                                                {{ $Pefindo->wherenull('status_sdm')->where('status_pincab', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>
@@ -554,7 +554,7 @@
                                     <div class="col-sm-3 border-right bg-warning">
                                         <div class="description-block">
                                             <h5 class="description-header">
-                                                {{ $PefindoRe->wherenull('status_sdm')->count() }}
+                                                {{ $PefindoRe->wherenull('status_sdm')->where('status_pincab', 'Approve')->count() }}
                                             </h5>
                                             <span class="description-text">NEED ACTION</span>
                                         </div>

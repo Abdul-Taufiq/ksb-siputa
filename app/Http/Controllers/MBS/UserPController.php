@@ -39,6 +39,7 @@ class UserPController extends Controller
                 case 'Kepala Kantor Kas':
                 case 'Pimpinan Cabang':
                 case 'Analis Area':
+                case 'Staf Area':
                     if (!empty($request->kode)) {
                         $data = UserP::where('kode_form', $kode)
                             ->OrderBy('created_at', 'desc')->get();
@@ -117,6 +118,7 @@ class UserPController extends Controller
                         case 'Kasi Operasional':
                         case 'Kasi Komersial':
                         case 'Analis Area':
+                        case 'Staf Area':
                         case 'Kepala Kantor Kas':
                             $status .= '<a class="btn btn-success btn-sm disabled">Terkirim</a>';
                             break;
@@ -173,6 +175,7 @@ class UserPController extends Controller
                             break;
                             # area...
                         case 'Analis Area':
+                        case 'Staf Area':
                             if ($data->status_sdm != null) {
                                 $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
                             } else {
@@ -267,7 +270,7 @@ class UserPController extends Controller
         $LogAksi = '(+) Pengajuan User MSO';
         $this->LogActivity($data, $LogAksi);
         // Send Email
-        if (auth()->user()->jabatan == 'Analis Area') {
+        if (auth()->user()->jabatan == 'Analis Area' || auth()->user()->jabatan == 'Staf Area') {
             $data->update([
                 'nama_pincab' => 'Ditarik Oleh User SDM',
                 'status_pincab' => '--',

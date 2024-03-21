@@ -76,12 +76,12 @@ class PDepositoController extends Controller
                             ->OrderBy('created_at', 'desc')->get();
                     } else {
                         if (!empty($request->min)) {
-                            $data = PDeposito::where('status_pembukuan', "Edited")
+                            $data = PDeposito::where('status_pembukuan', "SendedToDirops")
                                 ->orwhere('status_pembukuan', 'Approve')
                                 ->whereBetween('created_at', [$awal, $akhir])
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
-                            $data = PDeposito::where('status_pembukuan', 'Approve')->orderBy('created_at', 'desc')->get();
+                            $data = PDeposito::where('status_pembukuan', "SendedToDirops")->orwhere('status_pembukuan', 'Approve')->orderBy('created_at', 'desc')->get();
                         }
                     }
                     break;
@@ -586,8 +586,8 @@ class PDepositoController extends Controller
                 $status .= 'SendedToDirops';
                 $status .= '</button>';
                 $status .= '<div class="dropdown-menu" aria-labelledby="statusDropdown">';
-                $status .= '<a class="dropdown-item approve" href="/pembatalan-deposito-approve/' . encrypt($data->id_deposito) . '">Approve</a>';
-                $status .= '<a class="dropdown-item reject" href="/pembatalan-deposito-reject/' . encrypt($data->id_deposito) . '">Reject</a>';
+                $status .= '<a class="dropdown-item" href="/pembatalan-deposito-approve/' . encrypt($data->id_depositor)  . '" onclick="return confirm(\'Approve data sebagai Selesai?\')">Approve</a>';
+                $status .= '<a class="dropdown-item" href="/pembatalan-deposito-Reject/' . encrypt($data->id_depositor)  . '" onclick="return confirm(\'Reject data sebagai Selesai?\')">Reject</a>';
                 $status .= '</div>';
                 $status .= '</div>';
             } else {
@@ -678,6 +678,7 @@ class PDepositoController extends Controller
             'kode_form' => $data->kode_form,
             'keperluan' => "Pembatalan Transaksi (Deposito)",
             'status_akhir' => $status_akhir,
+            'pelanggaran' => ($status_akhir == 'Approved') ? $data->pelanggaran_dirops : null,
         ], function ($message) use ($userPenerima) {
             $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
             $message->to($userPenerima->email);

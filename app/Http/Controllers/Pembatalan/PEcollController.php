@@ -76,12 +76,12 @@ class PEcollController extends Controller
                             ->OrderBy('created_at', 'desc')->get();
                     } else {
                         if (!empty($request->min)) {
-                            $data = PEcoll::where('status_pembukuan', "Edited")
+                            $data = PEcoll::where('status_pembukuan', "SendedToDirops")
                                 ->orwhere('status_pembukuan', 'Approve')
                                 ->whereBetween('created_at', [$awal, $akhir])
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
-                            $data = PEcoll::where('status_pembukuan', 'Approve')->orderBy('created_at', 'desc')->get();
+                            $data = PEcoll::where('status_pembukuan', "SendedToDirops")->orwhere('status_pembukuan', 'Approve')->orderBy('created_at', 'desc')->get();
                         }
                     }
                     break;
@@ -648,6 +648,7 @@ class PEcollController extends Controller
             'kode_form' => $data->kode_form,
             'keperluan' => "Pembatalan Transaksi (Ecoll)",
             'status_akhir' => $status_akhir,
+            'pelanggaran' => ($status_akhir == 'Approved') ? $data->pelanggaran_dirops : null,
         ], function ($message) use ($userPenerima) {
             $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
             $message->to($userPenerima->email);

@@ -75,7 +75,7 @@ class BarangController extends Controller
             ->table('cabang')
             // ->select('kode', 'nama_pincab') // jika ada select tertentu diakhiri ->first() atau get()
             ->where('id_cabang', $request->cabang)
-            ->value('kode');
+            ->value('kode_brg');
         // dd($cabang);
         switch ($request->jns_barang) {
             case 'Komputer':

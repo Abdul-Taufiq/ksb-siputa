@@ -172,7 +172,14 @@ $(document).ready(function () {
         var modalId = "myModal" + Id;
         $("#myModal").attr("id", modalId); //merubah id dari modal
         $("#modalHeader").text("DETAIL DATA - " + kode_form);
+        $(".btnPrint").attr("id", Id);
         $("#frameDetail").attr("src", "/inventaris-pengganti/" + Id); //merubah link frame
+
+        // Tambahkan event listener untuk menangkap penutupan modal
+        $("#" + modalId).on("hidden.bs.modal", function () {
+            // Kembalikan ID modal ke nilai default
+            $(this).attr("id", "myModal");
+        });
     });
 });
 // end detail

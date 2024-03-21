@@ -25,8 +25,11 @@
                 <td>: {{ $keperluan }}</td>
             </tr>
         </table> <br>
-        <b>Telah Selesai</b> dengan Status <b>{{ $status_akhir }}</b>, <br>
-        Cek aplikasi form berbasis web sekarang untuk meninjau form pengajuan tersebut.
+        <b>Telah Selesai</b> dengan Status <b>{{ $status_akhir }}</b>,
+        @if ($status_akhir == 'Approved')
+            Dengan dikategorikan sebagai <b>{{ $pelanggaran }}</b>
+        @endif
+        <br> Cek aplikasi form berbasis web sekarang untuk meninjau form pengajuan tersebut.
         <a href="https://ksb-siputa.bprkusumasumbing.com">Akses Aplikasi Disini!</a>
         <br><br>
         <b>Regard,</b> <br>
