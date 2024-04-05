@@ -12,8 +12,12 @@
             <a href="/contact" class="nav-link">Kontak</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="{{ asset('Juknis/Juknis.pdf') }}" target="_blank" class="nav-link">Jangan Lupa Baca Juknisnya!</a>
+            <a href="{{ asset('Juknis/Juknis.pdf') }}" target="_blank" class="nav-link">Baca Juknisnya!</a>
         </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/lastes-version" class="nav-link">Apa Yang Baru?</a>
+        </li>
+
     </ul>
 
     <!-- Right navbar links -->
@@ -147,9 +151,9 @@
                 @if (auth()->user()->jabatan != 'Pembukuan')
                     {{-- USER --}}
                     <li
-                        class="nav-item {{ request()->is('user-email-reset*', 'user-email-pengajuan*', 'user-siadit*', 'siadit-perubahan*', 'user-ecoll*', 'reset-ecoll*', 'slik-pengajuan*', 'slik-reset*', 'pefindo-pengajuan*', 'pefindo-reset*', 'mso-pengajuan*', 'mso-reset*') ? 'active menu-is-opening menu-open' : '' }}">
+                        class="nav-item {{ request()->is('user-email-reset*', 'user-email-pengajuan*', 'user-siadit', 'user-ecoll*', 'reset-ecoll*', 'slik-pengajuan*', 'slik-reset*', 'pefindo-pengajuan*', 'pefindo-reset*', 'mso-pengajuan*', 'mso-reset*') ? 'active menu-is-opening menu-open' : '' }}">
                         <a href="#"
-                            class="nav-link  {{ request()->is('user-email-reset*', 'user-email-pengajuan*', 'user-siadit*', 'siadit-perubahan*', 'user-ecoll*', 'reset-ecoll*', 'slik-pengajuan*', 'slik-reset*', 'pefindo-pengajuan*', 'pefindo-reset*', 'mso-pengajuan*', 'mso-reset*') ? 'active aria-expanded= "true"' : 'collapsed' }}">
+                            class="nav-link  {{ request()->is('user-email-reset*', 'user-email-pengajuan*', 'user-siadit', 'user-ecoll*', 'reset-ecoll*', 'slik-pengajuan*', 'slik-reset*', 'pefindo-pengajuan*', 'pefindo-reset*', 'mso-pengajuan*', 'mso-reset*') ? 'active aria-expanded= "true"' : 'collapsed' }}">
                             <i class="fa fa-address-book nav-icon" aria-hidden="true"></i>
                             <p>
                                 Form User
@@ -157,7 +161,7 @@
                             </p>
                         </a>
                         <ul
-                            class="nav nav-treeview  {{ request()->is('user-email-reset*', 'user-email-pengajuan*', 'user-siadit*', 'siadit-perubahan*', 'user-ecoll*', 'reset-ecoll*', 'slik-pengajuan*', 'slik-reset*', 'pefindo-pengajuan*', 'pefindo-reset*', 'mso-pengajuan*', 'mso-reset*') ? 'style="display: block;"' : '' }}">
+                            class="nav nav-treeview  {{ request()->is('user-email-reset*', 'user-email-pengajuan*', 'user-siadit', 'user-ecoll*', 'reset-ecoll*', 'slik-pengajuan*', 'slik-reset*', 'pefindo-pengajuan*', 'pefindo-reset*', 'mso-pengajuan*', 'mso-reset*') ? 'style="display: block;"' : '' }}">
 
                             {{-- email --}}
                             <hr style="margin-left: 12px; margin-right: 15px;">
@@ -188,7 +192,7 @@
                             </p>
                             <li class="nav-item">
                                 <a href="/user-siadit"
-                                    class="nav-link {{ Request::is('user-siadit*') ? 'active' : '' }}">
+                                    class="nav-link {{ Request::is('user-siadit') ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Pengajuan User</p>
                                 </a>
@@ -454,13 +458,13 @@
                                 <p>Pemeliharaan/Trouble</p>
                             </a>
                         </li>
-                        {{-- <li class="nav-item">
-                            <a href="/tsi-pemeliharaan-pengajuan"
-                                class="nav-link {{ Request::is('tsi-pemeliharaan-pengajuan*') ? 'active' : '' }}">
+                        <li class="nav-item">
+                            <a href="/tsi-permohonan"
+                                class="nav-link {{ Request::is('tsi-permohonan*') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Permohonan Bantuan</p>
                             </a>
-                        </li> --}}
+                        </li>
                         <li class="nav-item">
                             <a href="/tsi-barang-elektro"
                                 class="nav-link {{ Request::is('tsi-barang-elektro*') ? 'active' : '' }}">

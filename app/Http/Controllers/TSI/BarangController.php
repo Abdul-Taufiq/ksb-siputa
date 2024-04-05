@@ -4,6 +4,7 @@ namespace App\Http\Controllers\TSI;
 
 use App\Http\Controllers\Controller;
 use App\Models\TSI\Barang;
+use App\Models\TSI\PemeliharaanHistory;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -131,7 +132,8 @@ class BarangController extends Controller
 
     public function show(Barang $barang)
     {
-        return view('Page.Barang.show', compact('barang'), ['title' => 'Show Data']);
+        $perbaikan_histories = PemeliharaanHistory::where('kode_inventaris', $barang->kode_inventaris)->get();
+        return view('Page.Barang.show', compact('barang', 'perbaikan_histories'), ['title' => 'Show Data']);
     }
 
 

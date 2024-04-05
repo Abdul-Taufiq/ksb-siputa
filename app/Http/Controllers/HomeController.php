@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Ecoll\{EcollP, EcollR};
 use App\Models\Inventaris\Inventaris as InventarisInventaris;
 use App\Models\Inventaris\InventarisPengganti;
+use App\Models\LastVersion;
 use App\Models\MBS\{UserP, UserR};
 use App\Models\Pefindo\{Pefindo, PefindoRe};
 use App\Models\Pembatalan\{Akuntansi, Antarbank, Antarkantor, Inventaris, Kredit, PDeposito, PEcoll, Tabungan};
@@ -12,6 +13,7 @@ use App\Models\PermissionTokens;
 use App\Models\Perubahan\{Cif, Kredit as perKredit, Deposito as perDeposito};
 use App\Models\Siadit\{PSiadit, USiadit};
 use App\Models\Slik\Pslik;
+use App\Models\TSI\BantuanTSI;
 use App\Models\TSI\Pemeliharaan;
 use App\Models\User\{EmailPe, EmailR};
 use Illuminate\Http\Request;
@@ -90,6 +92,7 @@ class HomeController extends Controller
 
         // Pemeliharaan Traoubel
         $pemeliharaan = Pemeliharaan::all();
+        $bantuan_tsi = BantuanTSI::all();
 
 
 
@@ -122,6 +125,7 @@ class HomeController extends Controller
                 'inv_baru',
                 'inv_pengganti',
                 'pemeliharaan',
+                'bantuan_tsi',
             ),
             ['title' => 'Dashboard']
         );
@@ -131,5 +135,35 @@ class HomeController extends Controller
     public function create()
     {
         return redirect('home')->with('AlertSuccess', "Bergasil");
+    }
+
+    public function ListVersion()
+    {
+        $versi = LastVersion::orderBy('created_at', 'DESC')->get();
+        return view('home.List-Version', compact('versi'), ['title' => 'Lastes Version']);
+    }
+
+    public function ListVersionCreate(Request $request)
+    {
+        $versi = new LastVersion();
+        $versi->kode_versi = $request->kode_versi;
+        $versi->pembaruan = $request->pembaruan;
+        $versi->tgl_rilis = $request->tgl_rilis;
+
+        $gambar = $request->file('juknis');
+        $fileName = $gambar->getClientOriginalName();
+        $gambar->move('Juknis', $fileName);
+
+        $versi->juknis = $fileName;
+        $versi->save();
+
+        return redirect()->back()->with('AlertSuccess', 'Berhasil di Upload!');
+    }
+
+    public function ListVersionDelete($Id)
+    {
+        $versi = LastVersion::where('id_version', $Id)->first();
+        $versi->delete();
+        return redirect()->back()->with('AlertSuccess', 'Berhasil di Hapus!');
     }
 }

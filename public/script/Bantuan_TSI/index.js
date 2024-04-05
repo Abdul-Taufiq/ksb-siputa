@@ -60,7 +60,7 @@ function loadtable(min, max, cari) {
             serverSide: true,
             ajax: {
                 // type: "post",
-                url: "pemeliharaan-perangkat",
+                url: "tsi-permohonan",
                 data: {
                     min: min,
                     max: max,
@@ -92,14 +92,6 @@ function loadtable(min, max, cari) {
                     data: "id_cabang",
                     name: "id_cabang.cabang",
                 },
-                {
-                    data: "kode_inventaris",
-                    name: "kode_inventaris",
-                },
-                {
-                    data: "keputusan_tsi",
-                    name: "keputusan_tsi",
-                },
 
                 {
                     data: null,
@@ -129,8 +121,9 @@ function loadtable(min, max, cari) {
 
             columnDefs: [
                 {
-                    targets: [5, 6],
+                    targets: [4],
                     visible: false,
+                    searchable: false,
                 },
             ],
 
@@ -166,10 +159,6 @@ $(document).on("click", "#btn-cari", function () {
 });
 // end datatables
 
-//
-//
-//
-
 //  ========================================
 // {{ detail data modal }}
 $(document).ready(function () {
@@ -180,7 +169,7 @@ $(document).ready(function () {
         var modalId = "myModal" + Id;
         $("#myModal").attr("id", modalId); //merubah id dari modal
         $("#modalHeader").text("DETAIL DATA - " + kode_form);
-        $("#frameDetail").attr("src", "/pemeliharaan-perangkat/" + Id); //merubah link frame
+        $("#frameDetail").attr("src", "/tsi-permohonan/" + Id); //merubah link frame
 
         // Tambahkan event listener untuk menangkap penutupan modal
         $("#" + modalId).on("hidden.bs.modal", function () {
@@ -190,11 +179,6 @@ $(document).ready(function () {
     });
 });
 // end detail
-
-//
-//
-//
-//
 
 //  ========================================
 // {{ add data modal }}
@@ -226,10 +210,6 @@ function hanyaAngka(evt) {
 }
 // end add data modal
 
-//
-//
-//
-
 //  ========================================
 // edit data
 $(document).ready(function () {
@@ -259,15 +239,14 @@ $(document).ready(function () {
 
         $.ajax({
             type: "GET",
-            url: "/pemeliharaan-perangkat/" + Id + "/edit",
+            url: "/tsi-permohonan/" + Id + "/edit",
             success: function (response) {
                 console.log("Rz wuzz here");
-                $("#kode_inventaris_edit").val(response.data.kode_inventaris);
-                $("#kendala").val(response.data.detail_kendala);
-                // $("#nama_edit").val(response.data.nama);
+                $("#permasalahan").val(response.data.detail_permasalahan);
+                console.log(response.data.nik);
 
                 // link formnya
-                $("#editForm").attr("action", "/pemeliharaan-perangkat/" + Id);
+                $("#editForm").attr("action", "/tsi-permohonan/" + Id);
             },
         });
     });
@@ -288,7 +267,7 @@ $(document).ready(function () {
         console.log("Copyright by Abdul Taufiq");
         $("#modalApproveLabel").text("APPROVE DATA " + NoSPK);
         // Ubah action form untuk menyertakan ID
-        var formAction = "/pemeliharaan-perangkat-approve/" + idKredit;
+        var formAction = "/tsi-permohonan-approve/" + idKredit;
         $("#approveForm").attr("action", formAction);
     });
 
@@ -322,7 +301,7 @@ $(document).ready(function () {
         console.log("Copyright by Abdul Taufiq");
         $("#modalRejectLabel").text("REJECT DATA " + NoSPK);
         // Ubah action form untuk menyertakan ID
-        var formAction = "/pemeliharaan-perangkat-reject/" + idKredit;
+        var formAction = "/tsi-permohonan-reject/" + idKredit;
         $("#rejectForm").attr("action", formAction);
     });
 
@@ -340,60 +319,4 @@ $(document).ready(function () {
         // Modal otomatis tertutup setelah klik "Simpan"
         $("#modalReject").modal("hide");
     });
-});
-
-//
-//
-//
-//sdm data modal
-$(document).ready(function () {
-    $("body").on("click", ".sdm", function () {
-        var idKredit = $(this).data("id");
-        var NoSPK = $(this).data("kode_form");
-        $("#encryptedId").val(idKredit);
-
-        // console.log("Nama Kredit:", idKredit, NoSPK);
-        console.log("Copyright by Abdul Taufiq");
-        $("#modalSdmLabel").text("Lanjukan DATA Ke SDM " + NoSPK);
-        // Ubah action form untuk menyertakan ID
-        var formAction = "/pemeliharaan-perangkat-sdm/" + idKredit;
-        $("#SdmForm").attr("action", formAction);
-    });
-
-    $("#SdmForm").submit(function (event) {
-        // Dapatkan nilai textarea
-        var rejectReason = $("#rejectReason").val();
-
-        // Ubah nilai textarea menjadi input tersembunyi
-        var hiddenInput = $("<input>")
-            .attr("type", "hidden")
-            .attr("name", "rejectReason")
-            .val(rejectReason);
-        $(this).append(hiddenInput);
-
-        // Modal otomatis tertutup setelah klik "Simpan"
-        $("#modalApprove").modal("hide");
-    });
-});
-
-$("#keperluan").on("change", function () {
-    var selectopt = $(this).val();
-    var masa_aktif = document.getElementById("masa_aktif");
-
-    if (selectopt == "Permohonan User Baru (Alternate)") {
-        masa_aktif.classList.remove("d-none");
-    } else {
-        masa_aktif.classList.add("d-none");
-    }
-});
-
-$("#keperluan_edit").on("change", function () {
-    var selectopt = $(this).val();
-    var masa_aktif_edit = document.getElementById("masa_aktif_edit");
-
-    if (selectopt == "Permohonan User Baru (Alternate)") {
-        masa_aktif_edit.classList.remove("d-none");
-    } else {
-        masa_aktif_edit.classList.add("d-none");
-    }
 });

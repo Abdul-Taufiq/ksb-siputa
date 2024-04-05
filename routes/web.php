@@ -12,6 +12,7 @@ use App\Http\Controllers\Pembatalan\{AkuntansiController, AntarBankController, A
 use App\Http\Controllers\Perubahan\{CifController, DepositoController, KreditController as PerubahanKreditController};
 use App\Http\Controllers\Siadit\{PSiaditController, USiaditController};
 use App\Http\Controllers\Slik\{PSlikController};
+use App\Http\Controllers\TSI\BantuanTSIController;
 use App\Http\Controllers\TSI\BarangController;
 use App\Http\Controllers\TSI\PemeliharaanController;
 use App\Http\Controllers\TSI\PemeliharaanHistoryController;
@@ -54,6 +55,10 @@ Route::group(['middleware' => ['permission']], function () {
         Route::get('/create', [HomeController::class, 'create']);
         Route::get('/profile', [UserController::class, 'profil']);
         Route::post('/profile/upload', [UserController::class, 'upload']);
+
+        Route::get('/lastes-version', [HomeController::class, 'ListVersion']);
+        Route::post('/lastes-version', [HomeController::class, 'ListVersionCreate']);
+        Route::delete('/lastes-version/{Id}', [HomeController::class, 'ListVersionDelete']);
 
         // contact
         Route::resource('contact', UserController::class)->parameters(['contact' => 'user']);
@@ -180,10 +185,16 @@ Route::group(['middleware' => ['permission']], function () {
         Route::resource('pemeliharaan-perangkat', PemeliharaanController::class)->parameters(['pemeliharaan-perangkat' => 'pemeliharaan']);
         Route::patch('/pemeliharaan-perangkat-approve/{idEncrypt}', [PemeliharaanController::class, 'ResponApprove']);
         Route::patch('/pemeliharaan-perangkat-reject/{idEncrypt}', [PemeliharaanController::class, 'ResponReject']);
+        Route::patch('/pemeliharaan-perangkat-sdm/{idEncrypt}', [PemeliharaanController::class, 'ResponLanjutan']);
 
-        // TSI PErmohonan Bantuan
+        // TSI Bantuan
         Route::resource('pemeliharaan-history', PemeliharaanHistoryController::class)->parameters(['pemeliharaan-history' => 'pemeliharaanHistory']);
         Route::resource('tsi-barang-elektro', BarangController::class)->parameters(['tsi-barang-elektro' => 'barang']);
+
+        // TSI Permohonan Ke Cabang
+        Route::resource('tsi-permohonan', BantuanTSIController::class)->parameters(['tsi-permohonan' => 'bantuanTSI']);
+        Route::patch('/tsi-permohonan-approve/{idEncrypt}', [BantuanTSIController::class, 'ResponApprove']);
+        Route::patch('/tsi-permohonan-reject/{idEncrypt}', [BantuanTSIController::class, 'ResponReject']);
 
 
         // log activity

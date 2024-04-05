@@ -70,6 +70,35 @@
         <div class="card card-outline card-primary mb-0"></div>
     </div>
 
+    <div class="card card-outline card-warning">
+        <div class="card-header">
+            <h6><b>History Pemeliharaan Barang &rarr;</b></h6>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <tr>
+                    <th>#</th>
+                    <th>Kode Inventaris</th>
+                    <th>Detail Kerusakan</th>
+                    <th>Detail Perbaikan</th>
+                    <th>Tanggal Dilaksanakan</th>
+                </tr>
+                @foreach ($perbaikan_histories as $data)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td> <!-- Menampilkan nomor iterasi dari loop luar -->
+                        <td>{{ $data->kode_inventaris }}</td>
+                        <td>{!! $data->detail_kerusakan !!}</td>
+                        <td>{!! $data->detail_perbaikan !!}</td>
+                        <td>{{ $data->tgl_dilaksanakan ? $data->tgl_dilaksanakan->translatedFormat('d F Y') : ' ' }}
+                        </td>
+                    </tr>
+                @endforeach
+
+            </table>
+        </div>
+        <div class="card card-outline card-warning mb-0"></div>
+    </div>
+
 </body>
 
 </html>

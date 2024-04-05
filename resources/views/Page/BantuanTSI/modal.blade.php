@@ -41,13 +41,11 @@
     }
 </style>
 
-
-
 {{-- modal add --}}
 <div class="modal fade" id="addModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="addModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <form id="quickForm" action="{{ url('pemeliharaan-perangkat') }}" method="post" enctype="multipart/form-data">
+        <form id="quickForm" action="{{ url('tsi-permohonan') }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="modal-content">
                 <div class="modal-header">
@@ -60,23 +58,11 @@
                     <div class="card card-outline card-primary">
                         <div class="card-body">
                             <div class="row ml-2">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="kode_inventaris">Kode Inventaris :</label>
-                                        <input type="text" name="kode_inventaris" id="kode_inventaris"
-                                            class="form-control input">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="ml-2">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="detail_kendala">Detail Kendala :</label>
-                                        <input id="detail_kendala" type="hidden" name="detail_kendala"
-                                            class="form-control input" placeholder="Detail Kendala" required>
-                                        <trix-editor input="detail_kendala" class="input"></trix-editor>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="detail_permasalahan">Detail Permasalahan :</label>
+                                    <input id="detail_permasalahan" type="hidden" name="detail_permasalahan"
+                                        class="form-control input" placeholder="Detail Kendala" required>
+                                    <trix-editor input="detail_permasalahan" class="input"></trix-editor>
                                 </div>
                             </div>
                         </div>
@@ -118,51 +104,43 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalEditLabel" style="letter-spacing: 2px; font-weight: bold;">
-                        Tambah {{ $title }}
+                        Tambah Pengajuan Reset Password Email
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="card card-outline card-warning">
-                    <div class="card-body">
-                        <div class="row ml-2">
-                            <div class="col-md-6">
+                <div class="modal-body">
+                    <div class="card card-outline card-primary">
+                        <div class="card-body">
+                            <div class="row ml-2">
                                 <div class="form-group">
-                                    <label for="kode_inventaris_edit">Kode Inventaris :</label>
-                                    <input type="text" name="kode_inventaris_edit" id="kode_inventaris_edit"
-                                        class="form-control input">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ml-2">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="detail_kendala_edit">Detail Kendala :</label>
-                                    <input id="detail_kendala_edit" type="hidden" name="detail_kendala_edit"
+                                    <label for="detail_permasalahan_edit">Detail Permasalahan :</label>
+                                    <input id="detail_permasalahan_edit" type="hidden" name="detail_permasalahan_edit"
                                         class="form-control input" placeholder="Detail Kendala" required>
-                                    <trix-editor id="kendala" input="detail_kendala_edit"
+                                    <trix-editor id="permasalahan" input="detail_permasalahan_edit"
                                         class="input"></trix-editor>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group mb-0">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" name="terms" class="custom-control-input"
-                                    id="exampleCheck2" required>
-                                <label class="custom-control-label" for="exampleCheck2">
-                                    Saya setuju dengan <a href="{{ asset('Juknis/Juknis.pdf') }}"
-                                        target="_blank">ketentuan
-                                        yang berlaku</a>.
-                                </label>
+                        <div class="card-footer">
+                            <div class="form-group mb-0">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" name="terms" class="custom-control-input" id="ModalEdit"
+                                        required>
+                                    <label class="custom-control-label" for="ModalEdit">
+                                        Saya setuju dengan <a href="{{ asset('Juknis/Juknis.pdf') }}"
+                                            target="_blank">ketentuan yang berlaku</a>.
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button id="simpan" type="submit" class="btn btn-primary" style="letter-spacing: 2px;">
-                            <i class="fa-regular fa-floppy-disk"></i> &nbsp; <b>SIMPAN</b></button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
+                        <div class="card card-outline card-primary mb-0"></div>
                     </div>
                 </div>
-                <div class="card card-outline card-warning mb-0"></div>
+                <div class="modal-footer">
+                    <button id="simpan" type="submit" class="btn btn-primary" style="letter-spacing: 2px;">
+                        <i class="fa-regular fa-floppy-disk"></i> &nbsp; <b>SIMPAN</b></button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
+                </div>
             </div>
         </form>
     </div>
@@ -173,7 +151,7 @@
 
 {{-- modal detail --}}
 <div class="modal" id="myModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalHeader" style="letter-spacing: 2px; font-weight: bold;">DETAIL
@@ -210,18 +188,10 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="rejectForm" action="/status-spk-rej" method="POST" enctype="multipart/form-data">
+            <form id="rejectForm" action="" method="POST" enctype="multipart/form-data">
                 @method('patch')
                 @csrf
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="keputusan_tsi">Keputusan TSI (Perbaiki Sendiri/Sevice):</label>
-                        <select name="keputusan_tsi" id="keputusan_tsi" class="form-control input" required>
-                            <option selected disabled>- Pilih Status -</option>
-                            <option value="Perbaikan Mandiri">Perbaikan Mandiri</option>
-                            <option value="Jasa Service/Luar">Jasa Service/Luar</option>
-                        </select>
-                    </div>
                     <div class="form-group">
                         <label for="catatan">Catatan Reject:</label>
                         <textarea class="form-control input" id="catatan" name="catatan" required></textarea>
@@ -229,9 +199,9 @@
                     <input type="hidden" name="encryptedId" id="encryptedId" value="">
                     <div class="form-group mb-0">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" name="terms" class="custom-control-input" id="exampleCheck3"
+                            <input type="checkbox" name="terms" class="custom-control-input" id="exampleCheck2"
                                 required>
-                            <label class="custom-control-label" for="exampleCheck3">Saya setuju dengan<a
+                            <label class="custom-control-label" for="exampleCheck2">Saya setuju dengan<a
                                     href="#"> ketentuan yang berlaku</a>.</label>
                             <label class="text-danger"><i>Coution: </i> Pastikan bahwa Anda telah yakin untuk
                                 melakukan aksi ini!</label>
@@ -251,7 +221,7 @@
 <!-- Modal Approve -->
 <div class="modal fade" id="modalApprove" tabindex="-1" role="dialog" aria-labelledby="modalApproveLabel"
     aria-hidden="true">
-    <div class="modal-dialog  modal-lg" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalApproveLabel">Approve Data</h5>
@@ -259,33 +229,31 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="approveForm" action="/status-spk" method="POST" enctype="multipart/form-data">
+            <form id="approveForm" action="" method="POST" enctype="multipart/form-data">
                 @method('patch')
                 @csrf
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="keputusan_tsi">Keputusan TSI (Perbaiki Sendiri/Sevice):</label>
-                        <select name="keputusan_tsi" id="keputusan_tsi" class="form-control input" required>
-                            <option selected disabled>- Pilih Status -</option>
-                            <option value="Perbaikan Mandiri">Perbaikan Mandiri</option>
-                            <option value="Jasa Service/Luar">Jasa Service/Luar</option>
-                        </select>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="detail_kerusakan">Detail Kerusakannya :</label>
-                        <input id="detail_kerusakan" type="hidden" name="detail_kerusakan"
-                            class="form-control input" placeholder="Detail Kendala" required>
-                        <trix-editor input="detail_kerusakan" class="input"></trix-editor>
-                    </div>
+                    @if (auth()->user()->jabatan == 'TSI')
+                        <div class="form-group">
+                            <label for="kode_inventaris">Kode Inventaris :</label>
+                            <input id="kode_inventaris" type="text" name="kode_inventaris"
+                                class="form-control input" placeholder="Kode Inventaris">
+                        </div>
+                        <div class="form-group">
+                            <label for="detail_kerusakan">Detail Kerusakannya :</label>
+                            <input id="detail_kerusakan" type="hidden" name="detail_kerusakan"
+                                class="form-control input" placeholder="Detail Kendala" required>
+                            <trix-editor input="detail_kerusakan" class="input"></trix-editor>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="detail_perbaikan">Detail Perbaikannya :</label>
-                        <input id="detail_perbaikan" type="hidden" name="detail_perbaikan"
-                            class="form-control input" placeholder="Detail Kendala" required>
-                        <trix-editor input="detail_perbaikan" class="input"></trix-editor>
-                    </div>
-
+                        <div class="form-group">
+                            <label for="detail_perbaikan">Detail Perbaikannya :</label>
+                            <input id="detail_perbaikan" type="hidden" name="detail_perbaikan"
+                                class="form-control input" placeholder="Detail Kendala" required>
+                            <trix-editor input="detail_perbaikan" class="input"></trix-editor>
+                        </div>
+                    @endif
 
                     <div class="form-group">
                         <label for="catatan">Catatan Approve:</label>
@@ -294,10 +262,10 @@
                     <input type="hidden" name="encryptedId" id="encryptedId" value="">
                     <div class="form-group mb-0">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" name="terms" class="custom-control-input" id="exampleCheck4"
+                            <input type="checkbox" name="terms" class="custom-control-input" id="exampleCheck3"
                                 required>
-                            <label class="custom-control-label" for="exampleCheck4">Saya setuju dengan<a
-                                    href="#"> ketentuan yang berlaku</a>.</label> <br>
+                            <label class="custom-control-label" for="exampleCheck3">Saya setuju dengan<a
+                                    href="#"> ketentuan yang berlaku</a>.</label>
                             <label class="text-danger"><i>Coution: </i> Pastikan bahwa Anda telah yakin untuk
                                 melakukan aksi ini!</label>
                         </div>
@@ -307,48 +275,6 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary">Lanjutkan Approve Pengajuan Ini!</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-
-<!-- Modal sdm -->
-<div class="modal fade" id="modalSdm" tabindex="-1" role="dialog" aria-labelledby="modalSdmLabel"
-    aria-hidden="true">
-    <div class="modal-dialog  modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalSdmLabel">Lanjutkan Data ke SDM</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form id="SdmForm" action="" method="POST" enctype="multipart/form-data">
-                @method('patch')
-                @csrf
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="catatan">Catatan :</label>
-                        <textarea class="form-control input" id="catatan" name="catatan" required></textarea>
-                    </div>
-                    <input type="hidden" name="encryptedId" id="encryptedId" value="">
-                    <div class="form-group mb-0">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" name="terms" class="custom-control-input" id="exampleCheck5"
-                                required>
-                            <label class="custom-control-label" for="exampleCheck5">Saya setuju dengan<a
-                                    href="#"> ketentuan yang berlaku</a>.</label> <br>
-                            <label class="text-danger"><i>Coution: </i> Pastikan bahwa Anda telah yakin untuk
-                                melakukan aksi ini!</label>
-                        </div>
-                    </div>
-                    <br>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Lanjutkan Kirim Ke SDM!</button>
                 </div>
             </form>
         </div>

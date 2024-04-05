@@ -4,6 +4,7 @@ namespace App\Http\Controllers\TSI;
 
 use App\Http\Controllers\Controller;
 use App\Models\LogActivity;
+use App\Models\TSI\BantuanTSI;
 use App\Models\TSI\Pemeliharaan;
 use App\Models\TSI\PemeliharaanHistory;
 use App\Models\User;
@@ -169,10 +170,12 @@ class PemeliharaanController extends Controller
                             # Pembukuan, Dirops & TSi...
                         case 'Pembukuan':
                         case 'Direktur Operasional':
+                            $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
+                            break;
                         case 'TSI':
                             if ($data->jns_pembelian == 'Pembelian Dengan Speksifikasi KPM' && $data->kategori_barang == 'Elektronik') {
                                 # code...
-                                if ($data->status_tsi == "Approve" || $data->status_tsi == "Reject") {
+                                if ($data->status_tsi != null) {
                                     $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
                                 } else {
                                     $button .= '<a data-toggle="modal" data-target="#modalEdit' . $data->id_pemeliharaan . '" id="' . $data->id_pemeliharaan . '"
@@ -360,7 +363,7 @@ class PemeliharaanController extends Controller
         }
 
         // Log Activity
-        $LogAksi = '(cs) Approve Pengajuan Inventaris';
+        $LogAksi = '(cs) Approve Pengajuan Pemeliharaan';
         $this->LogActivity($data, $LogAksi);
 
         return redirect('pemeliharaan-perangkat')->with('AlertSuccess', "Pengajuan Berhasil Dilakukan Perubahan Status!");
@@ -413,7 +416,95 @@ class PemeliharaanController extends Controller
         }
 
         // Log Activity
-        $LogAksi = '(cs) Rejected Pengajuan Inventaris';
+        $LogAksi = '(cs) Rejected Pengajuan Pemeliharaan';
+        $this->LogActivity($data, $LogAksi);
+
+        return redirect('pemeliharaan-perangkat')->with('AlertSuccess', "Pengajuan Berhasil Dilakukan Perubahan Status!");
+    }
+
+
+
+    // Response Lanjut ke SDM
+    public function ResponLanjutan(Request $request, $idEncrypt)
+    {
+        $ids = Crypt::decrypt($idEncrypt);
+        $data = Pemeliharaan::where('id_pemeliharaan', $ids)->first();
+        $jabatan = auth()->user()->jabatan;
+        $nama = auth()->user()->nama;
+
+        $data->update([
+            'nama_tsi' => $nama,
+            'status_tsi' => 'SendedSDM',
+            'tgl_status_tsi' => now(),
+            'keputusan_tsi' => 'SendedSDM',
+            'catatan_tsi' => $request->catatan,
+            'tgl_status_akhir' => now(),
+            'status_akhir' => 'SendedSDM',
+        ]);
+
+
+        // NEW INPUT
+        $cabang = DB::connection('mysql') // Assuming 'mysql' is the default connection in your database.php configuration
+            ->table('tb_cabang')
+            // ->select('kode', 'nama_pincab') // jika ada select tertentu diakhiri ->first() atau get()
+            ->where('id_cabang', auth()->user()->id_cabang)
+            ->value('kode');
+        // dd($cabang);
+        $now = Carbon::now();
+        $thn = $now->year;
+
+        if ($thn == 2023) {
+            $cek = 0;
+        } else {
+            $cek = BantuanTSI::count();
+        }
+
+        if ($cek == 0) {
+            $urut = 0001;
+            $nomer = $cabang . '/TSI-BNT/' . $thn . '/0001';
+        } else {
+            $ambil = BantuanTSI::all()->last();
+            $cekTahun = substr($ambil->kode_form, -9, 4);
+            if ($cekTahun != $thn) {
+                $urut = 0001;
+                $nomer = $cabang . '/TSI-BNT/' . $thn . '/0001';
+            } else {
+                $urut = substr($ambil->kode_form, -4, 10);
+                $urut = (int)$urut + 1;
+                $urut = str_pad($urut, 4, '0', STR_PAD_LEFT); // Menggunakan str_pad untuk menambahkan nol di depan
+                $nomer = $cabang . '/TSI-BNT/' . $thn . '/' . $urut;
+            }
+        }
+
+        $bantuanTSI = new BantuanTSI();
+        $bantuanTSI->kode_form = $nomer;
+        $bantuanTSI->id_cabang = $data->id_cabang;
+        $bantuanTSI->detail_permasalahan = $data->detail_kendala;
+        $bantuanTSI->nama_kaops = $data->nama_kaops;
+        $bantuanTSI->nama_pincab = 'Ditarik';
+        $bantuanTSI->status_pincab = 'Ditarik';
+        $bantuanTSI->tgl_status_pincab = now();
+        $bantuanTSI->save();
+
+
+
+        $userPenerima = User::where('jabatan', 'Pembukuan')->where('nama', 'Sigid Setiyawan')->first();
+        $url = route('pemeliharaan-perangkat.index');
+        $title = 'Terdapat Form Pengajuan Baru!';
+        $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
+        $this->SendEmail($data, $userPenerima, $url, $title, $message);
+
+        // send email untuk user satunya
+        $userPenerima = User::where('jabatan', 'TSI')
+            ->where('nama', '!=', $nama)->first();
+        // pemberitahuan database
+        $url = route('pemeliharaan-perangkat.index');
+        $title = 'Pengajuan Sudah Dikerjakan!';
+        $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
+        $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+
+        // Log Activity
+        $LogAksi = '(cs) SendedSDM';
         $this->LogActivity($data, $LogAksi);
 
         return redirect('pemeliharaan-perangkat')->with('AlertSuccess', "Pengajuan Berhasil Dilakukan Perubahan Status!");
@@ -433,6 +524,7 @@ class PemeliharaanController extends Controller
         $status .= '<div class="dropdown-menu" aria-labelledby="statusDropdown">';
         $status .= '<a class="dropdown-item approve" href="#" data-toggle="modal" data-target="#modalApprove" data-id="' . encrypt($data->id_pemeliharaan) . '" data-kode_form="' . $data->kode_form . '">Approve</a>';
         $status .= '<a class="dropdown-item reject" href="#" data-toggle="modal" data-target="#modalReject" data-id="' . encrypt($data->id_pemeliharaan) . '" data-kode_form="' . $data->kode_form . '">Reject</a>';
+        $status .= '<a class="dropdown-item sdm" href="#" data-toggle="modal" data-target="#modalSdm" data-id="' . encrypt($data->id_pemeliharaan) . '" data-kode_form="' . $data->kode_form . '">Lanjut Ke SDM</a>';
         $status .= '</div>';
         $status .= '</div>';
         return $status;
@@ -446,6 +538,8 @@ class PemeliharaanController extends Controller
             $status .= '<a class="btn btn-success btn-sm disabled">Approve</a>';
         } elseif ($jabatan == 'Reject') {
             $status .= '<a class="btn btn-danger btn-sm disabled">Reject</a>';
+        } elseif ($jabatan == 'SendedSDM') {
+            $status .= '<a class="btn btn-danger btn-sm disabled">SendedSDM</a>';
         } elseif ($jabatan == '--') {
             $status .= '<a class="btn btn-success btn-sm disabled">Ditarik</a>';
         } else {

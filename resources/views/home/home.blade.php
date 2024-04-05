@@ -64,6 +64,8 @@
             @case('Kasi Komersial')
 
             @case('Analis Area')
+            @case('Staf Area')
+
             @case('Kepala Kantor Kas')
                 @include('home.kaops')
             @break

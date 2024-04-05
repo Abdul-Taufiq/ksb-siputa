@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\TSI;
 
 use App\Http\Controllers\Controller;
 use App\Models\LogActivity;
+use App\Models\TSI\BantuanTSI;
+use App\Models\TSI\PemeliharaanHistory;
 use App\Models\User;
-use App\Models\User\EmailR;
 use App\Notifications\NotifikasiPengajuan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Notification;
 
-class EmailRController extends Controller
+class BantuanTSIController extends Controller
 {
     public function index(Request $request)
     {
@@ -41,15 +41,34 @@ class EmailRController extends Controller
                 case 'Analis Area':
                 case 'Staf Area':
                     if (!empty($request->kode)) {
-                        $data = EmailR::where('kode_form', $kode)
+                        $data = BantuanTSI::where('kode_form', $kode)
                             ->OrderBy('created_at', 'desc')->get();
                     } else {
                         if (!empty($request->min)) {
-                            $data = EmailR::where('id_cabang', $id_cabang)
+                            $data = BantuanTSI::where('id_cabang', $id_cabang)
                                 ->whereBetween('created_at', [$awal, $akhir])
                                 ->get();
                         } else {
-                            $data = EmailR::where('id_cabang', $id_cabang)
+                            $data = BantuanTSI::where('id_cabang', $id_cabang)
+                                ->OrderBy('created_at', 'desc')->get();
+                        }
+                    }
+                    break;
+
+                case 'Pembukuan':
+                    if (!empty($request->kode)) {
+                        $data = BantuanTSI::where('kode_form', $kode)
+                            ->OrderBy('created_at', 'desc')->get();
+                    } else {
+                        if (!empty($request->min)) {
+                            $data = BantuanTSI::whereIn('status_pincab', ['Approve', '--', 'Ditarik'])
+                                ->whereBetween('created_at', [$awal, $akhir])
+                                ->get();
+                        } elseif (!empty($request->cari)) {
+                            $data = BantuanTSI::where('kode_form', $request->cari)
+                                ->orderBy('created_at', 'desc')->get();
+                        } else {
+                            $data = BantuanTSI::whereIn('status_pincab', ['Approve', '--', 'Ditarik'])
                                 ->OrderBy('created_at', 'desc')->get();
                         }
                     }
@@ -57,18 +76,18 @@ class EmailRController extends Controller
 
                 case 'SDM':
                     if (!empty($request->kode)) {
-                        $data = EmailR::where('kode_form', $kode)
+                        $data = BantuanTSI::where('kode_form', $kode)
                             ->OrderBy('created_at', 'desc')->get();
                     } else {
                         if (!empty($request->min)) {
-                            $data = EmailR::whereIn('status_pincab', ['Approve', '--'])
+                            $data = BantuanTSI::whereIn('status_pembukuan', ['Approve', '--', 'Ditarik'])
                                 ->whereBetween('created_at', [$awal, $akhir])
                                 ->get();
                         } elseif (!empty($request->cari)) {
-                            $data = EmailR::where('kode_form', $request->cari)
+                            $data = BantuanTSI::where('kode_form', $request->cari)
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
-                            $data = EmailR::whereIn('status_pincab', ['Approve', '--'])
+                            $data = BantuanTSI::whereIn('status_pembukuan', ['Approve', '--', 'Ditarik'])
                                 ->OrderBy('created_at', 'desc')->get();
                         }
                     }
@@ -76,28 +95,28 @@ class EmailRController extends Controller
 
                 case 'Direktur Operasional':
                     if (!empty($request->kode)) {
-                        $data = EmailR::where('kode_form', $kode)
+                        $data = BantuanTSI::where('kode_form', $kode)
                             ->OrderBy('created_at', 'desc')->get();
                     } else {
                         if (!empty($request->min)) {
-                            $data = EmailR::where('status_sdm', 'Approve')->whereBetween('created_at', [$awal, $akhir])
+                            $data = BantuanTSI::where('status_sdm', 'Approve')->whereBetween('created_at', [$awal, $akhir])
                                 ->get();
                         } else {
-                            $data = EmailR::where('status_sdm', 'Approve')->OrderBy('created_at', 'desc')->get();
+                            $data = BantuanTSI::where('status_sdm', 'Approve')->OrderBy('created_at', 'desc')->get();
                         }
                     }
                     break;
 
                 case 'TSI':
                     if (!empty($request->kode)) {
-                        $data = EmailR::where('kode_form', $kode)
+                        $data = BantuanTSI::where('kode_form', $kode)
                             ->OrderBy('created_at', 'desc')->get();
                     } else {
                         if (!empty($request->min)) {
-                            $data = EmailR::where('status_dirops', 'Approve')->whereBetween('created_at', [$awal, $akhir])
+                            $data = BantuanTSI::where('status_sdm', 'Approve')->whereBetween('created_at', [$awal, $akhir])
                                 ->get();
                         } else {
-                            $data = EmailR::where('status_dirops', 'Approve')->OrderBy('created_at', 'desc')->get();
+                            $data = BantuanTSI::where('status_sdm', 'Approve')->OrderBy('created_at', 'desc')->get();
                         }
                     }
                     break;
@@ -130,6 +149,12 @@ class EmailRController extends Controller
                             return $statusAfter;
                             break;
 
+                        case 'Pembukuan':
+                            $jabatan = $data->status_pembukuan;
+                            $statusAfter = $this->statusAfter($data, $jabatan, $statusDropdown);
+                            return $statusAfter;
+                            break;
+
                         case 'SDM':
                             $jabatan = $data->status_sdm;
                             $statusAfter = $this->statusAfter($data, $jabatan, $statusDropdown);
@@ -137,9 +162,7 @@ class EmailRController extends Controller
                             break;
 
                         case 'Direktur Operasional':
-                            $jabatan = $data->status_dirops;
-                            $statusAfter = $this->statusAfter($data, $jabatan, $statusDropdown);
-                            return $statusAfter;
+                            $status .= '<a class="btn btn-success btn-sm disabled">NotAct</a>';
                             break;
 
                         case 'TSI':
@@ -152,7 +175,7 @@ class EmailRController extends Controller
                     return $status;
                 })
                 ->addColumn('action', function ($data) {
-                    $button = '<a data-toggle="modal" data-target="#myModal' . $data->id_reset . '" id="' . $data->id_reset . '"
+                    $button = '<a data-toggle="modal" data-target="#myModal' . $data->id_bantuan . '" id="' . $data->id_bantuan . '"
                                     class="btn btn-info btn-sm detail_data" data-kode_form="' . $data->kode_form . '">
                                     <span class="icon text-white-50">
                                     <i class="fa fa-eye"></i>
@@ -168,7 +191,7 @@ class EmailRController extends Controller
                             if ($data->status_pincab == "Approve" || $data->status_pincab == "Reject") {
                                 $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
                             } else {
-                                $button .= '<a data-toggle="modal" data-target="#modalEdit' . $data->id_reset . '" id="' . $data->id_reset . '"
+                                $button .= '<a data-toggle="modal" data-target="#modalEdit' . $data->id_bantuan . '" id="' . $data->id_bantuan . '"
                                             class="btn btn-warning btn-sm edit" data-kode_form="' . $data->kode_form . '">
                                         <i class="fa fa-edit"></i></a>';
                                 $button .= '&nbsp;';
@@ -180,7 +203,7 @@ class EmailRController extends Controller
                             if ($data->status_sdm != null) {
                                 $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
                             } else {
-                                $button .= '<a href="/user-email-reset/' . $data->id_reset . '/edit" data-toggle="tooltip" 
+                                $button .= '<a href="/tsi-permohonan/' . $data->id_bantuan . '/edit" data-toggle="tooltip" 
                                         data-original-title="Edit" class="edit btn btn-warning btn-sm edit-post">
                                         <i class="fa fa-edit"></i></a>';
                                 $button .= '&nbsp;';
@@ -194,6 +217,7 @@ class EmailRController extends Controller
                         case 'SDM':
                         case 'Direktur Operasional':
                         case 'TSI':
+                        case 'Pembukuan':
                             $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
                             break;
                     }
@@ -204,7 +228,7 @@ class EmailRController extends Controller
                 ->make(true);
         }
 
-        return view('Page-user.email-r.index', ['title' => 'Reset Password Email']);
+        return view('Page.BantuanTSI.index', ['title' => 'Permohonan Bantuan TSI']);
     }
 
 
@@ -218,6 +242,7 @@ class EmailRController extends Controller
 
     public function store(Request $request)
     {
+        // NEW INPUT
         $cabang = DB::connection('mysql') // Assuming 'mysql' is the default connection in your database.php configuration
             ->table('tb_cabang')
             // ->select('kode', 'nama_pincab') // jika ada select tertentu diakhiri ->first() atau get()
@@ -227,59 +252,53 @@ class EmailRController extends Controller
         $now = Carbon::now();
         $thn = $now->year;
 
-
         if ($thn == 2023) {
             $cek = 0;
         } else {
-            $cek = EmailR::count();
+            $cek = BantuanTSI::count();
         }
 
         if ($cek == 0) {
             $urut = 0001;
-            $nomer = $cabang . '/EMAIL-R/' . $thn . '/0001';
+            $nomer = $cabang . '/TSI-BNT/' . $thn . '/0001';
         } else {
-            $ambil = EmailR::all()->last();
+            $ambil = BantuanTSI::all()->last();
             $cekTahun = substr($ambil->kode_form, -9, 4);
             if ($cekTahun != $thn) {
                 $urut = 0001;
-                $nomer = $cabang . '/EMAIL-R/' . $thn . '/0001';
+                $nomer = $cabang . '/TSI-BNT/' . $thn . '/0001';
             } else {
                 $urut = substr($ambil->kode_form, -4, 10);
                 $urut = (int)$urut + 1;
                 $urut = str_pad($urut, 4, '0', STR_PAD_LEFT); // Menggunakan str_pad untuk menambahkan nol di depan
-                $nomer = $cabang . '/EMAIL-R/' . $thn . '/' . $urut;
+                $nomer = $cabang . '/TSI-BNT/' . $thn . '/' . $urut;
             }
         }
 
-
-        $data = new EmailR();
-        $data->id_cabang = auth()->user()->id_cabang;
+        $data = new BantuanTSI();
         $data->kode_form = $nomer;
-        $data->keperluan = $request->keperluan;
-        $data->nik = $request->nik;
-        $data->nama = $request->nama;
-        $data->user = $request->user;
-        $data->no_telp = $request->no_telp;
-        $data->keterangan = $request->keterangan;
-        $data->created_at = now();
+        $data->id_cabang = auth()->user()->id_cabang;
+        $data->nama_kaops = auth()->user()->nama;
+        $data->detail_permasalahan = $request->detail_permasalahan;
         $data->save();
 
         // Log Activity
-        $LogAksi = '(+) Pengajuan Reset Password Email';
+        $LogAksi = '(+) Pengajuan Permohonan Bantuan TSI';
         $this->LogActivity($data, $LogAksi);
+
         // Send Email
         if (auth()->user()->jabatan == 'Analis Area' || auth()->user()->jabatan == 'Staf Area') {
             $data->update([
-                'nama_pincab' => 'Ditarik Oleh User SDM',
+                'nama_pincab' => 'Ditarik',
                 'status_pincab' => '--',
                 'tgl_status_pincab' => null,
             ]);
 
-            $userPenerima = User::where('jabatan', 'SDM')->get();
+            $userPenerima = User::where('jabatan', 'Pembukuan')->where('nama', 'Sigid Setiyawan')->first();
             $url = route('user-email-pengajuan.index');
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-            $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+            $this->SendEmail($data, $userPenerima, $url, $title, $message);
         } else {
             $userPenerima = User::where('id_cabang', auth()->user()->id_cabang)
                 ->where('jabatan', 'Pimpinan Cabang')->first();
@@ -289,55 +308,51 @@ class EmailRController extends Controller
             $this->SendEmail($data, $userPenerima, $url, $title, $message);
         }
 
-
-        return redirect('user-email-reset')->with('AlertSuccess', "Pengajuan Reset Password Berhasil Dikirim!");
+        return redirect('tsi-permohonan')->with('AlertSuccess', "Pengajuan Berhasil Dikirimkan!");
     }
 
 
 
-    public function show(EmailR $emailR)
+    public function show(BantuanTSI $bantuanTSI)
     {
         auth()->user()->unreadNotifications->where('id', request('id'))->first()?->markAsRead();
-        return view('Page-user.email-r.show', compact('emailR'));
+        return view('Page.BantuanTSI.show', compact('bantuanTSI'));
     }
 
 
 
-    public function edit(EmailR $emailR)
+    public function edit(BantuanTSI $bantuanTSI)
     {
         return response()->json([
             'status' => 200,
-            'data' => $emailR,
+            'data' => $bantuanTSI
         ]);
     }
 
 
 
-    public function update(Request $request, EmailR $emailR)
+    public function update(Request $request, BantuanTSI $bantuanTSI)
     {
-        $emailR->keperluan = $request->keperluan;
-        $emailR->nik = $request->nik;
-        $emailR->nama = $request->nama;
-        $emailR->user = $request->user;
-        $emailR->no_telp = $request->no_telp;
-        $emailR->keterangan = $request->keterangan;
-        $emailR->updated_at = now();
-        $emailR->save();
+        $bantuanTSI->detail_permasalahan = $request->detail_permasalahan_edit;
+        $bantuanTSI->updated_at = now();
+        $bantuanTSI->save();
 
         // Log Activity
-        $LogAksi = '(u) Pengajuan Reset Password Email';
-        $data = $emailR;
+        $LogAksi = '(u) Pengajuan Permohonan Bantuan TSI';
+        $data = $bantuanTSI;
         $this->LogActivity($data, $LogAksi);
 
-        return redirect('user-email-reset')->with('AlertSuccess', "Data Berhasil Diupdate!");
+        return redirect('tsi-permohonan')->with('AlertSuccess', "Data Berhasil Diupdate!");
     }
 
 
 
-    public function destroy(EmailR $emailR)
+    public function destroy(BantuanTSI $bantuanTSI)
     {
         //
     }
+
+
 
 
 
@@ -345,7 +360,7 @@ class EmailRController extends Controller
     public function ResponApprove(Request $request, $idEncrypt)
     {
         $ids = Crypt::decrypt($idEncrypt);
-        $data = EmailR::where('id_reset', $ids)->first();
+        $data = BantuanTSI::where('id_bantuan', $ids)->first();
         $jabatan = auth()->user()->jabatan;
         $nama = auth()->user()->nama;
 
@@ -358,69 +373,68 @@ class EmailRController extends Controller
                     'catatan_pincab' => $request->catatan,
                     'status_akhir' => 'Proses'
                 ]);
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('nama', 'Sigid Setiyawan')->first();
+                $url = route('user-email-pengajuan.index');
+                $title = 'Terdapat Form Pengajuan Baru!';
+                $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
+                $this->SendEmail($data, $userPenerima, $url, $title, $message);
+                break;
+
+            case 'Pembukuan':
+                if ($data->status_pincab != null) {
+                    $data->update([
+                        'nama_pembukuan' => $nama,
+                        'status_pembukuan' => 'Approve',
+                        'tgl_status_pembukuan' => now(),
+                        'catatan_pembukuan' => $request->catatan,
+                        'status_akhir' => 'Proses'
+                    ]);
+                } else {
+                    $data->update([
+                        'nama_pincab' => 'Ditarik Oleh User pembukuan',
+                        'status_pincab' => '--',
+                        'tgl_status_pincab' => now(),
+                        'nama_pembukuan' => $nama,
+                        'status_pembukuan' => 'Approve',
+                        'tgl_status_pembukuan' => now(),
+                        'catatan_pembukuan' => $request->catatan,
+                        'status_akhir' => 'Proses'
+                    ]);
+                }
+
                 // Send Email Double
                 $userPenerima = User::where('jabatan', 'SDM')->get();
                 // pemberitahuan database
-                $url = route('user-email-reset.index');
+                $url = route('tsi-permohonan.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
                 $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
                 break;
 
             case 'SDM':
-                if ($data->status_pincab != null) {
-                    $data->update([
-                        'nama_sdm' => $nama,
-                        'status_sdm' => 'Approve',
-                        'tgl_status_sdm' => now(),
-                        'catatan_sdm' => $request->catatan,
-                        'status_akhir' => 'Proses'
-                    ]);
-                } else {
-                    $data->update([
-                        'nama_pincab' => 'Ditarik Oleh User SDM',
-                        'status_pincab' => '--',
-                        'tgl_status_pincab' => now(),
-                        'nama_sdm' => $nama,
-                        'status_sdm' => 'Approve',
-                        'tgl_status_sdm' => now(),
-                        'catatan_sdm' => $request->catatan,
-                        'status_akhir' => 'Proses'
-                    ]);
-                }
-                // Send Email Single
-                $userPenerima = User::where('jabatan', 'Direktur Operasional')->first();
-                // pemberitahuan database
-                $url = route('user-email-reset.index');
-                $title = 'Terdapat Form Pengajuan Baru!';
-                $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                $this->SendEmail($data, $userPenerima, $url, $title, $message);
-                // send email untuk user satunya
-
-                $userPenerima = User::where('jabatan', 'SDM')
-                    ->where('nama', '!=', $nama)->first();
-                // pemberitahuan database
-                $url = route('user-email-reset.index');
-                $title = 'Pengajuan Sudah Dikerjakan!';
-                $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
-                break;
-
-            case 'Direktur Operasional':
                 $data->update([
-                    'nama_dirops' => $nama,
-                    'status_dirops' => 'Approve',
-                    'tgl_status_dirops' => now(),
-                    'catatan_dirops' => $request->catatan,
+                    'nama_sdm' => $nama,
+                    'status_sdm' => 'Approve',
+                    'tgl_status_sdm' => now(),
+                    'catatan_sdm' => $request->catatan,
                     'status_akhir' => 'Proses'
                 ]);
                 // Send Email Double
                 $userPenerima = User::where('jabatan', 'TSI')->get();
-                // pemberitahuan database
-                $url = route('user-email-reset.index');
+                // pemberitahuan database0
+                $url = route('tsi-permohonan.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
                 $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+
+                // send email untuk user satunya
+                $userPenerima = User::where('jabatan', 'SDM')
+                    ->where('nama', '!=', $nama)->first();
+                // pemberitahuan database
+                $url = route('tsi-permohonan.index');
+                $title = 'Pengajuan Sudah Dikerjakan!';
+                $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
+                $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 break;
 
             case 'TSI':
@@ -430,14 +444,26 @@ class EmailRController extends Controller
                     'tgl_status_tsi' => now(),
                     'catatan_tsi' => $request->catatan,
                     'tgl_status_akhir' => now(),
-                    'status_akhir' => 'Selesai'
+                    'status_akhir' => 'Selesai',
+                    'detail_kerusakan' => $request->detail_kerusakan,
+                    'detail_perbaikan' => $request->detail_perbaikan,
+                    'tgl_pelaksanaan' => now()
                 ]);
+
+                $history = new PemeliharaanHistory();
+                $history->id_cabang = $data->id_cabang;
+                $history->kode_inventaris = $request->kode_inventaris;
+                $history->detail_kerusakan = $request->detail_kerusakan;
+                $history->detail_perbaikan = $request->detail_perbaikan;
+                $history->tgl_dilaksanakan =  now();
+                $history->save();
+
                 // Send Email Single to Kaops cabang
                 $status_akhir = 'Approved';
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
                     ->where('jabatan', 'Kasi Operasional')->first();
                 // pemberitahuan database
-                $url = route('user-email-reset.index');
+                $url = route('tsi-permohonan.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Approved!';
                 $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
@@ -446,7 +472,7 @@ class EmailRController extends Controller
                 $userPenerima = User::where('jabatan', 'TSI')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
-                $url = route('user-email-reset.index');
+                $url = route('tsi-permohonan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
                 $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
@@ -458,10 +484,10 @@ class EmailRController extends Controller
         }
 
         // Log Activity
-        $LogAksi = '(cs) Approve Pengajuan Email';
+        $LogAksi = '(cs) Approve Permohonan Bantuan TSI';
         $this->LogActivity($data, $LogAksi);
 
-        return redirect('user-email-reset')->with('AlertSuccess', "Pengajuan Berhasil Dilakukan Perubahan Status!");
+        return redirect('tsi-permohonan')->with('AlertSuccess', "Pengajuan Berhasil Dilakukan Perubahan Status!");
     }
 
 
@@ -469,7 +495,7 @@ class EmailRController extends Controller
     public function ResponReject(Request $request, $idEncrypt)
     {
         $ids = Crypt::decrypt($idEncrypt);
-        $data = EmailR::where('id_reset', $ids)->first();
+        $data = BantuanTSI::where('id_bantuan', $ids)->first();
         $jabatan = auth()->user()->jabatan;
         $nama = auth()->user()->nama;
 
@@ -488,7 +514,7 @@ class EmailRController extends Controller
                     ->where('jabatan', 'Kasi Operasional')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
-                $url = route('user-email-reset.index');
+                $url = route('tsi-permohonan.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
                 $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
@@ -523,7 +549,7 @@ class EmailRController extends Controller
                     ->where('jabatan', 'Kasi Operasional')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
-                $url = route('user-email-reset.index');
+                $url = route('tsi-permohonan.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
                 $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
@@ -532,7 +558,7 @@ class EmailRController extends Controller
                 $userPenerima = User::where('jabatan', 'SDM')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
-                $url = route('user-email-reset.index');
+                $url = route('tsi-permohonan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
                 $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
@@ -552,7 +578,7 @@ class EmailRController extends Controller
                     ->where('jabatan', 'Kasi Operasional')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
-                $url = route('user-email-reset.index');
+                $url = route('tsi-permohonan.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
                 $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
@@ -573,7 +599,7 @@ class EmailRController extends Controller
                     ->where('jabatan', 'Kasi Operasional')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
-                $url = route('user-email-reset.index');
+                $url = route('tsi-permohonan.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
                 $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
@@ -582,7 +608,7 @@ class EmailRController extends Controller
                 $userPenerima = User::where('jabatan', 'TSI')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
-                $url = route('user-email-reset.index');
+                $url = route('tsi-permohonan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
                 $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
@@ -594,10 +620,10 @@ class EmailRController extends Controller
         }
 
         // Log Activity
-        $LogAksi = '(cs) Rejected Pengajuan Email';
+        $LogAksi = '(cs) Rejected Permohonan Bantuan TSI';
         $this->LogActivity($data, $LogAksi);
 
-        return redirect('user-email-reset')->with('AlertSuccess', "Pengajuan Berhasil Dilakukan Perubahan Status!");
+        return redirect('tsi-permohonan')->with('AlertSuccess', "Pengajuan Berhasil Dilakukan Perubahan Status!");
     }
 
 
@@ -613,8 +639,8 @@ class EmailRController extends Controller
         $status .= 'Nothing';
         $status .= '</button>';
         $status .= '<div class="dropdown-menu" aria-labelledby="statusDropdown">';
-        $status .= '<a class="dropdown-item approve" href="#" data-toggle="modal" data-target="#modalApprove" data-id="' . encrypt($data->id_reset) . '" data-kode_form="' . $data->kode_form . '">Approve</a>';
-        $status .= '<a class="dropdown-item reject" href="#" data-toggle="modal" data-target="#modalReject" data-id="' . encrypt($data->id_reset) . '" data-kode_form="' . $data->kode_form . '">Reject</a>';
+        $status .= '<a class="dropdown-item approve" href="#" data-toggle="modal" data-target="#modalApprove" data-id="' . encrypt($data->id_bantuan) . '" data-kode_form="' . $data->kode_form . '">Approve</a>';
+        $status .= '<a class="dropdown-item reject" href="#" data-toggle="modal" data-target="#modalReject" data-id="' . encrypt($data->id_bantuan) . '" data-kode_form="' . $data->kode_form . '">Reject</a>';
         $status .= '</div>';
         $status .= '</div>';
         return $status;
@@ -629,6 +655,8 @@ class EmailRController extends Controller
         } elseif ($jabatan == 'Reject') {
             $status .= '<a class="btn btn-danger btn-sm disabled">Reject</a>';
         } elseif ($jabatan == '--') {
+            $status .= '<a class="btn btn-success btn-sm disabled">Ditarik</a>';
+        } elseif ($jabatan == 'Ditarik') {
             $status .= '<a class="btn btn-success btn-sm disabled">Ditarik</a>';
         } else {
             return $statusDropdown;
@@ -682,6 +710,7 @@ class EmailRController extends Controller
             'kode_form' => $data->kode_form,
             'keperluan' => $data->keperluan,
             'status_akhir' => $status_akhir,
+            'pelanggaran' => '-'
         ], function ($message) use ($userPenerima) {
             $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
             $message->to($userPenerima->email);
