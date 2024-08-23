@@ -118,28 +118,37 @@
 
             {{-- Diganti --}}
             {{-- tambahan --}}
-            <div class="row ml-2">
-                @foreach ($diganti as $ganti)
+            @foreach ($diganti as $ganti)
+                <div class="row ml-2">
                     <h5 style="font-weight: bold; font-style: italic; color: rgb(0, 101, 200)">Data
-                        Barang Yang Diganti 1
+                        Barang Yang Diganti {{ $loop->iteration }}
                         &#8628;</h5>
                     <hr style="width: 95%; margin-left: 5px">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>-= Aksi Untuk Data INI =-</label>
+                            <select class="form-control input border-danger" name="aksi_diganti_{{ $loop->iteration }}"
+                                id="aksi_diganti_{{ $loop->iteration }}" required>
+                                <option disabled selected>-Pilih Aksi-</option>
+                                <option value="Edit">Edit/Tetap Simpan</option>
+                                <option value="Hapus">Hapus/Hilangkan</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="kode_inventaris_{{ $loop->iteration }}">Kode Inventaris :</label>
                             <input type="text" name="kode_inventaris_{{ $loop->iteration }}"
-                                id="kode_inventaris_{{ $loop->iteration }}" required
-                                class="form-control border-danger input" placeholder="Kode Inventaris"
-                                value="{{ $ganti->kode_inventaris }}">
+                                id="kode_inventaris_{{ $loop->iteration }}" required class="form-control input"
+                                placeholder="Kode Inventaris" value="{{ $ganti->kode_inventaris }}">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="nilai_buku_terakhir_{{ $loop->iteration }}">Nilai Buku Terakhir :</label>
                             <input type="text" name="nilai_buku_terakhir_{{ $loop->iteration }}"
-                                id="nilai_buku_terakhir_{{ $loop->iteration }}" required
-                                class="form-control border-danger input" placeholder="Nilai Buku Terakhir"
-                                value="{{ $ganti->nilai_buku_terakhir }}">
+                                id="nilai_buku_terakhir_{{ $loop->iteration }}" required class="form-control input"
+                                placeholder="Nilai Buku Terakhir" value="{{ $ganti->nilai_buku_terakhir }}">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -147,12 +156,12 @@
                             <label for="tgl_pembelian_{{ $loop->iteration }}">Tanggal Pembelian :</label>
                             <div class="input-group date" id="date_pembelian_{{ $loop->iteration }}"
                                 data-target-input="nearest">
-                                <input type="text" class="form-control border-danger datetimepicker-input input"
+                                <input type="text" class="form-control datetimepicker-input input"
                                     data-target="#date_pembelian_{{ $loop->iteration }}"
                                     id="tgl_pembelian_{{ $loop->iteration }}"
                                     name="tgl_pembelian_{{ $loop->iteration }}" required
                                     placeholder="format : Tanggal-Bulan-Tahun, contoh: 31-12-2018"
-                                    value="{{ optional($ganti->tgl_pembelian)->format('Y-m-d') }}" />
+                                    value="{{ optional($ganti->tgl_pembelian)->format('d-m-Y') }}" />
                                 <div class="input-group-append" data-target="#date_pembelian_{{ $loop->iteration }}"
                                     data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i>
@@ -165,12 +174,11 @@
                         <div class="form-group">
                             <label for="kondisi_terakhir_{{ $loop->iteration }}">Kondisi Terakhir :</label>
                             <input type="text" name="kondisi_terakhir_{{ $loop->iteration }}"
-                                id="kondisi_terakhir_{{ $loop->iteration }}" required
-                                class="form-control border-danger input" placeholder="Kondisi Terakhir"
-                                value="{{ $ganti->kondisi_akhir }}">
+                                id="kondisi_terakhir_{{ $loop->iteration }}" required class="form-control input"
+                                placeholder="Kondisi Terakhir" value="{{ $ganti->kondisi_akhir }}">
                         </div>
                     </div>
-            </div>
+                </div>
             @endforeach
             <div>
                 <div id="tambah_barang_diganti_card"></div>

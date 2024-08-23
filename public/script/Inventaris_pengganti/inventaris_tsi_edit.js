@@ -3,7 +3,6 @@
 // protect form input
 $("input").attr("autocomplete", "off");
 $(document).ready(function () {
-    // default form danger
     $(".input").addClass("border-success");
 
     $(document).on("input", ".input", function () {
@@ -87,24 +86,41 @@ $("#jns_pembelian").on("change", function () {
     }
 });
 
-// BARANG DIGANTI
-for (let i = 1; i < 50; i++) {
-    $(`#date_pembelian_${i}`).datetimepicker({
-        format: "DD-MM-yyyy",
-    });
-}
+// =========================-
+// {{ tambah Data PEmbanding }}
+// UNTUK ELEKTRONIK
 document.addEventListener("DOMContentLoaded", function () {
-    var container = document.getElementById("tambah_barang_diganti_card"); // Ganti dengan ID atau selektor yang sesuai
+    var container = document.getElementById(
+        "tambah_barang_pembanding_elektronik_card_tsi"
+    ); // Ganti dengan ID atau selektor yang sesuai
+
+    container.addEventListener("input", function (event) {
+        event.target.classList.add("border-danger");
+        // Periksa apakah elemen yang memicu perubahan input adalah input dengan class 'form-control border-danger'
+        if (event.target.classList.contains("form-control border-danger")) {
+            // Jika input tidak kosong, ganti kelas menjadi 'border-success'
+            if (event.target.value.trim() !== "") {
+                event.target.classList.remove("border-danger");
+                event.target.classList.add("border-success");
+            } else {
+                // Jika input kosong, ganti kelas menjadi 'border-danger'
+                event.target.classList.remove("border-success");
+                event.target.classList.add("border-danger");
+            }
+        }
+    });
 
     var addButton = document.querySelector(
-        'input[value="(+) Tambah Barang Yang Diganti (+)"]'
+        'input[value="(+) Tambah Barang Pembanding Elektronik (+)"]'
     );
-    var container = document.getElementById("tambah_barang_diganti_card");
+    var container = document.getElementById(
+        "tambah_barang_pembanding_elektronik_card_tsi"
+    );
 
     addButton.addEventListener("click", function () {
         // Temukan semua elemen input dengan nama yang sesuai pola
         var inputElements = document.querySelectorAll(
-            'input[name^="kode_inventaris_"]'
+            'input[name^="jns_barang_"]'
         );
 
         // Mencari nomor terbesar dari nama input
@@ -134,54 +150,57 @@ document.addEventListener("DOMContentLoaded", function () {
             newDiv.className = "row  ml-2";
 
             var innerHTML = `
-                        <h5 style="font-weight: bold; font-style: italic; color: rgb(0, 101, 200)">Data
-                            Barang Yang Diganti ${counter}
+                        <h5 style="font-weight: bold; font-style: italic; color: rgb(0, 101, 252)">Data
+                            Pembanding Barang Elektronik ${counter}
                             &#8628;</h5>
                         <hr style="width: 95%; margin-left: 5px">
-                        <input type="hidden" name="aksi_diganti_${counter}" value="Edit">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="kode_inventaris_${counter}">Kode Inventaris :</label>
-                                <input type="text" name="kode_inventaris_${counter}"
-                                    id="kode_inventaris_${counter}" required class="form-control border-danger input"
-                                    placeholder="Kode Inventaris">
+                                <label class="wajib" for="jns_barang_${counter}">Jenis Barang :</label>
+                                <input type="text" name="jns_barang_${counter}" id="jns_barang_${counter}"
+                                    class="form-control input border-danger"
+                                    placeholder="ex: Printer/Komputer/Laptop atau yang lainnya">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="nilai_buku_terakhir_${counter}">Nilai Buku Terakhir :</label>
-                                <input type="text" name="nilai_buku_terakhir_${counter}"
-                                    id="nilai_buku_terakhir_${counter}" required class="form-control border-danger input"
-                                    placeholder="Kode Inventaris">
+                                <label class="wajib" for="merk_${counter}">Merk :</label>
+                                <input type="text" name="merk_${counter}" id="merk_${counter}"
+                                    class="form-control input border-danger" placeholder="Merk">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="tgl_pembelian_${counter}">Tanggal Pembelian :</label>
-                                <div class="input-group date" id="date_pembelian_${counter}"
-                                    data-target-input="nearest">
-                                    <input type="text" class="form-control border-danger datetimepicker-input input"
-                                        data-target="#date_pembelian_${counter}" id="tgl_pembelian_${counter}"
-                                        name="tgl_pembelian_${counter}" required
-                                        placeholder="format : Tanggal-Bulan-Tahun, contoh: 31-12-2018" />
-                                    <div class="input-group-append" data-target="#date_pembelian_${counter}"
-                                        data-toggle="datetimepicker">
-                                        <div class="input-group-text"><i class="fa fa-calendar"></i>
-                                        </div>
-                                    </div>
-                                </div>
+                                <label class="wajib" for="type_${counter}">Type :</label>
+                                <input type="text" name="type_${counter}" id="type_${counter}"
+                                    class="form-control input border-danger" placeholder="Type">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="kondisi_terakhir_${counter}">Kondisi Terakhir :</label>
-                                <input type="text" name="kondisi_terakhir_${counter}"
-                                    id="kondisi_terakhir_${counter}" required class="form-control border-danger input"
-                                    placeholder="Kondisi Terakhir">
+                                <label class="wajib" for="nama_toko_${counter}">Nama Toko :</label>
+                                <input type="text" name="nama_toko_${counter}" id="nama_toko_${counter}"
+                                    class="form-control input border-danger"
+                                    placeholder="Nama Toko (Market) - ex: ABC (Tokopedia)">
                             </div>
                         </div>
-
-                        <input class="btn btn-outline-danger mb-1" type="button" value="(-) Kurangi Data Barang Yang Diganti (-)">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="wajib" for="harga_pembelian_${counter}">Harga :</label>
+                                <input type="text" name="harga_pembelian_${counter}" id="harga_pembelian_${counter}"
+                                    class="form-control input border-danger" placeholder="Harga">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="wajib" for="file_detail_toko_${counter}">File Detail Toko
+                                    (PNG/JPG/JPEG/RAR/ZIP) :</label>
+                                <input type="file" name="file_detail_toko_${counter}" id="file_detail_toko_${counter}"
+                                    class="form-control input border-danger"
+                                    accept="image/jpeg,image/jpg,image/png, .zip, .rar, .7zip">
+                            </div>
+                        </div>
+                        <input class="btn btn-outline-danger mb-1" type="button" value="(-) Kurangi Data Pembanding Elektronik (-)">
                 `;
 
             newDiv.innerHTML = innerHTML;
@@ -189,10 +208,6 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
             alert("Melebihi Batas Data Pembanding!");
         }
-
-        $(`#date_pembelian_${counter}`).datetimepicker({
-            format: "DD-MM-yyyy",
-        });
 
         // harga pembelian
         var currentElement = document.getElementById(
@@ -234,7 +249,7 @@ document.addEventListener("DOMContentLoaded", function () {
     container.addEventListener("click", function (e) {
         if (
             e.target.tagName === "INPUT" &&
-            e.target.value === "(-) Kurangi Data Barang Yang Diganti (-)"
+            e.target.value === "(-) Kurangi Data Pembanding Elektronik (-)"
         ) {
             e.preventDefault();
             var currentDiv = e.target.parentNode;

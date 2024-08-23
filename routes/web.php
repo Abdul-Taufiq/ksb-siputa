@@ -177,6 +177,7 @@ Route::group(['middleware' => ['permission']], function () {
 
         // Pengajuan Inventaris Pengganti
         Route::resource('inventaris-pengganti', InventarisPenggantiController::class)->parameters(['inventaris-pengganti' => 'inventarisPengganti']);
+        Route::patch('/inventaris-pengganti-edit/{inventarisPengganti}', [InventarisPenggantiController::class, 'UpdateTSI']);
         Route::patch('/inventaris-pengganti-approve/{idEncrypt}', [InventarisPenggantiController::class, 'ResponApprove']);
         Route::patch('/inventaris-pengganti-reject/{idEncrypt}', [InventarisPenggantiController::class, 'ResponReject']);
         Route::get('/inventaris-cetak/{idEncrypt}', [InventarisPenggantiController::class, 'Print']);

@@ -14,7 +14,8 @@ class UserPolicy
     {
         if (
             $user->jabatan === 'Kasi Operasional' || $user->jabatan === 'Kasi Komersial' ||
-            $user->jabatan === 'SDM' || $user->jabatan === 'Analis Area' || $user->jabatan === 'Staf Area' || $user->jabatan === 'Kepala Kantor Kas'
+            $user->jabatan === 'SDM' || $user->jabatan === 'Analis Area' || $user->jabatan === 'Staf Area' || $user->jabatan === 'Kepala Kantor Kas' ||
+            $user->jabatan === 'Sekretariat'
         ) {
             return TRUE;
         } else {

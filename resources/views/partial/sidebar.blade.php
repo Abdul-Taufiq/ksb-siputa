@@ -148,7 +148,7 @@
                 </li>
 
 
-                @if (auth()->user()->jabatan != 'Pembukuan')
+                @if (auth()->user()->jabatan != 'Pembukuan' && auth()->user()->jabatan != 'Sekretariat')
                     {{-- USER --}}
                     <li
                         class="nav-item {{ request()->is('user-email-reset*', 'user-email-pengajuan*', 'user-siadit', 'user-ecoll*', 'reset-ecoll*', 'slik-pengajuan*', 'slik-reset*', 'pefindo-pengajuan*', 'pefindo-reset*', 'mso-pengajuan*', 'mso-reset*') ? 'active menu-is-opening menu-open' : '' }}">
@@ -288,7 +288,9 @@
                 @endif
 
 
-                @if (auth()->user()->jabatan != 'SDM' && auth()->user()->jabatan != 'Analis Area')
+                @if (auth()->user()->jabatan != 'SDM' &&
+                        auth()->user()->jabatan != 'Analis Area' &&
+                        auth()->user()->jabatan != 'Sekretariat')
                     {{-- Pembatalan transaksi --}}
                     <li class="nav-item {{ request()->is('pembatalan*') ? 'active menu-is-opening menu-open' : '' }}">
                         <a href="#"

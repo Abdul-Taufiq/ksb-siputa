@@ -37,9 +37,10 @@ class InventarisController extends Controller
                     # kaops ...
                 case 'Kasi Operasional':
                 case 'Kasi Komersial':
-                case 'Kepala Kantor Kas':
                 case 'Analis Area':
                 case 'Staf Area':
+                case 'Sekretariat':
+                case 'Kepala Kantor Kas':
                 case 'Pimpinan Cabang':
                     if (!empty($request->kode)) {
                         $data = Inventaris::where('kode_form', $kode)
@@ -123,6 +124,7 @@ class InventarisController extends Controller
                         case 'Kasi Komersial':
                         case 'Analis Area':
                         case 'Staf Area':
+                        case 'Sekretariat':
                         case 'Kepala Kantor Kas':
                             if ($data->status_akhir == 'Selesai') {
                                 $status .= '<a class="btn btn-success btn-sm disabled">Selesai</a>';
@@ -191,8 +193,11 @@ class InventarisController extends Controller
                             # Kaops...
                         case 'Kasi Operasional':
                         case 'Kasi Komersial':
+                        case 'Analis Area':
+                        case 'Staf Area':
+                        case 'Sekretariat':
                         case 'Kepala Kantor Kas':
-                            if ($data->status_pincab == "Approve" || $data->status_pincab == "Reject") {
+                            if ($data->status_pincab == "Approve" || $data->status_pincab == "Reject"  || $data->status_pembukuan != null) {
                                 $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
                             } else {
                                 $button .= '<a data-toggle="modal" data-target="#modalEdit' . $data->id_inventaris_baru . '" id="' . $data->id_inventaris_baru . '"
@@ -208,8 +213,10 @@ class InventarisController extends Controller
                             # Pembukuan, Dirops & TSi...
                         case 'Pembukuan':
                         case 'Direktur Operasional':
+                            $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
+                            break;
                         case 'TSI':
-                            if ($data->jns_pembelian == 'Pembelian Dengan Speksifikasi KPM' && $data->kategori_barang == 'Elektronik') {
+                            if ($data->jns_pembelian == 'Pembelian Dengan Speksifikasi KPM' && $data->kategori_barang == 'Elektronik'  || $data->id_cabang == 0) {
                                 # code...
                                 if ($data->status_tsi == "Approve" || $data->status_tsi == "Reject") {
                                     $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
@@ -321,7 +328,7 @@ class InventarisController extends Controller
         $LogAksi = '(+) Pengajuan Inventaris Baru';
         $this->LogActivity($data, $LogAksi);
         // Send Email
-        if (auth()->user()->jabatan == 'Analis Area' || auth()->user()->jabatan == 'Staf Area') {
+        if (auth()->user()->jabatan == 'Analis Area' || auth()->user()->jabatan == 'Staf Area' || auth()->user()->jabatan == 'Sekretariat') {
             $data->update([
                 'nama_pincab' => 'Ditarik Oleh User Pembukuan',
                 'status_pincab' => '--',

@@ -33,9 +33,10 @@ class InventarisPenggantiController extends Controller
                     # kaops ...
                 case 'Kasi Operasional':
                 case 'Kasi Komersial':
-                case 'Kepala Kantor Kas':
                 case 'Analis Area':
                 case 'Staf Area':
+                case 'Sekretariat':
+                case 'Kepala Kantor Kas':
                 case 'Pimpinan Cabang':
                     if (!empty($request->kode)) {
                         $data = InventarisPengganti::where('kode_form', $kode)
@@ -119,6 +120,7 @@ class InventarisPenggantiController extends Controller
                         case 'Kasi Komersial':
                         case 'Analis Area':
                         case 'Staf Area':
+                        case 'Sekretariat':
                         case 'Kepala Kantor Kas':
                             if ($data->status_akhir == 'Selesai') {
                                 $status .= '<a class="btn btn-success btn-sm disabled">Selesai</a>';
@@ -187,8 +189,11 @@ class InventarisPenggantiController extends Controller
                             # Kaops...
                         case 'Kasi Operasional':
                         case 'Kasi Komersial':
+                        case 'Analis Area':
+                        case 'Staf Area':
+                        case 'Sekretariat':
                         case 'Kepala Kantor Kas':
-                            if ($data->status_pincab == "Approve" || $data->status_pincab == "Reject") {
+                            if ($data->status_pincab == "Approve" || $data->status_pincab == "Reject" || $data->status_pembukuan != null) {
                                 $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
                             } else {
                                 $button .= '<a data-toggle="modal" data-target="#modalEdit' . $data->id_inventaris_pengganti . '" id="' . $data->id_inventaris_pengganti . '"
@@ -204,8 +209,10 @@ class InventarisPenggantiController extends Controller
                             # Pembukuan, Dirops & TSi...
                         case 'Pembukuan':
                         case 'Direktur Operasional':
+                            $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
+                            break;
                         case 'TSI':
-                            if ($data->jns_pembelian == 'Pembelian Dengan Speksifikasi KPM' && $data->kategori_barang == 'Elektronik') {
+                            if ($data->jns_pembelian == 'Pembelian Dengan Speksifikasi KPM' && $data->kategori_barang == 'Elektronik'  || $data->id_cabang == 0) {
                                 # code...
                                 if ($data->status_tsi == "Approve" || $data->status_tsi == "Reject") {
                                     $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
@@ -317,7 +324,7 @@ class InventarisPenggantiController extends Controller
                 $diganti->kode_inventaris = $request->input('kode_inventaris_' . $i);
                 $diganti->nilai_buku_terakhir = $request->input('nilai_buku_terakhir_' . $i);
                 $diganti->tgl_pembelian = Carbon::createFromFormat('d-m-Y', $request->input('tgl_pembelian_' . $i))->format('Y-m-d');
-                $diganti->kondisi_akhir = $request->input('kondisi_akhir_' . $i);
+                $diganti->kondisi_akhir = $request->input('kondisi_terakhir_' . $i);
                 $diganti->save();
             }
         }
@@ -326,7 +333,7 @@ class InventarisPenggantiController extends Controller
         $LogAksi = '(+) Pengajuan Inventaris Pengganti Baru';
         $this->LogActivity($data, $LogAksi);
         // Send Email
-        if (auth()->user()->jabatan == 'Analis Area' || auth()->user()->jabatan == 'Staf Area') {
+        if (auth()->user()->jabatan == 'Analis Area' || auth()->user()->jabatan == 'Staf Area' || auth()->user()->jabatan == 'Sekretariat') {
             $data->update([
                 'nama_pincab' => 'Ditarik Oleh User Pembukuan',
                 'status_pincab' => '--',
@@ -362,7 +369,7 @@ class InventarisPenggantiController extends Controller
             $perbaikan_histories[] = $perbaikan_history;
         }
 
-        return view('Page.inventaris_pengganti.show', compact('inventarisPengganti', 'barang', 'diganti', 'perbaikan_histories'), ['title' => 'Show Data']);
+        return view('Page.Inventaris_pengganti.show', compact('inventarisPengganti', 'barang', 'diganti', 'perbaikan_histories'), ['title' => 'Show Data']);
     }
 
 
@@ -381,7 +388,7 @@ class InventarisPenggantiController extends Controller
 
 
         $pdf = Pdf::loadView(
-            'Page.inventaris_pengganti.print',
+            'Page.Inventaris_pengganti.print',
             compact('inventarisPengganti', 'barang', 'diganti', 'perbaikan_histories'),
             ['title' => 'Print']
         );
@@ -400,12 +407,13 @@ class InventarisPenggantiController extends Controller
             ->where('id_inventaris_pengganti', $inventarisPengganti->id_inventaris_pengganti)
             ->get();
         $diganti = Diganti::where('id_inventaris_pengganti', $inventarisPengganti->id_inventaris_pengganti)->get();
+        $inventaris = $inventarisPengganti;
 
         if (auth()->user()->jabatan == 'TSI') {
             # code...
             return view(
                 'Page.Inventaris_pengganti.modal-edit-tsi',
-                compact('inventaris', 'elektronik', 'non_elektronik', 'diganti'),
+                compact('inventarisPengganti', 'elektronik', 'non_elektronik', 'diganti'),
                 ['title' => 'ddd']
             );
         } else {
@@ -456,18 +464,34 @@ class InventarisPenggantiController extends Controller
             }
         }
 
+        Diganti::where('id_inventaris_pengganti', $data->id_inventaris_pengganti)->delete();
         for ($i = 1; $i < 50; $i++) {
             if ($request->input('kode_inventaris_' . $i) != '') {
-                $diganti = new Diganti();
-                $diganti->id_inventaris_pengganti = $data->id_inventaris_pengganti;
-                $diganti->kode_inventaris = $request->input('kode_inventaris_' . $i);
-                $diganti->nilai_buku_terakhir = $request->input('nilai_buku_terakhir_' . $i);
-                $diganti->tgl_pembelian = Carbon::createFromFormat('d-m-Y', $request->input('tgl_pembelian_' . $i))->format('Y-m-d');
-                $diganti->kondisi_akhir = $request->input('kondisi_akhir_' . $i);
-                $diganti->save();
+                if ($request->input('aksi_diganti_' . $i) != 'Hapus') {
+                    # code...
+                    $diganti = new Diganti();
+                    $diganti->id_inventaris_pengganti = $data->id_inventaris_pengganti;
+                    $diganti->kode_inventaris = $request->input('kode_inventaris_' . $i);
+                    $diganti->nilai_buku_terakhir = $request->input('nilai_buku_terakhir_' . $i);
+                    $diganti->tgl_pembelian = Carbon::createFromFormat('d-m-Y', $request->input('tgl_pembelian_' . $i))->format('Y-m-d');
+                    $diganti->kondisi_akhir = $request->input('kondisi_terakhir_' . $i);
+                    $diganti->save();
+                }
             }
         }
 
+        // Log Activity
+        $LogAksi = '(u) Pengajuan Inventaris Pengganti Baru';
+        $this->LogActivity($data, $LogAksi);
+
+        return redirect()->back()->with('AlertSuccess', "Pengajuan Inventaris Pengganti Baru Berhasil DiPerbaruhi!");
+    }
+
+
+
+    public function UpdateTSI(Request $request, InventarisPengganti $inventarisPengganti)
+    {
+        $data = $inventarisPengganti;
         if (auth()->user()->jabatan == 'TSI') {
             $data->status_tsi = 'Sended';
             $data->tgl_status_tsi = now();
@@ -481,7 +505,7 @@ class InventarisPenggantiController extends Controller
                     if ($request->input('jns_barang_' . $i) != '') {
                         $barang = new BarangBaruPengganti();
                         $barang->id_inventaris_pengganti = $data->id_inventaris_pengganti;
-                        $barang->kategori_barang = $request->kategori_barang;
+                        $barang->kategori_barang = $data->kategori_barang;
                         $barang->jns_barang = $request->input('jns_barang_' . $i);
                         $barang->merk = $request->input('merk_' . $i);
                         $barang->type = $request->input('type_' . $i);
@@ -896,12 +920,10 @@ class InventarisPenggantiController extends Controller
     // Email single
     private function SendEmail($data, $userPenerima, $url, $title, $message)
     {
-        Mail::send('email.notif.notif-pengajuan',  [
-            'nama' => $data->nama,
+        Mail::send('email.notif.notif-pengajuan-inv',  [
             'kc' => $data->cabang->cabang,
-            'nik' => $data->nik,
             'kode_form' => $data->kode_form,
-            'keperluan' => $data->keperluan
+            'keperluan' => "Pengajuan Inventaris",
         ], function ($message) use ($userPenerima) {
             $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
             $message->to($userPenerima->email);
@@ -915,12 +937,10 @@ class InventarisPenggantiController extends Controller
     // Email single to kaops
     private function SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message)
     {
-        Mail::send('email.notif.notif-status-akhir',  [
-            'nama' => $data->nama,
+        Mail::send('email.notif.notif-status-akhir-inv',  [
             'kc' => $data->cabang->cabang,
-            'nik' => $data->nik,
             'kode_form' => $data->kode_form,
-            'keperluan' => $data->keperluan,
+            'keperluan' => "Pengajuan Inventaris",
             'status_akhir' => $status_akhir,
         ], function ($message) use ($userPenerima) {
             $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
@@ -935,12 +955,10 @@ class InventarisPenggantiController extends Controller
     // Email single to user lainnya
     private function SendEmailToUserLain($data, $userPenerima, $url, $title, $message)
     {
-        Mail::send('email.notif.notif-dikerjakan',  [
-            'nama' => $data->nama,
+        Mail::send('email.notif.notif-dikerjakan-inv',  [
             'kc' => $data->cabang->cabang,
-            'nik' => $data->nik,
             'kode_form' => $data->kode_form,
-            'keperluan' => $data->keperluan
+            'keperluan' => "Pengajuan Inventaris",
         ], function ($message) use ($userPenerima) {
             $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
             $message->to($userPenerima->email);
@@ -955,12 +973,10 @@ class InventarisPenggantiController extends Controller
     private function SendEmailDobel($data, $userPenerima, $url, $title, $message)
     {
         foreach ($userPenerima as $user) {
-            Mail::send('email.notif.notif-pengajuan',  [
-                'nama' => $data->nama,
+            Mail::send('email.notif.notif-pengajuan-inv',  [
                 'kc' => $data->cabang->cabang,
-                'nik' => $data->nik,
                 'kode_form' => $data->kode_form,
-                'keperluan' => $data->keperluan
+                'keperluan' => "Pengajuan Inventaris",
             ], function ($message) use ($user) {
                 $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
                 $message->to($user->email);

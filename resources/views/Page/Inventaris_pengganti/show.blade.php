@@ -88,7 +88,7 @@
                         <td>{{ $data->kode_inventaris }}</td>
                         <td>{{ $data->nilai_buku_terakhir }}</td>
                         <td>{{ $data->kondisi_akhir }}</td>
-                        <td>{{ $data->tgl_pembelian ? $data->tgl_pembelian->translatedFormat('d F Y, H:i') : ' ' }}
+                        <td>{{ $data->tgl_pembelian ? $data->tgl_pembelian->translatedFormat('d F Y') : ' ' }}
                         </td>
                     </tr>
                 @endforeach

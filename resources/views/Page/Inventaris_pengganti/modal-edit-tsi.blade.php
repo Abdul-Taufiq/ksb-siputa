@@ -46,8 +46,8 @@
 
 
 
-<form id="editForm" action=" {{ url('inventaris-pengajuan/' . $inventaris->id_inventaris_baru) }}" method="post"
-    enctype="multipart/form-data">
+<form id="editForm" action=" {{ url('inventaris-pengganti-edit/' . $inventarisPengganti->id_inventaris_pengganti) }}"
+    method="post" enctype="multipart/form-data">
     @method('patch')
     @csrf
 
@@ -59,17 +59,17 @@
                     <div class="form-group">
                         <label for="kategori_barang">Kategori Pengajuan Inventaris :</label>
                         <select name="kategori_barang" id="kategori_barang" autocomplete="off" required
-                            class="form-control input border-success" readonly>
+                            class="form-control input border-success" readonly disabled>
                             <option disabled selected hidden>- Pilih Kategori Pengajuan Inventaris -
                             </option>
                             <option value="Elektronik"
-                                {{ $inventaris->kategori_barang == 'Elektronik' ? 'selected' : null }}>
+                                {{ $inventarisPengganti->kategori_barang == 'Elektronik' ? 'selected' : null }}>
                                 Elektronik</option>
                             <option value="Kendaraan"
-                                {{ $inventaris->kategori_barang == 'Kendaraan' ? 'selected' : null }}>
+                                {{ $inventarisPengganti->kategori_barang == 'Kendaraan' ? 'selected' : null }}>
                                 Kendaraan</option>
                             <option value="Peralatan/Perlengkapan Kantor"
-                                {{ $inventaris->kategori_barang == 'Peralatan/Perlengkapan Kantor' ? 'selected' : null }}>
+                                {{ $inventarisPengganti->kategori_barang == 'Peralatan/Perlengkapan Kantor' ? 'selected' : null }}>
                                 Peralatan/Perlengkapan Kantor</option>
                         </select>
                     </div>
@@ -78,14 +78,14 @@
                     <div class="form-group">
                         <label for="jns_pembelian">Jenis Pembelian :</label>
                         <select name="jns_pembelian" id="jns_pembelian" autocomplete="off" required
-                            class="form-control input border-success" readonly>
+                            class="form-control input border-success" readonly disabled>
                             <option disabled selected hidden>- Pilih Jenis Inventaris -
                             </option>
                             <option value="Pembelian Dengan Speksifikasi Cabang"
-                                {{ $inventaris->jns_pembelian == 'Pembelian Dengan Speksifikasi Cabang' ? 'selected' : null }}>
+                                {{ $inventarisPengganti->jns_pembelian == 'Pembelian Dengan Speksifikasi Cabang' ? 'selected' : null }}>
                                 Pembelian Dengan Speksifikasi Cabang</option>
                             <option value="Pembelian Dengan Speksifikasi KPM"
-                                {{ $inventaris->jns_pembelian == 'Pembelian Dengan Speksifikasi KPM' ? 'selected' : null }}>
+                                {{ $inventarisPengganti->jns_pembelian == 'Pembelian Dengan Speksifikasi KPM' ? 'selected' : null }}>
                                 Pembelian Dengan Speksifikasi KPM (Khusus Elektronik)</option>
                         </select>
                     </div>
@@ -96,44 +96,41 @@
                     <div class="form-group">
                         <label for="qty">QTY (Jumlah Barang) :</label>
                         <input type="number" name="qty" id="qty" required
-                            class="form-control input border-success" readonly placeholder="QTY"
-                            value="{{ $inventaris->qty }}">
+                            class="form-control input border-success" readonly disabled placeholder="QTY"
+                            value="{{ $inventarisPengganti->qty }}">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="catatan" class="wajib">Catatan :</label>
-                        <textarea class="form-control input border-success" readonly name="catatan" id="catatan" cols="30" rows="1"
-                            required placeholder="Catatan">{{ $inventaris->catatan }}</textarea>
+                        <textarea class="form-control input border-success" readonly disabled name="catatan" id="catatan" cols="30"
+                            rows="1" required placeholder="Catatan">{{ $inventarisPengganti->catatan }}</textarea>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="keterangan" class="wajib">Keterangan :</label>
-                        <textarea class="form-control input border-success" readonly name="keterangan" id="keterangan" cols="30"
-                            rows="1" required placeholder="Keterangan">{{ $inventaris->keterangan }}</textarea>
+                        <textarea class="form-control input border-success" readonly disabled name="keterangan" id="keterangan" cols="30"
+                            rows="1" required placeholder="Keterangan">{{ $inventarisPengganti->keterangan }}</textarea>
                     </div>
                 </div>
             </div>
-
-            @if (auth()->user()->jabatan == 'TSI')
-                {{-- ELEKTRONIK --}}
-                <div>
-                    {{-- tambahan --}}
-                    <div id="tambah_barang_pembanding_elektronik_card_tsi"></div>
-                    <div class="row ml-2">
-                        <input class="btn btn-outline-primary mb-4" id="tambah_barang_pembanding_elektronik"
-                            type="button" value="(+) Tambah Barang Pembanding Elektronik. (+)">
-                    </div>
+            {{-- ELEKTRONIK --}}
+            <div>
+                {{-- tambahan --}}
+                <div id="tambah_barang_pembanding_elektronik_card_tsi"></div>
+                <div class="row ml-2">
+                    <input class="btn btn-outline-primary mb-4" id="tambah_barang_pembanding_elektronik" type="button"
+                        value="(+) Tambah Barang Pembanding Elektronik (+)">
                 </div>
-            @endif
+            </div>
 
             <hr>
             <div class="col-md-12">
                 <div class="form-group">
                     <label for="catatan_tsi" class="wajib">Catatan TSI :</label>
-                    <textarea class="form-control input border-success" name="catatan_tsi" id="catatan_tsi" cols="30" rows="3"
-                        required placeholder="Catatan">{{ $inventaris->catatan_tsi }}</textarea>
+                    <textarea class="form-control input border-danger" name="catatan_tsi" id="catatan_tsi" cols="30" rows="3"
+                        required placeholder="Catatan">{{ $inventarisPengganti->catatan_tsi }}</textarea>
                 </div>
             </div>
 
@@ -160,7 +157,7 @@
 
 
 @section('script')
-    <script src="{{ asset('script/Inventaris_pengganti/inventaris_edit.js') }}"></script>
+    <script src="{{ asset('script/Inventaris_pengganti/inventaris_tsi_edit.js') }}"></script>
 @endsection
 @yield('footer')
 @include('partial.footer')
