@@ -56,6 +56,7 @@ class EmailRController extends Controller
                     break;
 
                 case 'SDM':
+                case 'Internal Audit':
                     if (!empty($request->kode)) {
                         $data = EmailR::where('kode_form', $kode)
                             ->OrderBy('created_at', 'desc')->get();

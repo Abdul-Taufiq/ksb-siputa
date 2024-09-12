@@ -89,6 +89,7 @@
                                             <th>Kode</th>
                                             <th>K.Cabang</th>
                                             <th>Kode Inventaris</th>
+                                            <th>Detail Inventaris</th>
                                             <th>Keputusan TSI</th>
 
                                             <th>Tanggal Create</th>

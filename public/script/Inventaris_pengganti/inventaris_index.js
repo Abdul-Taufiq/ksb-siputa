@@ -125,7 +125,7 @@ function loadtable(min, max, cari) {
 
             columnDefs: [
                 {
-                    targets: [],
+                    targets: [6],
                     visible: false,
                 },
             ],
@@ -216,6 +216,70 @@ $(document).ready(function () {
         // Ubah action form untuk menyertakan ID
         var formAction = "/inventaris-pengganti-approve/" + idKredit;
         $("#approveForm").attr("action", formAction);
+
+        // Fungsi untuk mengambil data barang dan menambahkannya ke select option
+        $.ajax({
+            url: "/get-barang-pengganti/" + idKredit,
+            type: "GET",
+            success: function (data) {
+                // menampilkan select pincab
+                var selectPincab = document.getElementById("pembanding_pincab");
+                var jabatan = $("#jabatan").val();
+                var jns_pembelian = data.inventaris.jns_pembelian;
+
+                console.log(data.harga_terkecil);
+
+                if (jabatan == "Pimpinan Cabang") {
+                    if (
+                        jns_pembelian ==
+                            "Pembelian Dengan Speksifikasi Cabang" &&
+                        data.harga_terkecil <= 500000
+                    ) {
+                        selectPincab.classList.remove("d-none");
+                    } else {
+                        selectPincab.classList.add("d-none");
+                    }
+                }
+
+                var catatan_tsi = document.getElementById("catatan_tsi");
+                if (jabatan == "Direktur Operasional") {
+                    if (
+                        data.inventaris.jns_pembelian ==
+                        "Pembelian Dengan Speksifikasi KPM"
+                    ) {
+                        catatan_tsi.classList.remove("d-none");
+                        $("#isi_catatan").text(data.inventaris.catatan_tsi);
+                    } else {
+                        catatan_tsi.classList.add("d-none");
+                    }
+                }
+
+                // untuk mengisi select barang pembanding
+                var select = $("#pembanding_dipilih");
+                select.empty(); // Kosongkan opsi sebelumnya
+                select.append(
+                    '<option selected disabled value="">Pilih Barang</option>'
+                ); // Tambahkan opsi default
+                data.data.forEach(function (item) {
+                    select.append(
+                        '<option value="' +
+                            item.id_barang_pembanding_pengganti +
+                            '">' +
+                            item.merk +
+                            "/" +
+                            item.type +
+                            " &nbsp;  &rarr;  &nbsp; " +
+                            item.nama_toko +
+                            " &nbsp;  &rarr;  &nbsp; " +
+                            item.harga +
+                            "</option>"
+                    );
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+            },
+        });
     });
 
     $("#approveForm").submit(function (event) {

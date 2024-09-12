@@ -58,6 +58,7 @@ class InventarisController extends Controller
                     break;
                     # Pimpinan Cabang ...
                 case 'Pembukuan':
+                case 'Internal Audit':
                     if (!empty($request->kode)) {
                         $data = Inventaris::where('kode_form', $kode)
                             ->OrderBy('created_at', 'desc')->get();
@@ -84,6 +85,7 @@ class InventarisController extends Controller
                             $data = Inventaris::where('status_pembukuan', "Edited")
                                 ->orwhere('status_pembukuan', 'Approve')
                                 ->orwhere('status_tsi', '--')
+                                ->orwhere('status_tsi', 'Not Needed')
                                 ->whereBetween('created_at', [$awal, $akhir])
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
@@ -128,6 +130,16 @@ class InventarisController extends Controller
                         case 'Kepala Kantor Kas':
                             if ($data->status_akhir == 'Selesai') {
                                 $status .= '<a class="btn btn-success btn-sm disabled">Selesai</a>';
+                            } elseif ($data->status_dirops == 'Not Needed' && $data->jns_pembelian == 'Pembelian Dengan Speksifikasi Cabang') {
+                                $status = '';
+                                $status .= '<div class="dropdown">';
+                                $status .= '<button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="statusDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                                $status .= 'Nothing';
+                                $status .= '</button>';
+                                $status .= '<div class="dropdown-menu" aria-labelledby="statusDropdown">';
+                                $status .= '<a class="dropdown-item approve" href="#" data-toggle="modal" data-target="#modalApprove" data-id="' . encrypt($data->id_inventaris_baru) . '" data-kode_form="' . $data->kode_form . '">Approve</a>';
+                                $status .= '</div>';
+                                $status .= '</div>';
                             } elseif ($data->status_dirops == 'Approve' && $data->jns_pembelian == 'Pembelian Dengan Speksifikasi Cabang') {
                                 $status = '';
                                 $status .= '<div class="dropdown">';
@@ -171,8 +183,7 @@ class InventarisController extends Controller
                             } elseif ($jabatan == 'Sended') {
                                 $status .= '<a class="btn btn-info btn-sm disabled">Sended</a>';
                             } else {
-                                $statusAfter = $this->statusAfter($data, $jabatan, $statusDropdown);
-                                return $statusAfter;
+                                $status .= '<a class="btn btn-warning btn-sm disabled">NotYet</a>';
                             }
                             break;
                     }
@@ -297,28 +308,30 @@ class InventarisController extends Controller
 
         if ($request->jns_pembelian == 'Pembelian Dengan Speksifikasi Cabang') {
             // data pembanding
-            BarangBaru::where('id_inventaris_baru', $data->id_inventaris_baru)->delete();
-            for ($i = 1; $i < 50; $i++) {
-                if ($request->input('jns_barang_' . $i) != '') {
-                    $barang = new BarangBaru();
-                    $barang->id_inventaris_baru = $data->id_inventaris_baru;
-                    $barang->kategori_barang = $request->kategori_barang;
-                    $barang->jns_barang = $request->input('jns_barang_' . $i);
-                    $barang->merk = $request->input('merk_' . $i);
-                    $barang->type = $request->input('type_' . $i);
-                    $barang->nama_toko = $request->input('nama_toko_' . $i);
-                    $barang->harga = $request->input('harga_pembelian_' . $i);
+            if ($request->input('jns_barang_1') != '') {
+                BarangBaru::where('id_inventaris_baru', $data->id_inventaris_baru)->delete();
+                for ($i = 1; $i < 50; $i++) {
+                    if ($request->input('jns_barang_' . $i) != '') {
+                        $barang = new BarangBaru();
+                        $barang->id_inventaris_baru = $data->id_inventaris_baru;
+                        $barang->kategori_barang = $request->kategori_barang;
+                        $barang->jns_barang = $request->input('jns_barang_' . $i);
+                        $barang->merk = $request->input('merk_' . $i);
+                        $barang->type = $request->input('type_' . $i);
+                        $barang->nama_toko = $request->input('nama_toko_' . $i);
+                        $barang->harga = $request->input('harga_pembelian_' . $i);
 
-                    // file uploud
-                    // Mengelola file yang diunggah
-                    if ($request->hasFile('file_detail_toko_' . $i)) {
-                        $file = $request->file('file_detail_toko_' . $i);
-                        $fileName = $file->getClientOriginalName();
-                        $file->move('file_upload/barang_inventaris_baru', $fileName);
-                        $barang->file_detail_toko = $fileName;
+                        // file uploud
+                        // Mengelola file yang diunggah
+                        if ($request->hasFile('file_detail_toko_' . $i)) {
+                            $file = $request->file('file_detail_toko_' . $i);
+                            $fileName = $file->getClientOriginalName();
+                            $file->move('file_upload/barang_inventaris_baru', $fileName);
+                            $barang->file_detail_toko = $fileName;
+                        }
+
+                        $barang->save();
                     }
-
-                    $barang->save();
                 }
             }
         }
@@ -336,14 +349,14 @@ class InventarisController extends Controller
             ]);
 
             $userPenerima = User::where('jabatan', 'Pembukuan')->get();
-            $url = route('user-email-pengajuan.index');
+            $url = route('inventaris-pengajuan.index');
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
             $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
         } else {
             $userPenerima = User::where('id_cabang', auth()->user()->id_cabang)
                 ->where('jabatan', 'Pimpinan Cabang')->first();
-            $url = route('user-email-pengajuan.index');
+            $url = route('inventaris-pengajuan.index');
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
             $this->SendEmail($data, $userPenerima, $url, $title, $message);
@@ -377,24 +390,19 @@ class InventarisController extends Controller
 
     public function edit(Inventaris $inventaris)
     {
-        $elektronik = BarangBaru::where('kategori_barang', 'Elektronik')
-            ->where('id_inventaris_baru', $inventaris->id_inventaris_baru)
-            ->get();
-        $non_elektronik = BarangBaru::where('kategori_barang', '!=', 'Elektronik')
-            ->where('id_inventaris_baru', $inventaris->id_inventaris_baru)
-            ->get();
+        $barang = BarangBaru::where('id_inventaris_baru', $inventaris->id_inventaris_baru)->get();
 
         if (auth()->user()->jabatan == 'TSI') {
             # code...
             return view(
                 'Page.Inventaris.modal-edit-tsi',
-                compact('inventaris', 'elektronik', 'non_elektronik'),
+                compact('inventaris', 'barang'),
                 ['title' => 'ddd']
             );
         } else {
             return view(
                 'Page.Inventaris.modal-edit',
-                compact('inventaris', 'elektronik', 'non_elektronik'),
+                compact('inventaris', 'barang'),
                 ['title' => 'ddd']
             );
         }
@@ -418,25 +426,30 @@ class InventarisController extends Controller
                 BarangBaru::where('id_inventaris_baru', $data->id_inventaris_baru)->delete();
                 for ($i = 1; $i < 50; $i++) {
                     if ($request->input('jns_barang_' . $i) != '') {
-                        $barang = new BarangBaru();
-                        $barang->id_inventaris_baru = $data->id_inventaris_baru;
-                        $barang->kategori_barang = $request->kategori_barang;
-                        $barang->jns_barang = $request->input('jns_barang_' . $i);
-                        $barang->merk = $request->input('merk_' . $i);
-                        $barang->type = $request->input('type_' . $i);
-                        $barang->nama_toko = $request->input('nama_toko_' . $i);
-                        $barang->harga = $request->input('harga_pembelian_' . $i);
+                        if ($request->input('aksi_diganti_' . $i) != 'Hapus') {
+                            $barang = new BarangBaru();
+                            $barang->id_inventaris_baru = $data->id_inventaris_baru;
+                            $barang->kategori_barang = $request->kategori_barang;
+                            $barang->jns_barang = $request->input('jns_barang_' . $i);
+                            $barang->merk = $request->input('merk_' . $i);
+                            $barang->type = $request->input('type_' . $i);
+                            $barang->nama_toko = $request->input('nama_toko_' . $i);
+                            $barang->harga = $request->input('harga_pembelian_' . $i);
 
-                        // file uploud
-                        // Mengelola file yang diunggah
-                        if ($request->hasFile('file_detail_toko_' . $i)) {
-                            $file = $request->file('file_detail_toko_' . $i);
-                            $fileName = $file->getClientOriginalName();
-                            $file->move('file_upload/barang_inventaris_baru', $fileName);
-                            $barang->file_detail_toko = $fileName;
+                            // file uploud
+                            // Mengelola file yang diunggah
+                            if ($request->hasFile('file_detail_toko_' . $i)) {
+                                $file = $request->file('file_detail_toko_' . $i);
+                                $fileName = $file->getClientOriginalName();
+                                $file->move('file_upload/barang_inventaris_baru', $fileName);
+                                $barang->file_detail_toko = $fileName;
+                            } else {
+                                $barang->file_detail_toko =  $request->input('detail_toko_old_' . $i);
+                            }
+
+
+                            $barang->save();
                         }
-
-                        $barang->save();
                     }
                 }
             }
@@ -493,9 +506,34 @@ class InventarisController extends Controller
     }
 
 
-    public function destroy(Inventaris $inventaris)
+    public function getBarang($Id)
     {
-        //
+        $ids = Crypt::decrypt($Id);
+        $barang = BarangBaru::where('id_inventaris_baru', $ids)->get();
+        $inventaris = Inventaris::where('id_inventaris_baru', $ids)->first();
+        $barangForPincab = BarangBaru::where('id_inventaris_baru', $ids)->get();
+
+        $hargaArray = [];
+        foreach ($barangForPincab as $item) {
+            $harga = str_replace(['Rp. ', '.'], '', $item->harga);
+            $hargaArray[] = (int) $harga; // Konversi ke integer
+        }
+
+        if ($barangForPincab->isNotEmpty()) {
+            # code...
+            $terkecil = min($hargaArray);
+        } else {
+            # code...
+            $terkecil = 0;
+        }
+
+
+        return response()->json([
+            'status' => 200,
+            'data' => $barang,
+            'harga_terkecil' => $terkecil,
+            'inventaris' => $inventaris
+        ]);
     }
 
 
@@ -522,20 +560,68 @@ class InventarisController extends Controller
                 ]);
                 break;
             case 'Pimpinan Cabang':
-                $data->update([
-                    'nama_pincab' => $nama,
-                    'status_pincab' => 'Approve',
-                    'tgl_status_pincab' => now(),
-                    'catatan_pincab' => $request->catatan,
-                    'status_akhir' => 'Proses'
-                ]);
-                // Send Email Double
-                $userPenerima = User::where('jabatan', 'Pembukuan')->get();
-                // pemberitahuan database
-                $url = route('inventaris-pengajuan.index');
-                $title = 'Terdapat Form Pengajuan Baru!';
-                $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+                if ($data->jns_pembelian == 'Pembelian Dengan Speksifikasi Cabang') {
+                    $barangForPincab = BarangBaru::where('id_inventaris_baru', $ids)->get();
+
+                    $hargaArray = [];
+                    foreach ($barangForPincab as $item) {
+                        $harga = str_replace(['Rp. ', '.'], '', $item->harga);
+                        $hargaArray[] = (int) $harga; // Konversi ke integer
+                    }
+                    $terkecil = min($hargaArray);
+
+                    if ($terkecil < 500000) {
+                        $pembanding = BarangBaru::where('id_barang_pembanding_baru', $request->pembanding_dipilih)->update([
+                            'dipilih' => 'True'
+                        ]);
+
+                        $data->update([
+                            'nama_pincab' => $nama,
+                            'status_pincab' => 'Approve',
+                            'tgl_status_pincab' => now(),
+                            'catatan_pimpin_cabang' => $request->catatan,
+                            'status_akhir' => 'Proses',
+                            'status_pembukuan' => 'Not Needed',
+                            'status_dirops' => 'Not Needed',
+                            'status_tsi' => 'Not Needed',
+                        ]);
+                    } else {
+                        # code...
+                        $data->update([
+                            'nama_pincab' => $nama,
+                            'status_pincab' => 'Approve',
+                            'tgl_status_pincab' => now(),
+                            'catatan_pincab' => $request->catatan,
+                            'status_akhir' => 'Proses'
+                        ]);
+
+                        // Send Email Double
+                        $userPenerima = User::where('jabatan', 'Pembukuan')->get();
+                        // pemberitahuan database
+                        $url = route('inventaris-pengajuan.index');
+                        $title = 'Terdapat Form Pengajuan Baru!';
+                        $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
+                        $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+                    }
+                } else {
+                    # code...
+                    $data->update([
+                        'nama_pincab' => $nama,
+                        'status_pincab' => 'Approve',
+                        'tgl_status_pincab' => now(),
+                        'catatan_pincab' => $request->catatan,
+                        'status_akhir' => 'Proses'
+                    ]);
+
+                    // Send Email Double
+                    $userPenerima = User::where('jabatan', 'Pembukuan')->get();
+                    // pemberitahuan database
+                    $url = route('inventaris-pengajuan.index');
+                    $title = 'Terdapat Form Pengajuan Baru!';
+                    $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
+                    $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+                }
+
                 break;
 
             case 'Pembukuan':
@@ -563,7 +649,7 @@ class InventarisController extends Controller
                 if ($data->jns_pembelian == 'Pembelian Dengan Speksifikasi Cabang') {
                     $data->update([
                         'nama_tsi' => 'Tidak Diperlukan',
-                        'status_tsi' => '--',
+                        'status_tsi' => 'Not Needed',
                         'tgl_status_tsi' => null,
                         'nama_tsi' => 'Tidak Diperlukan',
                     ]);
@@ -608,6 +694,9 @@ class InventarisController extends Controller
                 break;
 
             case 'Direktur Operasional':
+                $pembanding = BarangBaru::where('id_barang_pembanding_baru', $request->pembanding_dipilih)->update([
+                    'dipilih' => 'True'
+                ]);
                 $data->update([
                     'nama_dirops' => $nama,
                     'status_dirops' => 'Approve',
@@ -848,7 +937,9 @@ class InventarisController extends Controller
         } elseif ($jabatan == 'Reject') {
             $status .= '<a class="btn btn-danger btn-sm disabled">Reject</a>';
         } elseif ($jabatan == '--') {
-            $status .= '<a class="btn btn-success btn-sm disabled">Ditarik</a>';
+            $status .= '<a class="btn btn-info btn-sm disabled">Ditarik</a>';
+        } elseif ($jabatan == 'Not Needed') {
+            $status .= '<a class="btn btn-info btn-sm disabled">NotNeeded</a>';
         } else {
             return $statusDropdown;
         }
@@ -894,7 +985,7 @@ class InventarisController extends Controller
     // Email single to kaops
     private function SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message)
     {
-        Mail::send('email.notif.notif-status-akhir',  [
+        Mail::send('email.notif.notif-status-akhir-inv',  [
             'nama' => $data->nama,
             'kc' => $data->cabang->cabang,
             'nik' => $data->nik,

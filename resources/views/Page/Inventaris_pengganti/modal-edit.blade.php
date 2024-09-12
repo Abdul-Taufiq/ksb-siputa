@@ -180,6 +180,88 @@
                     </div>
                 </div>
             @endforeach
+
+            {{-- pengganti --}}
+            {{-- barang --}}
+            @foreach ($barang as $item)
+                <div class="row ml-2">
+                    <h5 style="font-weight: bold; font-style: italic; color: rgb(0, 101, 252)">Data
+                        Pembanding Barang {{ $loop->iteration }}
+                        &#8628;</h5>
+                    <hr style="width: 95%; margin-left: 5px">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>-= Aksi Untuk Data INI =-</label>
+                            <select class="form-control input border-danger"
+                                name="aksi_diganti_{{ $loop->iteration }}" id="aksi_diganti_{{ $loop->iteration }}"
+                                required>
+                                <option disabled selected>-Pilih Aksi-</option>
+                                <option value="Edit">Edit/Tetap Simpan</option>
+                                <option value="Hapus">Hapus/Hilangkan</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="wajib" for="jns_barang_{{ $loop->iteration }}">Jenis Barang :</label>
+                            <input type="text" name="jns_barang_{{ $loop->iteration }}"
+                                id="jns_barang_{{ $loop->iteration }}" class="form-control input" required
+                                placeholder="ex: Printer/Komputer/Laptop atau yang lainnya"
+                                value="{{ $item->jns_barang }}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="wajib" for="merk_{{ $loop->iteration }}">Merk :</label>
+                            <input type="text" name="merk_{{ $loop->iteration }}"
+                                id="merk_{{ $loop->iteration }}" class="form-control input" required
+                                placeholder="Merk" value="{{ $item->merk }}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="wajib" for="type_{{ $loop->iteration }}">Type :</label>
+                            <input type="text" name="type_{{ $loop->iteration }}"
+                                id="type_{{ $loop->iteration }}" class="form-control input" required
+                                placeholder="Type" value="{{ $item->type }}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="wajib" for="nama_toko_{{ $loop->iteration }}">Nama Toko :</label>
+                            <input type="text" name="nama_toko_{{ $loop->iteration }}"
+                                id="nama_toko_{{ $loop->iteration }}" class="form-control input" required
+                                placeholder="Nama Toko (Market) - ex: ABC (Tokopedia)"
+                                value="{{ $item->nama_toko }}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="wajib" for="harga_pembelian"_{{ $loop->iteration }}>Harga :</label>
+                            <input type="text" name="harga_pembelian_{{ $loop->iteration }}"
+                                id="harga_pembelian_{{ $loop->iteration }}" class="form-control input" required
+                                placeholder="Harga" value="{{ $item->harga }}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="wajib" for="file_detail_toko_{{ $loop->iteration }}">File Detail Toko
+                                (PNG/JPG/JPEG/PDF)
+                                :</label>
+                            <input type="file" name="file_detail_toko_{{ $loop->iteration }}"
+                                id="file_detail_toko_{{ $loop->iteration }}" class="form-control "
+                                accept="image/jpeg,image/jpg,image/png, application/pdf">
+                            <input type="hidden" name="detail_toko_old_{{ $loop->iteration }}"
+                                value="{{ $item->file_detail_toko }}">
+                            <a href="{{ asset('file_upload/barang_inventaris_baru/' . $item->file_detail_toko) }}"
+                                target="_blank">
+                                {{ $item->file_detail_toko ? $item->file_detail_toko : 'null' }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+
             <div>
                 <div id="tambah_barang_diganti_card"></div>
                 <div class="row ml-2">

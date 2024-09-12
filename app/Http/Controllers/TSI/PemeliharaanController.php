@@ -53,6 +53,7 @@ class PemeliharaanController extends Controller
                     break;
                     # Pimpinan Cabang ...
                 case 'Pembukuan':
+                case 'Internal Audit':
                     if (!empty($request->kode)) {
                         $data = Pemeliharaan::where('kode_form', $kode)
                             ->OrderBy('created_at', 'desc')->get();
@@ -244,6 +245,7 @@ class PemeliharaanController extends Controller
         $data->nama_kaops = auth()->user()->nama;
         $data->id_cabang = auth()->user()->id_cabang;
         $data->kode_inventaris = $request->kode_inventaris;
+        $data->detail_barang = $request->detail_barang;
         $data->detail_kendala = $request->detail_kendala;
         $data->save();
 
@@ -251,6 +253,7 @@ class PemeliharaanController extends Controller
         $history->id_cabang = auth()->user()->id_cabang;
         $history->id_pemeliharaan = $data->id_pemeliharaan;
         $history->kode_inventaris = $data->kode_inventaris;
+        $history->detail_barang = $data->detail_barang;
         $history->save();
 
         // Log Activity
@@ -288,10 +291,12 @@ class PemeliharaanController extends Controller
     {
         $pemeliharaan->kode_inventaris = $request->kode_inventaris_edit;
         $pemeliharaan->detail_kendala = $request->detail_kendala_edit;
+        $pemeliharaan->detail_barang = $request->detail_barang_edit;
         $pemeliharaan->save();
 
         $history = PemeliharaanHistory::where('id_pemeliharaan', $pemeliharaan->id_pemeliharaan)->first();
         $history->kode_inventaris = $pemeliharaan->kode_inventaris;
+        $history->detail_barang = $pemeliharaan->detail_barang_edit;
         $history->save();
 
         // Log Activity

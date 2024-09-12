@@ -54,6 +54,7 @@ class InventarisPenggantiController extends Controller
                     break;
                     # Pimpinan Cabang ...
                 case 'Pembukuan':
+                case 'Internal Audit':
                     if (!empty($request->kode)) {
                         $data = InventarisPengganti::where('kode_form', $kode)
                             ->OrderBy('created_at', 'desc')->get();
@@ -124,6 +125,16 @@ class InventarisPenggantiController extends Controller
                         case 'Kepala Kantor Kas':
                             if ($data->status_akhir == 'Selesai') {
                                 $status .= '<a class="btn btn-success btn-sm disabled">Selesai</a>';
+                            } elseif ($data->status_dirops == 'Not Needed' && $data->jns_pembelian == 'Pembelian Dengan Speksifikasi Cabang') {
+                                $status = '';
+                                $status .= '<div class="dropdown">';
+                                $status .= '<button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="statusDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                                $status .= 'Nothing';
+                                $status .= '</button>';
+                                $status .= '<div class="dropdown-menu" aria-labelledby="statusDropdown">';
+                                $status .= '<a class="dropdown-item approve" href="#" data-toggle="modal" data-target="#modalApprove" data-id="' . encrypt($data->id_inventaris_pengganti) . '" data-kode_form="' . $data->kode_form . '">Approve</a>';
+                                $status .= '</div>';
+                                $status .= '</div>';
                             } elseif ($data->status_dirops == 'Approve' && $data->jns_pembelian == 'Pembelian Dengan Speksifikasi Cabang') {
                                 $status = '';
                                 $status .= '<div class="dropdown">';
@@ -166,9 +177,10 @@ class InventarisPenggantiController extends Controller
                                 return $statusAfter;
                             } elseif ($jabatan == 'Sended') {
                                 $status .= '<a class="btn btn-info btn-sm disabled">Sended</a>';
+                            } elseif ($data->status_tsi == 'Not Needed') {
+                                $status .= '<a class="btn btn-info btn-sm disabled">NotNeeded</a>';
                             } else {
-                                $statusAfter = $this->statusAfter($data, $jabatan, $statusDropdown);
-                                return $statusAfter;
+                                $status .= '<a class="btn btn-warning btn-sm disabled">NotYet</a>';
                             }
                             break;
                     }
@@ -341,14 +353,14 @@ class InventarisPenggantiController extends Controller
             ]);
 
             $userPenerima = User::where('jabatan', 'Pembukuan')->get();
-            $url = route('user-email-pengajuan.index');
+            $url = route('inventaris-pengganti.index');
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
             $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
         } else {
             $userPenerima = User::where('id_cabang', auth()->user()->id_cabang)
                 ->where('jabatan', 'Pimpinan Cabang')->first();
-            $url = route('user-email-pengajuan.index');
+            $url = route('inventaris-pengganti.index');
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
             $this->SendEmail($data, $userPenerima, $url, $title, $message);
@@ -400,11 +412,7 @@ class InventarisPenggantiController extends Controller
 
     public function edit(InventarisPengganti $inventarisPengganti)
     {
-        $elektronik = BarangBaruPengganti::where('kategori_barang', 'Elektronik')
-            ->where('id_inventaris_pengganti', $inventarisPengganti->id_inventaris_pengganti)
-            ->get();
-        $non_elektronik = BarangBaruPengganti::where('kategori_barang', '!=', 'Elektronik')
-            ->where('id_inventaris_pengganti', $inventarisPengganti->id_inventaris_pengganti)
+        $barang = BarangBaruPengganti::where('id_inventaris_pengganti', $inventarisPengganti->id_inventaris_pengganti)
             ->get();
         $diganti = Diganti::where('id_inventaris_pengganti', $inventarisPengganti->id_inventaris_pengganti)->get();
         $inventaris = $inventarisPengganti;
@@ -413,13 +421,13 @@ class InventarisPenggantiController extends Controller
             # code...
             return view(
                 'Page.Inventaris_pengganti.modal-edit-tsi',
-                compact('inventarisPengganti', 'elektronik', 'non_elektronik', 'diganti'),
+                compact('inventarisPengganti', 'barang', 'diganti'),
                 ['title' => 'ddd']
             );
         } else {
             return view(
                 'Page.Inventaris_pengganti.modal-edit',
-                compact('inventarisPengganti', 'elektronik', 'non_elektronik', 'diganti'),
+                compact('inventarisPengganti', 'barang', 'diganti'),
                 ['title' => 'ddd']
             );
         }
@@ -442,24 +450,28 @@ class InventarisPenggantiController extends Controller
             BarangBaruPengganti::where('id_inventaris_pengganti', $data->id_inventaris_pengganti)->delete();
             for ($i = 1; $i < 50; $i++) {
                 if ($request->input('jns_barang_' . $i) != '') {
-                    $barang = new BarangBaruPengganti();
-                    $barang->id_inventaris_pengganti = $data->id_inventaris_pengganti;
-                    $barang->kategori_barang = $request->kategori_barang;
-                    $barang->jns_barang = $request->input('jns_barang_' . $i);
-                    $barang->merk = $request->input('merk_' . $i);
-                    $barang->type = $request->input('type_' . $i);
-                    $barang->nama_toko = $request->input('nama_toko_' . $i);
-                    $barang->harga = $request->input('harga_pembelian_' . $i);
+                    if ($request->input('aksi_diganti_' . $i) != 'Hapus') {
+                        $barang = new BarangBaruPengganti();
+                        $barang->id_inventaris_pengganti = $data->id_inventaris_pengganti;
+                        $barang->kategori_barang = $request->kategori_barang;
+                        $barang->jns_barang = $request->input('jns_barang_' . $i);
+                        $barang->merk = $request->input('merk_' . $i);
+                        $barang->type = $request->input('type_' . $i);
+                        $barang->nama_toko = $request->input('nama_toko_' . $i);
+                        $barang->harga = $request->input('harga_pembelian_' . $i);
 
-                    // file uploud
-                    // Mengelola file yang diunggah
-                    if ($request->hasFile('file_detail_toko_' . $i)) {
-                        $file = $request->file('file_detail_toko_' . $i);
-                        $fileName = $file->getClientOriginalName();
-                        $file->move('file_upload/barang_inventaris_pengganti', $fileName);
-                        $barang->file_detail_toko = $fileName;
+                        // file uploud
+                        // Mengelola file yang diunggah
+                        if ($request->hasFile('file_detail_toko_' . $i)) {
+                            $file = $request->file('file_detail_toko_' . $i);
+                            $fileName = $file->getClientOriginalName();
+                            $file->move('file_upload/barang_inventaris_baru', $fileName);
+                            $barang->file_detail_toko = $fileName;
+                        } else {
+                            $barang->file_detail_toko =  $request->input('detail_toko_old_' . $i);
+                        }
+                        $barang->save();
                     }
-                    $barang->save();
                 }
             }
         }
@@ -543,6 +555,37 @@ class InventarisPenggantiController extends Controller
     }
 
 
+    public function getBarang($Id)
+    {
+        $ids = Crypt::decrypt($Id);
+        $barang = BarangBaruPengganti::where('id_inventaris_pengganti', $ids)->get();
+        $barangForPincab = BarangBaruPengganti::where('id_inventaris_pengganti', $ids)->get();
+        $inventaris = InventarisPengganti::where('id_inventaris_pengganti', $ids)->first();
+
+        $hargaArray = [];
+        foreach ($barangForPincab as $item) {
+            $harga = str_replace(['Rp. ', '.'], '', $item->harga);
+            $hargaArray[] = (int) $harga; // Konversi ke integer
+        }
+
+        if ($barangForPincab->isNotEmpty()) {
+            # code...
+            $terkecil = min($hargaArray);
+        } else {
+            # code...
+            $terkecil = 0;
+        }
+
+
+        return response()->json([
+            'status' => 200,
+            'data' => $barang,
+            'harga_terkecil' => $terkecil,
+            'inventaris' => $inventaris
+        ]);
+    }
+
+
 
 
     // RESPON APPROVE STATUS PENGAJUAN
@@ -567,20 +610,68 @@ class InventarisPenggantiController extends Controller
                 ]);
                 break;
             case 'Pimpinan Cabang':
-                $data->update([
-                    'nama_pincab' => $nama,
-                    'status_pincab' => 'Approve',
-                    'tgl_status_pincab' => now(),
-                    'catatan_pincab' => $request->catatan,
-                    'status_akhir' => 'Proses'
-                ]);
-                // Send Email Double
-                $userPenerima = User::where('jabatan', 'Pembukuan')->get();
-                // pemberitahuan database
-                $url = route('inventaris-pengganti.index');
-                $title = 'Terdapat Form Pengajuan Baru!';
-                $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+                if ($data->jns_pembelian == 'Pembelian Dengan Speksifikasi Cabang') {
+                    $barangForPincab = BarangBaruPengganti::where('id_inventaris_pengganti', $ids)->get();
+
+                    $hargaArray = [];
+                    foreach ($barangForPincab as $item) {
+                        $harga = str_replace(['Rp. ', '.'], '', $item->harga);
+                        $hargaArray[] = (int) $harga; // Konversi ke integer
+                    }
+                    $terkecil = min($hargaArray);
+
+                    if ($terkecil < 500000) {
+                        # code...
+                        $pembanding = BarangBaruPengganti::where('id_barang_pembanding_pengganti', $request->pembanding_dipilih)->update([
+                            'dipilih' => 'True'
+                        ]);
+
+                        $data->update([
+                            'nama_pincab' => $nama,
+                            'status_pincab' => 'Approve',
+                            'tgl_status_pincab' => now(),
+                            'catatan_pimpin_cabang' => $request->catatan,
+                            'status_akhir' => 'Selesai',
+                            'status_pembukuan' => 'Not Needed',
+                            'status_dirops' => 'Not Needed',
+                            'status_tsi' => 'Not Needed',
+                        ]);
+                    } else {
+                        # code...
+                        $data->update([
+                            'nama_pincab' => $nama,
+                            'status_pincab' => 'Approve',
+                            'tgl_status_pincab' => now(),
+                            'catatan_pincab' => $request->catatan,
+                            'status_akhir' => 'Proses'
+                        ]);
+
+                        // Send Email Double
+                        $userPenerima = User::where('jabatan', 'Pembukuan')->get();
+                        // pemberitahuan database
+                        $url = route('inventaris-pengajuan.index');
+                        $title = 'Terdapat Form Pengajuan Baru!';
+                        $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
+                        $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+                    }
+                } else {
+                    # code...
+                    $data->update([
+                        'nama_pincab' => $nama,
+                        'status_pincab' => 'Approve',
+                        'tgl_status_pincab' => now(),
+                        'catatan_pincab' => $request->catatan,
+                        'status_akhir' => 'Proses'
+                    ]);
+
+                    // Send Email Double
+                    $userPenerima = User::where('jabatan', 'Pembukuan')->get();
+                    // pemberitahuan database
+                    $url = route('inventaris-pengajuan.index');
+                    $title = 'Terdapat Form Pengajuan Baru!';
+                    $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
+                    $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+                }
                 break;
 
             case 'Pembukuan':
@@ -608,7 +699,7 @@ class InventarisPenggantiController extends Controller
                 if ($data->jns_pembelian == 'Pembelian Dengan Speksifikasi Cabang') {
                     $data->update([
                         'nama_tsi' => 'Tidak Diperlukan',
-                        'status_tsi' => '--',
+                        'status_tsi' => 'Not Needed',
                         'tgl_status_tsi' => null,
                         'nama_tsi' => 'Tidak Diperlukan',
                     ]);
@@ -649,10 +740,12 @@ class InventarisPenggantiController extends Controller
                     $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
                     $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 }
-
                 break;
 
             case 'Direktur Operasional':
+                $pembanding = BarangBaruPengganti::where('id_inventaris_pengganti', $request->pembanding_dipilih)->update([
+                    'dipilih' => 'True'
+                ]);
                 $data->update([
                     'nama_dirops' => $nama,
                     'status_dirops' => 'Approve',
@@ -892,6 +985,8 @@ class InventarisPenggantiController extends Controller
             $status .= '<a class="btn btn-success btn-sm disabled">Approve</a>';
         } elseif ($jabatan == 'Reject') {
             $status .= '<a class="btn btn-danger btn-sm disabled">Reject</a>';
+        } elseif ($jabatan == 'Not Needed') {
+            $status .= '<a class="btn btn-info btn-sm disabled">NotNeeded</a>';
         } elseif ($jabatan == '--') {
             $status .= '<a class="btn btn-success btn-sm disabled">Ditarik</a>';
         } else {

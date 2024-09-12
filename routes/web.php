@@ -6,6 +6,8 @@ use App\Http\Controllers\{LoginController, UserController, HelperController, Reg
 use App\Http\Controllers\Ecoll\{EcollPController, EcollRController};
 use App\Http\Controllers\Inventaris\InventarisController as InventarisPengajuanController;
 use App\Http\Controllers\Inventaris\InventarisPenggantiController;
+use App\Http\Controllers\Inventaris\InventarisPenjualanController;
+use App\Http\Controllers\Inventaris\InventarisRekapController;
 use App\Http\Controllers\MBS\{UserPController, ResetController};
 use App\Http\Controllers\Pefindo\{PefindoController, PefindoreController};
 use App\Http\Controllers\Pembatalan\{AkuntansiController, AntarBankController, AntarKantorController, InventarisController, KreditController, PDepositoController, PEcollController, TabunganController};
@@ -23,12 +25,24 @@ Route::get('/', function () {
 });
 
 Route::get('/clear-cache', function () {
-    $exitCode = Artisan::call('route:clear');
-    $exitCode = Artisan::call('config:clear');
-    $exitCode = Artisan::call('cache:clear');
-    $exitCode = Artisan::call('config:cache');
-    return 'DONE'; //Return anything
+    $commands = [
+        'route:clear',
+        'route:cache',
+        'config:clear',
+        'cache:clear',
+        'config:cache',
+        'view:clear',
+        'view:cache',
+        'optimize:clear'
+    ];
+
+    foreach ($commands as $command) {
+        Artisan::call($command);
+    }
+
+    return 'DONE'; // Return anything
 });
+
 
 // Login
 Route::get('/login', [LoginController::class, 'index']);
@@ -48,7 +62,7 @@ Auth::routes(['verify' => true]);
 
 Auth::routes();
 
-Route::group(['middleware' => ['permission']], function () {
+Route::group(['middleware' => ['permission', 'CekMaintenance']], function () {
 
     Route::group(['middleware' => ['auth']], function () {
         Route::get('/home', [HomeController::class, 'index'])->name('home');
@@ -174,6 +188,7 @@ Route::group(['middleware' => ['permission']], function () {
         Route::patch('/inventaris-pengajuan-approve/{idEncrypt}', [InventarisPengajuanController::class, 'ResponApprove']);
         Route::patch('/inventaris-pengajuan-reject/{idEncrypt}', [InventarisPengajuanController::class, 'ResponReject']);
         Route::get('/inventaris-baru-cetak/{idEncrypt}', [InventarisPengajuanController::class, 'Print']);
+        Route::get('get-barang/{Id}', [InventarisPengajuanController::class, 'getBarang']);
 
         // Pengajuan Inventaris Pengganti
         Route::resource('inventaris-pengganti', InventarisPenggantiController::class)->parameters(['inventaris-pengganti' => 'inventarisPengganti']);
@@ -181,6 +196,18 @@ Route::group(['middleware' => ['permission']], function () {
         Route::patch('/inventaris-pengganti-approve/{idEncrypt}', [InventarisPenggantiController::class, 'ResponApprove']);
         Route::patch('/inventaris-pengganti-reject/{idEncrypt}', [InventarisPenggantiController::class, 'ResponReject']);
         Route::get('/inventaris-cetak/{idEncrypt}', [InventarisPenggantiController::class, 'Print']);
+        Route::get('get-barang-pengganti/{Id}', [InventarisPenggantiController::class, 'getBarang']);
+
+        // Pengajuan Inventaris Penjualan
+        Route::resource('inventaris-penjualan', InventarisPenjualanController::class)->parameters(['inventaris-penjualan' => 'penjualan']);
+        Route::patch('/inventaris-penjualan-approve/{idEncrypt}', [InventarisPenjualanController::class, 'ResponApprove']);
+        Route::patch('/inventaris-penjualan-reject/{idEncrypt}', [InventarisPenjualanController::class, 'ResponReject']);
+
+        // Rekap Inventaris Penjualan dan Pembelian
+        Route::get('inventaris-rekap', [InventarisRekapController::class, 'Index']);
+        Route::any('inventaris-rekap/{min}/{max}/{id_cabang}/{pilih_laporan}', [InventarisRekapController::class, 'ShowRekap']);
+        Route::any('inventaris-rekap-cetak/{min}/{max}/{id_cabang}/{pilih_laporan}', [InventarisRekapController::class, 'PrintRekap']);
+
 
         // Pemeliharaan Perangkat
         Route::resource('pemeliharaan-perangkat', PemeliharaanController::class)->parameters(['pemeliharaan-perangkat' => 'pemeliharaan']);

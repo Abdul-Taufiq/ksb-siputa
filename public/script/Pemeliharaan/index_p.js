@@ -97,6 +97,10 @@ function loadtable(min, max, cari) {
                     name: "kode_inventaris",
                 },
                 {
+                    data: "detail_barang",
+                    name: "detail_barang",
+                },
+                {
                     data: "keputusan_tsi",
                     name: "keputusan_tsi",
                 },
@@ -129,7 +133,7 @@ function loadtable(min, max, cari) {
 
             columnDefs: [
                 {
-                    targets: [5, 6],
+                    targets: [6, 7],
                     visible: false,
                 },
             ],
@@ -263,6 +267,7 @@ $(document).ready(function () {
             success: function (response) {
                 console.log("Rz wuzz here");
                 $("#kode_inventaris_edit").val(response.data.kode_inventaris);
+                $("#detail_barang_edit").val(response.data.detail_barang);
                 $("#kendala").val(response.data.detail_kendala);
                 // $("#nama_edit").val(response.data.nama);
 

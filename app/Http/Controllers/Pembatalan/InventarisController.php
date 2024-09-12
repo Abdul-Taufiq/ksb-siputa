@@ -53,6 +53,7 @@ class InventarisController extends Controller
                     break;
                     # Pimpinan Cabang ...
                 case 'Pembukuan':
+                case 'Internal Audit':
                     if (!empty($request->kode)) {
                         $data = Inventaris::where('kode_form', $kode)
                             ->OrderBy('created_at', 'desc')->get();

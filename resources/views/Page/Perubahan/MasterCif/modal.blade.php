@@ -103,10 +103,11 @@
 
                                 <div class="col-md-6" id="ktp_head">
                                     <div class="form-group">
-                                        <label for="ktp" class="wajib">Berkas KTP (KArtu Tanda PEnduduk) :</label>
+                                        <label for="ktp" class="wajib">Berkas (KK & KTP Lama dan Baru) :</label>
                                         <input type="file" name="ktp" id="ktp" class="form-control input"
-                                            placeholder="Berkas KTP (KArtu TAnda PEnduduk)"
-                                            accept="image/jpeg,image/jpg,image/png" onchange="upload(this)">
+                                            placeholder="Berkas (KK & KTP Lama dan Baru)"
+                                            accept="image/jpeg,image/jpg,image/png, application/pdf"
+                                            onchange="upload(this)">
                                     </div>
                                     <div class="me-sm-2"
                                         style="width: 200px; height: 200px; background-color: #ccc; display: flex; justify-content: center; align-items: center; overflow: hidden;">
@@ -228,11 +229,12 @@
 
                                 <div class="col-md-6" id="ktp_head_edit">
                                     <div class="form-group">
-                                        <label for="ktp" class="wajib">Berkas KTP (KArtu Tanda PEnduduk)
+                                        <label for="ktp" class="wajib">Berkas (KK & KTP Lama dan Baru)
                                             :</label>
                                         <input type="file" name="ktp" id="ktp_edit"
-                                            class="form-control input" placeholder="Berkas KTP (KArtu TAnda PEnduduk)"
-                                            accept="image/jpeg,image/jpg,image/png" onchange="upload_edit(this)">
+                                            class="form-control input" placeholder="Berkas (KK & KTP Lama dan Baru)"
+                                            accept="image/jpeg,image/jpg,image/png, application/pdf"
+                                            onchange="upload_edit(this)">
                                     </div>
                                     <div class="me-sm-2 d-none" id="image_edit_head"
                                         style="width: 200px; height: 200px; background-color: #ccc; display: flex; justify-content: center; align-items: center; overflow: hidden;">

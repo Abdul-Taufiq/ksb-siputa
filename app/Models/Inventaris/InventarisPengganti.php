@@ -12,8 +12,14 @@ class InventarisPengganti extends Model
     protected $connection = 'ksb_sdm';
     protected $table = 'tb_pengajuan_inventaris_pengganti';
     protected $dates = [
-        'created_at', 'updated_at', 'tgl_status_pincab', 'tgl_status_pembukuan',
-        'tgl_status_dirops', 'tgl_status_akhir', 'tgl_status_tsi', 'tgl_pembelian'
+        'created_at',
+        'updated_at',
+        'tgl_status_pincab',
+        'tgl_status_pembukuan',
+        'tgl_status_dirops',
+        'tgl_status_akhir',
+        'tgl_status_tsi',
+        'tgl_pembelian'
     ];
     protected $primaryKey = 'id_inventaris_pengganti';
 
@@ -26,11 +32,11 @@ class InventarisPengganti extends Model
 
     public function BarangBaruPengganti()
     {
-        return $this->hasMany(BarangBaruPengganti::class, 'id_barang_perbandingan_pengganti', 'id_barang_perbandingan_pengganti');
+        return $this->hasMany(BarangBaruPengganti::class, 'id_inventaris_pengganti', 'id_inventaris_pengganti');
     }
 
     public function diganti()
     {
-        return $this->belongsTo(Diganti::class, 'id_inventaris_pengganti', 'id_inventaris_pengganti');
+        return $this->hasMany(Diganti::class, 'id_inventaris_pengganti', 'id_inventaris_pengganti');
     }
 }

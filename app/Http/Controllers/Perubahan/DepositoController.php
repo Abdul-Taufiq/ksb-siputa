@@ -55,6 +55,7 @@ class DepositoController extends Controller
                     break;
                     # Pimpinan Cabang ...
                 case 'Pembukuan':
+                case 'Internal Audit':
                     if (!empty($request->kode)) {
                         $data = Deposito::where('kode_form', $kode)
                             ->OrderBy('created_at', 'desc')->get();

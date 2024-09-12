@@ -54,6 +54,7 @@ class CifController extends Controller
                     break;
                     # Pimpinan Cabang ...
                 case 'Pembukuan':
+                case 'Internal Audit':
                     if (!empty($request->kode)) {
                         $data = Cif::where('kode_form', $kode)
                             ->OrderBy('created_at', 'desc')->get();

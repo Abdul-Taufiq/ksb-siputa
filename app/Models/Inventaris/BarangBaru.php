@@ -11,7 +11,8 @@ class BarangBaru extends Model
     protected $connection = 'ksb_sdm';
     protected $table = 'tb_barang_pembanding_baru';
     protected $dates = [
-        'created_at', 'updated_at'
+        'created_at',
+        'updated_at'
     ];
     protected $primaryKey = 'id_barang_pembanding_baru';
 

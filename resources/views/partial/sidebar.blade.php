@@ -417,7 +417,7 @@
                         class="nav-link  {{ request()->is('inventaris*') ? 'active aria-expanded= "true"' : 'collapsed' }}">
                         <i class="fa-solid fa-boxes-stacked nav-icon"></i>
                         <p>
-                            Pengajuan Inventaris
+                            Inventaris
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
@@ -436,6 +436,22 @@
                                 <p>Pengajuan u/ Pengganti</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="/inventaris-penjualan"
+                                class="nav-link {{ Request::is('inventaris-penjualan*') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Pengajuan u/ Penjualan</p>
+                            </a>
+                        </li>
+                        @can('viewRekap', App\Models\User::class)
+                            <li class="nav-item">
+                                <a href="/inventaris-rekap"
+                                    class="nav-link {{ Request::is('inventaris-rekap*') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Rekap Inventaris</p>
+                                </a>
+                            </li>
+                        @endcan
                     </ul>
                 </li>
                 {{-- End Pengajuan Inventaris --}}

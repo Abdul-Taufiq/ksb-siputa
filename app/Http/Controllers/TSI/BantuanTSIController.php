@@ -56,6 +56,7 @@ class BantuanTSIController extends Controller
                     break;
 
                 case 'Pembukuan':
+                case 'Internal Audit':
                     if (!empty($request->kode)) {
                         $data = BantuanTSI::where('kode_form', $kode)
                             ->OrderBy('created_at', 'desc')->get();

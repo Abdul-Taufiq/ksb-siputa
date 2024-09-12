@@ -67,6 +67,13 @@
                                             class="form-control input">
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="detail_barang">Detail Inventaris :</label>
+                                        <input type="text" name="detail_barang" id="detail_barang"
+                                            class="form-control input">
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="ml-2">
@@ -129,6 +136,13 @@
                                 <div class="form-group">
                                     <label for="kode_inventaris_edit">Kode Inventaris :</label>
                                     <input type="text" name="kode_inventaris_edit" id="kode_inventaris_edit"
+                                        class="form-control input">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="detail_barang_edit">Detail Inventaris :</label>
+                                    <input type="text" name="detail_barang_edit" id="detail_barang_edit"
                                         class="form-control input">
                                 </div>
                             </div>

@@ -51,6 +51,7 @@ class PSlikController extends Controller
                     break;
                     # Pimpinan Cabang ...
                 case 'SDM':
+                case 'Internal Audit':
                     if (!empty($request->kode)) {
                         $data = Pslik::where('kode_form', $kode)
                             ->OrderBy('created_at', 'desc')->get();

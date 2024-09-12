@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             var innerHTML = `
                         <h5 style="font-weight: bold; font-style: italic; color: rgb(0, 101, 252)">Data
-                            Pembanding Barang Elektronik ${counter}
+                            Pembanding Barang ${counter}
                             &#8628;</h5>
                         <hr style="width: 95%; margin-left: 5px">
                         <div class="col-md-6">

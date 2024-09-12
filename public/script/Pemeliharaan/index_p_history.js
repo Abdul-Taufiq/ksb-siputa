@@ -92,6 +92,10 @@ function loadtable(min, max, cari) {
                     data: "kode_inventaris",
                     name: "kode_inventaris",
                 },
+                {
+                    data: "detail_barang",
+                    name: "detail_barang",
+                },
 
                 {
                     data: null,
@@ -246,6 +250,7 @@ $(document).ready(function () {
                 console.log("Rz wuzz here");
                 $("#cabang_edit").val(response.data.id_cabang);
                 $("#kode_inventaris_edit").val(response.data.kode_inventaris);
+                $("#detail_barang_edit").val(response.data.detail_barang);
                 $("#kerusakan").val(response.data.detail_kerusakan);
                 $("#perbaikan").val(response.data.detail_perbaikan);
                 // $("#nama_edit").val(response.data.nama);

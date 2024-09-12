@@ -22,7 +22,7 @@
         <footer class="main-footer">
             <strong>Copyright &copy; <?php echo date('Y'); ?> <a href="#">TSI-BPR Kusuma Sumbing</a></strong>
             <div class="float-right d-none d-sm-inline-block">
-                <b>Version</b> 2.1.0
+                <b>Version</b> 3.0.0
             </div>
         </footer>
 

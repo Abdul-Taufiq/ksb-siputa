@@ -71,6 +71,7 @@
                                             <th style="10px">#</th> {{-- 0 --}}
                                             <th>K.Cabang</th>
                                             <th>Kode Inventaris</th>
+                                            <th>Detail Inventaris</th>
 
                                             <th>Tanggal Create</th>
                                             <th>Last Update</th>

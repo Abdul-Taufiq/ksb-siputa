@@ -138,19 +138,18 @@
                     <th>#</th>
                     <th>Kategori</th>
                     <th>Jenis Barang</th>
-                    <th>Merk</th>
-                    <th>Type</th>
+                    <th>Merk/Type</th>
                     <th>Nama Toko</th>
                     <th>Detail Toko</th>
                     <th>Harga</th>
+                    <th>Dipilih?</th>
                 </tr>
                 @foreach ($barang as $item)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $item->kategori_barang }}</td>
                         <td>{{ $item->jns_barang }}</td>
-                        <td>{{ $item->merk }}</td>
-                        <td>{{ $item->type }}</td>
+                        <td>{{ $item->merk }}/{{ $item->type }}</td>
                         <td>{{ $item->nama_toko }}</td>
                         <td>
                             <a href="{{ asset('file_upload/barang_inventaris_pengganti/' . $item->file_detail_toko) }}"
@@ -159,6 +158,7 @@
                             </a>
                         </td>
                         <td>{{ $item->harga }}</td>
+                        <td>{{ $item->dipilih == null ? '☓' : '✔' }}</td>
                     </tr>
                 @endforeach
             </table>
@@ -227,7 +227,7 @@
                     <th>Status Akhir</th>
                     <td>
                         {{ $inventarisPengganti->status_akhir }} -
-                        {{ $inventarisPengganti->tgl_status_akhir ? $inventarisPengganti->tgl_status_akhir->translatedFormat('d F Y, H:i') : ' ' }}
+                        {{ $inventarisPengganti->updated_at ? $inventarisPengganti->updated_at->translatedFormat('d F Y, H:i') : ' ' }}
                     </td>
                 </tr>
 

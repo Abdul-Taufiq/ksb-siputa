@@ -37,7 +37,7 @@
                 </tr>
                 <tr>
                     <th>Kode Inventaris</th>
-                    <td>{{ $pemeliharaan->kode_inventaris }}</td>
+                    <td>{{ $pemeliharaan->kode_inventaris }} - {{ $pemeliharaan->detail_barang }}</td>
                 </tr>
                 <tr>
                     <th>Detail Kendala</th>
@@ -66,6 +66,7 @@
                 <tr>
                     <th>#</th>
                     <th>Kode Inventaris</th>
+                    <th>Detail Inventaris</th>
                     <th>Detail Kerusakan</th>
                     <th>Detail Perbaikan</th>
                     <th>Tanggal Dilaksanakan</th>
@@ -74,6 +75,7 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td> <!-- Menampilkan nomor iterasi dari loop luar -->
                         <td>{{ $data->kode_inventaris }}</td>
+                        <td>{{ $data->detail_barang }}</td>
                         <td>{!! $data->detail_kerusakan !!}</td>
                         <td>{!! $data->detail_perbaikan !!}</td>
                         <td>{{ $data->tgl_dilaksanakan ? $data->tgl_dilaksanakan->translatedFormat('d F Y') : ' ' }}

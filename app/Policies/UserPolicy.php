@@ -34,4 +34,16 @@ class UserPolicy
             return Response::denyWithStatus(403, 'Anda tidak diizinkan mengakses halaman ini!');
         }
     }
+
+
+    public function ViewRekap(User $user)
+    {
+        if (
+            $user->jabatan === 'TSI' || $user->jabatan === 'Pembukuan'
+        ) {
+            return TRUE;
+        } else {
+            return Response::denyWithStatus(403, 'Anda tidak diizinkan mengakses halaman ini!');
+        }
+    }
 }

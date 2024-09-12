@@ -53,6 +53,7 @@ class AkuntansiController extends Controller
                     break;
                     # Pimpinan Cabang ...
                 case 'Pembukuan':
+                case 'Internal Audit':
                     if (!empty($request->kode)) {
                         $data = Akuntansi::where('kode_form', $kode)
                             ->OrderBy('created_at', 'desc')->get();

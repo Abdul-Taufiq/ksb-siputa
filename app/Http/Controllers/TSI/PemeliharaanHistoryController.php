@@ -67,6 +67,7 @@ class PemeliharaanHistoryController extends Controller
         $data = new PemeliharaanHistory();
         $data->id_cabang = $request->cabang;
         $data->kode_inventaris = $request->kode_inventaris;
+        $data->detail_barang = $request->detail_barang;
         $data->detail_kerusakan = $request->detail_kerusakan;
         $data->detail_perbaikan = $request->detail_perbaikan;
         $data->tgl_dilaksanakan = now();
@@ -96,6 +97,7 @@ class PemeliharaanHistoryController extends Controller
     {
         $pemeliharaanHistory->id_cabang = $request->cabang_edit;
         $pemeliharaanHistory->kode_inventaris = $request->kode_inventaris_edit;
+        $pemeliharaanHistory->detail_barang = $request->detail_barang_edit;
         $pemeliharaanHistory->detail_kerusakan = $request->detail_kerusakan_edit;
         $pemeliharaanHistory->detail_perbaikan = $request->detail_perbaikan_edit;
         $pemeliharaanHistory->save();

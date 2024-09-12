@@ -230,115 +230,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                {{-- if barang elektronik - Pebandingan 2 --}}
-                                <div class="row ml-2">
-                                    <h5 style="font-weight: bold; font-style: italic; color: rgb(0, 101, 252)">Data
-                                        Pembanding Barang Elektronik 2
-                                        &#8628;</h5>
-                                    <hr style="width: 95%; margin-left: 5px">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="wajib" for="jns_barang_2">Jenis Barang :</label>
-                                            <input type="text" name="jns_barang_2" id="jns_barang_2"
-                                                class="form-control input"
-                                                placeholder="ex: Printer/Komputer/Laptop atau yang lainnya">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="wajib" for="merk_2">Merk :</label>
-                                            <input type="text" name="merk_2" id="merk_2"
-                                                class="form-control input" placeholder="Merk">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="wajib" for="type_2">Type :</label>
-                                            <input type="text" name="type_2" id="type_2"
-                                                class="form-control input" placeholder="Type">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="wajib" for="nama_toko_2">Nama Toko :</label>
-                                            <input type="text" name="nama_toko_2" id="nama_toko_2"
-                                                class="form-control input"
-                                                placeholder="Nama Toko (Market) - ex: ABC (Tokopedia)">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="wajib" for="harga_pembelian_2">Harga :</label>
-                                            <input type="text" name="harga_pembelian_2" id="harga_pembelian_2"
-                                                class="form-control input" placeholder="Harga">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="wajib" for="file_detail_toko_2">File Detail Toko
-                                                (PNG/JPG/JPEG/RAR/ZIP) :</label>
-                                            <input type="file" name="file_detail_toko_2" id="file_detail_toko_2"
-                                                class="form-control input"
-                                                accept="image/jpeg,image/jpg,image/png, .zip, .rar, .7zip">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {{-- if barang elektronik - Pebandingan 3 --}}
-                                <div class="row ml-2">
-                                    <h5 style="font-weight: bold; font-style: italic; color: rgb(0, 101, 252)">Data
-                                        Pembanding Barang Elektronik 3
-                                        &#8628;</h5>
-                                    <hr style="width: 95%; margin-left: 5px">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="wajib" for="jns_barang_3">Jenis Barang :</label>
-                                            <input type="text" name="jns_barang_3" id="jns_barang_3"
-                                                class="form-control input"
-                                                placeholder="ex: Printer/Komputer/Laptop atau yang lainnya">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="wajib" for="merk_3">Merk :</label>
-                                            <input type="text" name="merk_3" id="merk_3"
-                                                class="form-control input" placeholder="Merk">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="wajib" for="type_3">Type :</label>
-                                            <input type="text" name="type_3" id="type_3"
-                                                class="form-control input" placeholder="Type">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="wajib" for="nama_toko_3">Nama Toko :</label>
-                                            <input type="text" name="nama_toko_3" id="nama_toko_3"
-                                                class="form-control input"
-                                                placeholder="Nama Toko (Market) - ex: ABC (Tokopedia)">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="wajib" for="harga_pembelian_3">Harga :</label>
-                                            <input type="text" name="harga_pembelian_3" id="harga_pembelian_3"
-                                                class="form-control input" placeholder="Harga">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="wajib" for="file_detail_toko_3">File Detail Toko
-                                                (PNG/JPG/JPEG/RAR/ZIP) :</label>
-                                            <input type="file" name="file_detail_toko_3" id="file_detail_toko_3"
-                                                class="form-control input"
-                                                accept="image/jpeg,image/jpg,image/png, .zip, .rar, .7zip">
-                                        </div>
-                                    </div>
-                                </div>
-
                                 {{-- tambahan --}}
                                 <div id="tambah_barang_pembanding_elektronik_card"></div>
                                 <div class="row ml-2">
@@ -433,7 +324,7 @@
 
 
 <!-- Modal Reject -->
-<input hidden value="{{ $jabatan = auth()->user()->jabatan }}">
+<input hidden id="jabatan" value="{{ $jabatan = auth()->user()->jabatan }}">
 <div class="modal fade" id="modalReject" tabindex="-1" role="dialog" aria-labelledby="modalRejectLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -499,6 +390,32 @@
                                 (PNG/JPG/JPEF/RAR/ZIP) :</label>
                             <input type="file" name="file_detail_invoice" id="file_detail_invoice"
                                 class="form-control input" accept="image/jpeg,image/jpg,image/png, .zip, .rar, .7zip">
+                        </div>
+                    @endif
+
+                    @if ($jabatan == 'Pimpinan Cabang')
+                        <div class="form-group d-none" id="pembanding_pincab">
+                            <label for="pembanding_dipilih">Pilih data barang (pembanding) :</label>
+                            <select name="pembanding_dipilih" id="pembanding_dipilih"
+                                class="form-control input"></select>
+                        </div>
+                    @endif
+
+                    @if ($jabatan == 'Direktur Operasional')
+                        <div class="form-group">
+                            <label for="pembanding_dipilih">Pilih data barang (pembanding) :</label>
+                            <select name="pembanding_dipilih" id="pembanding_dipilih"
+                                class="form-control input"></select>
+                        </div>
+                        <div class="d-none" id="catatan_tsi">
+                            <table style="width: 100%">
+                                <tr style="border: 1px solid black">
+                                    <th style="width: 25%; font-size: 14px">Catatan TSI</th>
+                                    <td style="1px">:</td>
+                                    <td style="font-size: 14px" id="isi_catatan"></td>
+                                </tr>
+                            </table>
+                            <br>
                         </div>
                     @endif
 

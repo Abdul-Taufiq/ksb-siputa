@@ -55,6 +55,7 @@ class PefindoreController extends Controller
                     break;
                     # Pimpinan Cabang ...
                 case 'SDM':
+                case 'Internal Audit':
                     if (!empty($request->kode)) {
                         $data = PefindoRe::where('kode_form', $kode)
                             ->OrderBy('created_at', 'desc')->get();

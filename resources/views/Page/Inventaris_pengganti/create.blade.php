@@ -354,6 +354,6 @@
 
 
 @section('script')
-    <script src="{{ asset('script/pembatalan/akuntansi_index.js') }}"></script>
+    {{-- <script src="{{ asset('script/pembatalan/akuntansi_index.js') }}"></script> --}}
 @endsection
 @endsection

@@ -46,6 +46,7 @@ class USiaditController extends Controller
                     break;
                     # Pimpinan Cabang ...
                 case 'SDM':
+                case 'Internal Audit':
                     if (!empty($request->kode)) {
                         $data = USiadit::where('kode_form', $kode)
                             ->OrderBy('created_at', 'desc')->get();
@@ -205,9 +206,7 @@ class USiaditController extends Controller
 
 
 
-    public function create()
-    {
-    }
+    public function create() {}
 
 
 

@@ -125,7 +125,7 @@ function loadtable(min, max, cari) {
 
             columnDefs: [
                 {
-                    targets: [],
+                    targets: [6],
                     visible: false,
                 },
             ],
@@ -191,8 +191,8 @@ $(document).ready(function () {
         var Id = $(this).attr("id");
         var Kode = $(this).data("kode_form");
 
-        console.log("Nama Kredit:", Id, Kode);
-        console.log("Copyright by Abdul Taufiq");
+        // console.log("Nama Kredit:", Id, Kode);
+        // console.log("Copyright by Abdul Taufiq");
         $("#modalEditLabel").text("EDIT DATA - " + Kode);
         $("#modalEdit").modal("show");
         $("#frameEdit").attr("src", "/inventaris-pengajuan/" + Id + "/edit"); //merubah link frame
@@ -210,26 +210,82 @@ $(document).ready(function () {
         var NoSPK = $(this).data("kode_form");
         $("#encryptedId").val(idKredit);
 
-        // console.log("Nama Kredit:", idKredit, NoSPK);
-        console.log("Copyright by Abdul Taufiq");
         $("#modalApproveLabel").text("APPROVE DATA " + NoSPK);
-        // Ubah action form untuk menyertakan ID
         var formAction = "/inventaris-pengajuan-approve/" + idKredit;
         $("#approveForm").attr("action", formAction);
+
+        // Fungsi untuk mengambil data barang dan menambahkannya ke select option
+        $.ajax({
+            url: "/get-barang/" + idKredit,
+            type: "GET",
+            success: function (data) {
+                // menampilkan select pincab
+                var selectPincab = document.getElementById("pembanding_pincab");
+                var jabatan = $("#jabatan").val();
+                var jns_pembelian = data.inventaris.jns_pembelian;
+
+                console.log(data.harga_terkecil);
+
+                if (jabatan == "Pimpinan Cabang") {
+                    if (
+                        jns_pembelian ==
+                            "Pembelian Dengan Speksifikasi Cabang" &&
+                        data.harga_terkecil <= 500000
+                    ) {
+                        selectPincab.classList.remove("d-none");
+                    } else {
+                        selectPincab.classList.add("d-none");
+                    }
+                }
+
+                var catatan_tsi = document.getElementById("catatan_tsi");
+                if (jabatan == "Direktur Operasional") {
+                    if (
+                        data.inventaris.jns_pembelian ==
+                        "Pembelian Dengan Speksifikasi KPM"
+                    ) {
+                        catatan_tsi.classList.remove("d-none");
+                        $("#isi_catatan").text(data.inventaris.catatan_tsi);
+                    } else {
+                        catatan_tsi.classList.add("d-none");
+                    }
+                }
+
+                // untuk mengisi select barang pembanding
+                var select = $("#pembanding_dipilih");
+                select.empty(); // Kosongkan opsi sebelumnya
+                select.append(
+                    '<option selected disabled value="">Pilih Barang</option>'
+                ); // Tambahkan opsi default
+                data.data.forEach(function (item) {
+                    select.append(
+                        '<option value="' +
+                            item.id_barang_pembanding_baru +
+                            '">' +
+                            item.merk +
+                            "/" +
+                            item.type +
+                            " &nbsp;  &rarr;  &nbsp; " +
+                            item.nama_toko +
+                            " &nbsp;  &rarr;  &nbsp; " +
+                            item.harga +
+                            "</option>"
+                    );
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+            },
+        });
     });
 
     $("#approveForm").submit(function (event) {
-        // Dapatkan nilai textarea
         var rejectReason = $("#rejectReason").val();
-
-        // Ubah nilai textarea menjadi input tersembunyi
         var hiddenInput = $("<input>")
             .attr("type", "hidden")
             .attr("name", "rejectReason")
             .val(rejectReason);
         $(this).append(hiddenInput);
-
-        // Modal otomatis tertutup setelah klik "Simpan"
         $("#modalApprove").modal("hide");
     });
 });
@@ -245,7 +301,7 @@ $(document).ready(function () {
         $("#encryptedId").val(idKredit);
 
         // console.log("Nama Kredit:", idKredit, NoSPK);
-        console.log("Copyright by Abdul Taufiq");
+        // console.log("Copyright by Abdul Taufiq");
         $("#modalRejectLabel").text("REJECT DATA " + NoSPK);
         // Ubah action form untuk menyertakan ID
         var formAction = "/inventaris-pengajuan-reject/" + idKredit;
