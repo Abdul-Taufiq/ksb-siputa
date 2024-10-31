@@ -439,6 +439,26 @@ class ResetController extends Controller
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
                 $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+
+                // Send Email Ended for Direktur Operasional & SDM
+                // Send Email Single
+                if ($data->keperluan == 'User Terblokir' || $data->keperluan == 'User Expired') {
+                    # code...
+                    $userPenerima = User::where('jabatan', 'Direktur Operasional')->first();
+                    // pemberitahuan database
+                    $url = route('mso-reset.index');
+                    $title = 'Form Pengajuan Sudah Selesai!';
+                    $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
+                    $this->SendEmailEnded($data, $userPenerima, $url, $title, $message);
+
+                    // Send Email Double
+                    $userPenerima = User::where('jabatan', 'SDM')->get();
+                    // pemberitahuan database
+                    $url = route('mso-reset.index');
+                    $title = 'Form Pengajuan Sudah Selesai!';
+                    $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
+                    $this->SendEmailDobelEnded($data, $userPenerima, $url, $title, $message);
+                }
                 break;
 
             default:
@@ -709,6 +729,46 @@ class ResetController extends Controller
                 'nik' => $data->nik,
                 'kode_form' => $data->kode_form,
                 'keperluan' => $data->keperluan
+            ], function ($message) use ($user) {
+                $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
+                $message->to($user->email);
+                $message->subject('Pengajuan Reset Password (MSO)');
+            });
+        }
+        // pemberitahuan database
+        Notification::send($userPenerima, new NotifikasiPengajuan($data, $url, $title, $message));
+    }
+
+
+    private function SendEmailEnded($data, $userPenerima, $url, $title, $message)
+    {
+        Mail::send('email.notif.notif-pengajuan-ended',  [
+            'nama' => $data->nama,
+            'kc' => $data->cabang->cabang,
+            'nik' => $data->nik,
+            'kode_form' => $data->kode_form,
+            'keperluan' => $data->keperluan,
+            'catatan' => $data->catatan_tsi
+        ], function ($message) use ($userPenerima) {
+            $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
+            $message->to($userPenerima->email);
+            $message->subject('Pengajuan Reset Password (MSO)');
+        });
+
+        // pemberitahuan database
+        Notification::send($userPenerima, new NotifikasiPengajuan($data, $url, $title, $message));
+    }
+
+    private function SendEmailDobelEnded($data, $userPenerima, $url, $title, $message)
+    {
+        foreach ($userPenerima as $user) {
+            Mail::send('email.notif.notif-pengajuan-ended',  [
+                'nama' => $data->nama,
+                'kc' => $data->cabang->cabang,
+                'nik' => $data->nik,
+                'kode_form' => $data->kode_form,
+                'keperluan' => $data->keperluan,
+                'catatan' => $data->catatan_tsi
             ], function ($message) use ($user) {
                 $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
                 $message->to($user->email);
