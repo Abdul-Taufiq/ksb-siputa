@@ -56,38 +56,38 @@
             <table class="spesial">
                 <tr>
                     <th>Kode</th>
-                    <td>{{ $inventaris->kode_form }}</td>
+                    <td>{{ $penjualan->kode_form }}</td>
                 </tr>
                 <tr>
                     <th>K.Cabang</th>
-                    <td>{{ $inventaris->cabang->cabang }}</td>
+                    <td>{{ $penjualan->cabang->cabang }}</td>
                 </tr>
                 <tr>
                     <th>Kategori Barang</th>
-                    <td>{{ $inventaris->kategori_barang }}</td>
+                    <td>{{ $penjualan->kategori_barang }}</td>
                 </tr>
                 <tr>
-                    <th>Jenis Pembelian</th>
-                    <td>{{ $inventaris->jns_pembelian }}</td>
+                    <th>No Inventaris</th>
+                    <td>{!! $penjualan->no_inventaris !!}</td>
                 </tr>
                 <tr>
-                    <th>Qty</th>
-                    <td>{{ $inventaris->qty }}</td>
+                    <th>Detail Barang</th>
+                    <td>{!! $penjualan->detail_barang !!}</td>
                 </tr>
                 <tr>
-                    <th>Catatan</th>
-                    <td>{{ $inventaris->catatan }}</td>
+                    <th>Kondisi Terakhir</th>
+                    <td>{!! $penjualan->kondisi_terakhir !!}</td>
                 </tr>
                 <tr>
                     <th>Keterangan</th>
-                    <td>{{ $inventaris->keterangan }}</td>
+                    <td>{!! $penjualan->keterangan !!}</td>
                 </tr>
                 <tr>
                     <th>Detail Invoice</th>
                     <td>
-                        <a href="{{ asset('file_upload/barang_inventaris_baru/Dibeli/' . $inventaris->file_detail_invoice) }}"
+                        <a href="{{ asset('file_upload/Inventaris Jual/' . $penjualan->file_invoice_akhir) }}"
                             target="_blank">
-                            {{ $inventaris->file_detail_invoice ? $inventaris->file_detail_invoice : 'null' }}
+                            {{ $penjualan->file_invoice_akhir ? $penjualan->file_invoice_akhir : 'null' }}
                         </a>
                     </td>
                 </tr>
@@ -105,29 +105,20 @@
             <table class="table table-striped">
                 <tr>
                     <th>#</th>
-                    <th>Kategori</th>
-                    <th>Jenis Barang</th>
-                    <th>Merk</th>
-                    <th>Type</th>
-                    <th>Nama Toko</th>
-                    <th>Detail Toko</th>
-                    <th>Harga</th>
+                    <th>NIK</th>
+                    <th>Nama</th>
+                    <th>Alamat</th>
+                    <th>Harga Tawar</th>
                 </tr>
-                @foreach ($barang as $item)
+                @foreach ($penawar as $item)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $item->kategori_barang }}</td>
-                        <td>{{ $item->jns_barang }}</td>
-                        <td>{{ $item->merk }}</td>
-                        <td>{{ $item->type }}</td>
-                        <td>{{ $item->nama_toko }}</td>
+                        <td>{{ $item->nik }}</td>
+                        <td>{{ $item->nama }}</td>
+                        <td>{{ $item->alamat }}</td>
                         <td>
-                            <a href="{{ asset('file_upload/barang_inventaris_baru/' . $item->file_detail_toko) }}"
-                                target="_blank">
-                                {{ $item->file_detail_toko ? $item->file_detail_toko : 'null' }}
-                            </a>
+                            {{ $item->harga_tawar ? 'Rp ' . number_format($item->harga_tawar, 0, ',', '.') : 'belum ada data' }}
                         </td>
-                        <td>{{ $item->harga }}</td>
                     </tr>
                 @endforeach
             </table>
@@ -145,59 +136,45 @@
                 <tr>
                     <th>Creator</th>
                     <td>
-                        {{ $inventaris->nama_kaops }} -
-                        {{ $inventaris->created_at ? $inventaris->created_at->translatedFormat('d F Y, H:i') : ' ' }}
+                        {{ $penjualan->nama_kaops }} -
+                        {{ $penjualan->created_at ? $penjualan->created_at->translatedFormat('d F Y, H:i') : ' ' }}
                     </td>
                 </tr>
                 <tr>
                     <th>Pincab Approve?</th>
                     <td>
-                        {{ $inventaris->status_pincab }} -
-                        {{ $inventaris->tgl_status_pincab ? $inventaris->tgl_status_pincab->translatedFormat('d F Y, H:i') : ' ' }}
+                        {{ $penjualan->status_pincab }} -
+                        {{ $penjualan->tgl_status_pincab ? $penjualan->tgl_status_pincab->translatedFormat('d F Y, H:i') : ' ' }}
                     </td>
                 </tr>
                 <tr>
                     <th>Pembukuan Approve?</th>
                     <td>
-                        {{ $inventaris->status_pembukuan }} -
-                        {{ $inventaris->tgl_status_pembukuan ? $inventaris->tgl_status_pembukuan->translatedFormat('d F Y, H:i') : ' ' }}
+                        {{ $penjualan->status_pembukuan }} -
+                        {{ $penjualan->tgl_status_pembukuan ? $penjualan->tgl_status_pembukuan->translatedFormat('d F Y, H:i') : ' ' }}
                     </td>
                 </tr>
                 <tr>
                     <th>Catatan Pembukuan</th>
-                    <td>{{ $inventaris->catatan_pembukuan }}</td>
+                    <td>{{ $penjualan->catatan_pembukuan }}</td>
                 </tr>
                 <tr>
                     <th>DirOps Approve?</th>
                     <td>
-                        {{ $inventaris->status_dirops }} -
-                        {{ $inventaris->tgl_status_dirops ? $inventaris->tgl_status_dirops->translatedFormat('d F Y, H:i') : ' ' }}
+                        {{ $penjualan->status_dirops }} -
+                        {{ $penjualan->tgl_status_dirops ? $penjualan->tgl_status_dirops->translatedFormat('d F Y, H:i') : ' ' }}
                     </td>
                 </tr>
                 <tr>
                     <th>Catatan DirOps</th>
-                    <td>{{ $inventaris->catatan_dirops }}</td>
+                    <td>{{ $penjualan->catatan_dirops }}</td>
                 </tr>
-
-                @if ($inventaris->jns_pembelian != 'Pembelian Dengan Speksifikasi Cabang')
-                    <tr>
-                        <th>TSI Approve?</th>
-                        <td>
-                            {{ $inventaris->status_tsi }} -
-                            {{ $inventaris->tgl_status_tsi ? $inventaris->tgl_status_tsi->translatedFormat('d F Y, H:i') : ' x' }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Catatan TSI</th>
-                        <td>{{ $inventaris->catatan_tsi }}</td>
-                    </tr>
-                @endif
 
                 <tr>
                     <th>Status Akhir</th>
                     <td>
-                        {{ $inventaris->status_akhir }} -
-                        {{ $inventaris->tgl_status_akhir ? $inventaris->tgl_status_akhir->translatedFormat('d F Y, H:i') : ' ' }}
+                        {{ $penjualan->status_akhir }} -
+                        {{ $penjualan->updated_at ? $penjualan->updated_at->translatedFormat('d F Y, H:i') : ' ' }}
                     </td>
                 </tr>
 

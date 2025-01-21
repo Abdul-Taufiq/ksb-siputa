@@ -91,29 +91,35 @@
                     <th>Tanggal Selesai</th>
                 </thead>
                 <tbody>
-                    @foreach ($pembelian as $pembelians)
+                    @if ($pembelian->isEmpty())
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $pembelians->cabang->cabang }}</td>
-                            <td>
-                                - <b>Kode: </b> {{ $pembelians->kode_form }} <br>
-                                - <b>Kategori: </b> {{ $pembelians->kategori_barang }} <br>
-                                - <b>Keterangan: </b> {{ $pembelians->keterangan }} <br>
-                            </td>
-                            <td>
-                                @foreach ($pembelians->BarangBaru as $barang)
-                                    - <b>Jenis Barang: </b> {{ $barang->jns_barang }} <br>
-                                    - <b>Merk/Type: </b> {{ $barang->merk . '/' . $barang->type }} <br>
-                                    - <b>Nama Toko: </b> {{ $barang->nama_toko }} <br>
-                                    - <b>Harga: </b> {{ $barang->harga }} <br>
-                                @endforeach
-                            </td>
-                            <td>{{ $pembelians->qty }}</td>
-                            <td>
-                                {{ $pembelians->tgl_status_akhir->translatedFormat('d M Y, H:i') . ' WIB' }}
-                            </td>
+                            <td colspan="6">Tidak ada data</td>
                         </tr>
-                    @endforeach
+                    @else
+                        @foreach ($pembelian as $pembelians)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $pembelians->cabang->cabang }}</td>
+                                <td>
+                                    - <b>Kode: </b> {{ $pembelians->kode_form }} <br>
+                                    - <b>Kategori: </b> {{ $pembelians->kategori_barang }} <br>
+                                    - <b>Keterangan: </b> {{ $pembelians->keterangan }} <br>
+                                </td>
+                                <td>
+                                    @foreach ($pembelians->BarangBaru as $barang)
+                                        - <b>Jenis Barang: </b> {{ $barang->jns_barang }} <br>
+                                        - <b>Merk/Type: </b> {{ $barang->merk . '/' . $barang->type }} <br>
+                                        - <b>Nama Toko: </b> {{ $barang->nama_toko }} <br>
+                                        - <b>Harga: </b> {{ $barang->harga }} <br>
+                                    @endforeach
+                                </td>
+                                <td>{{ $pembelians->qty }}</td>
+                                <td>
+                                    {{ $pembelians->tgl_status_akhir->translatedFormat('d M Y, H:i') . ' WIB' }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -137,40 +143,47 @@
                     <th>Tanggal Selesai</th>
                 </thead>
                 <tbody>
-                    @foreach ($pengganti as $penggantis)
+                    @if ($pengganti->isEmpty())
                         <tr>
-
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $penggantis->cabang->cabang }}</td>
-                            <td>
-                                - <b>Kode: </b> {{ $penggantis->kode_form }} <br>
-                                - <b>Kategori: </b> {{ $penggantis->kategori_barang }} <br>
-                                - <b>Keterangan: </b> {{ $penggantis->keterangan }} <br>
-                            </td>
-                            <td>
-                                @foreach ($penggantis->diganti as $barang)
-                                    - <b>No Inventaris: </b> {{ $barang->kode_inventaris }}<br>
-                                    - <b>No Nilai Buku: </b> {{ $barang->nilai_buku_terakhir }}<br>
-                                    - <b>Tgl Pembelian: </b>
-                                    {{ $barang->tgl_pembelian->translatedFormat('d M Y') }}<br>
-                                    - <b>Kondisi Terakhir: </b> {{ $barang->kondisi_akhir }}<br>
-                                @endforeach
-                            </td>
-                            <td>
-                                @foreach ($penggantis->BarangBaruPengganti as $barangPengganti)
-                                    - <b>Jenis Barang: </b> {{ $barangPengganti->jns_barang }} <br>
-                                    - <b>Merk/Type: </b> {{ $barangPengganti->merk . '/' . $barangPengganti->type }}
-                                    <br>
-                                    - <b>Nama Toko: </b> {{ $barangPengganti->nama_toko }} <br>
-                                    - <b>Harga: </b> {{ $barangPengganti->harga }} <br>
-                                @endforeach
-                            </td>
-                            <td>{{ $penggantis->qty }}</td>
-                            <td>
-                                {{ $penggantis->tgl_status_akhir->translatedFormat('d M Y, H:i') . ' WIB' }}
-                            </td>
+                            <td colspan="6">Tidak ada data</td>
                         </tr>
-                    @endforeach
+                    @else
+                        @foreach ($pengganti as $penggantis)
+                            <tr>
+
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $penggantis->cabang->cabang }}</td>
+                                <td>
+                                    - <b>Kode: </b> {{ $penggantis->kode_form }} <br>
+                                    - <b>Kategori: </b> {{ $penggantis->kategori_barang }} <br>
+                                    - <b>Keterangan: </b> {{ $penggantis->keterangan }} <br>
+                                </td>
+                                <td>
+                                    @foreach ($penggantis->diganti as $barang)
+                                        - <b>No Inventaris: </b> {{ $barang->kode_inventaris }}<br>
+                                        - <b>No Nilai Buku: </b> {{ $barang->nilai_buku_terakhir }}<br>
+                                        - <b>Tgl Pembelian: </b>
+                                        {{ $barang->tgl_pembelian->translatedFormat('d M Y') }}<br>
+                                        - <b>Kondisi Terakhir: </b> {{ $barang->kondisi_akhir }}<br>
+                                    @endforeach
+                                </td>
+                                <td>
+                                    @foreach ($penggantis->BarangBaruPengganti as $barangPengganti)
+                                        - <b>Jenis Barang: </b> {{ $barangPengganti->jns_barang }} <br>
+                                        - <b>Merk/Type: </b>
+                                        {{ $barangPengganti->merk . '/' . $barangPengganti->type }}
+                                        <br>
+                                        - <b>Nama Toko: </b> {{ $barangPengganti->nama_toko }} <br>
+                                        - <b>Harga: </b> {{ $barangPengganti->harga }} <br>
+                                    @endforeach
+                                </td>
+                                <td>{{ $penggantis->qty }}</td>
+                                <td>
+                                    {{ $penggantis->tgl_status_akhir->translatedFormat('d M Y, H:i') . ' WIB' }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -194,31 +207,38 @@
                     <th>Tanggal Selesai</th>
                 </thead>
                 <tbody>
-                    @foreach ($penjualan as $penjualans)
+                    @if ($penjualan->isEmpty())
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $penjualans->cabang->cabang }}</td>
-                            <td>{{ $penjualans->kode_form }}</td>
-                            <td>{{ $penjualans->no_inventaris }}</td>
-                            <td>
-                                - <b>Detail Barang: </b>{!! $penjualans->detail_barang !!}
-                                - <b>Kondisi Terakhir: </b> {!! $penjualans->kondisi_terakhir !!}
-                                - <b>Keterangan: </b> {!! $penjualans->keterangan !!}
-                            </td>
-                            <td>
-                                @foreach ($penjualans->penawar as $penawar)
-                                    - <b>NIK: </b> {{ $penawar->nik }} <br>
-                                    - <b>Nama: </b> {{ $penawar->nama }} <br>
-                                    - <b>Alamat: </b> {{ $penawar->alamat }} <br>
-                                    - <b>Harga: </b> {{ 'Rp ' . number_format($penawar->harga_tawar, 0, ',', '.') }}
-                                    <br>
-                                @endforeach
-                            </td>
-                            <td>
-                                {{ $penjualans->tgl_status_akhir->translatedFormat('d M Y, H:i') . ' WIB' }}
-                            </td>
+                            <td colspan="6">Tidak ada data</td>
                         </tr>
-                    @endforeach
+                    @else
+                        @foreach ($penjualan as $penjualans)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $penjualans->cabang->cabang }}</td>
+                                <td>{{ $penjualans->kode_form }}</td>
+                                <td>{{ $penjualans->no_inventaris }}</td>
+                                <td>
+                                    - <b>Detail Barang: </b>{!! $penjualans->detail_barang !!}
+                                    - <b>Kondisi Terakhir: </b> {!! $penjualans->kondisi_terakhir !!}
+                                    - <b>Keterangan: </b> {!! $penjualans->keterangan !!}
+                                </td>
+                                <td>
+                                    @foreach ($penjualans->penawar as $penawar)
+                                        - <b>NIK: </b> {{ $penawar->nik }} <br>
+                                        - <b>Nama: </b> {{ $penawar->nama }} <br>
+                                        - <b>Alamat: </b> {{ $penawar->alamat }} <br>
+                                        - <b>Harga: </b>
+                                        {{ 'Rp ' . number_format($penawar->harga_tawar, 0, ',', '.') }}
+                                        <br>
+                                    @endforeach
+                                </td>
+                                <td>
+                                    {{ $penjualans->tgl_status_akhir->translatedFormat('d M Y, H:i') . ' WIB' }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>

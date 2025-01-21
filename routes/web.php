@@ -202,6 +202,7 @@ Route::group(['middleware' => ['permission', 'CekMaintenance']], function () {
         Route::resource('inventaris-penjualan', InventarisPenjualanController::class)->parameters(['inventaris-penjualan' => 'penjualan']);
         Route::patch('/inventaris-penjualan-approve/{idEncrypt}', [InventarisPenjualanController::class, 'ResponApprove']);
         Route::patch('/inventaris-penjualan-reject/{idEncrypt}', [InventarisPenjualanController::class, 'ResponReject']);
+        Route::get('/inventaris-penjualan-cetak/{idEncrypt}', [InventarisPenjualanController::class, 'Print']);
 
         // Rekap Inventaris Penjualan dan Pembelian
         Route::get('inventaris-rekap', [InventarisRekapController::class, 'Index']);

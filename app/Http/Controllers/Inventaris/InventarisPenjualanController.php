@@ -7,6 +7,7 @@ use App\Models\Inventaris\{InventarisPenjualan as Penjualan, InventarisPenjualan
 use App\Models\LogActivity;
 use App\Models\User;
 use App\Notifications\NotifikasiPengajuan;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -375,6 +376,20 @@ class InventarisPenjualanController extends Controller
         $this->LogActivity($penjualan, $LogAksi);
 
         return redirect()->back()->with('inventaris-penjualan')->with('AlertSuccess', "Pengajuan Penjualan Inventaris Berhasil Diupdate!");
+    }
+
+    public function Print($idEncrypt)
+    {
+        $penjualan = Penjualan::where('id_inventaris_penjualan', $idEncrypt)->first();
+        $penawar = Penawar::where('id_inventaris_penjualan', $penjualan->id_inventaris_penjualan)->get();
+        $pdf = Pdf::loadView(
+            'Page.Inventaris_penjualan.print',
+            compact('penjualan', 'penawar'),
+            ['title' => 'Print']
+        );
+        $pdf->setPaper('A4', 'potrait')
+            ->setOptions(['isHtml5ParserEnabled' => true, 'isPhpEnabled' => true]);
+        return $pdf->stream('Data Form.' . $penjualan->kode_form . '.pdf');
     }
 
 

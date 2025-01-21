@@ -149,7 +149,9 @@
                     <td>{{ $inventaris->catatan_dirops }}</td>
                 </tr>
 
-                @if ($inventaris->jns_pembelian != 'Pembelian Dengan Speksifikasi Cabang')
+                @if (
+                    $inventaris->jns_pembelian != 'Pembelian Dengan Speksifikasi Cabang' &&
+                        $inventaris->kategori_barang == 'Elektronik')
                     <tr>
                         <th>TSI Approve?</th>
                         <td>
@@ -159,7 +161,7 @@
                     </tr>
                     <tr>
                         <th>Catatan TSI</th>
-                        <td>{{ $inventaris->catatan_tsi }}</td>
+                        <td>{!! $inventaris->catatan_tsi !!}</td>
                     </tr>
                 @endif
 

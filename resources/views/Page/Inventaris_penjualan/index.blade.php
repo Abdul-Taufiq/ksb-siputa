@@ -122,7 +122,7 @@
     <script src="{{ asset('script/Inventaris_penjualan/inventaris_input.js') }}"></script>
 
     {{-- SWA print IDI --}}
-    {{-- <script>
+    <script>
         $(document).ready(function() {
             $('.btnPrint').on('click', function() {
                 var Id = $(this).attr("id");
@@ -141,11 +141,11 @@
                     cancelButtonText: 'Batal'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.open('/inventaris-baru-cetak/' + Id, '_blank');
+                        window.open('/inventaris-penjualan-cetak/' + Id, '_blank');
                     }
                 });
             });
         });
-    </script> --}}
+    </script>
 @endsection
 @endsection

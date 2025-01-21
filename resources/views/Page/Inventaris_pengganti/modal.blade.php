@@ -384,7 +384,7 @@
                 @method('patch')
                 @csrf
                 <div class="modal-body">
-                    @if ($jabatan == 'Kasi Operasional' || $jabatan == 'TSI')
+                    @if ($jabatan == 'Kasi Operasional' || $jabatan == 'TSI' || $jabatan == 'Sekretariat')
                         <div class="form-group">
                             <label class="wajib" for="file_detail_invoice">File Detail Invoice
                                 (PNG/JPG/JPEF/RAR/ZIP) :</label>
