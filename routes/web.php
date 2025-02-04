@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\{Artisan, Route, Auth};
 use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\{LoginController, UserController, HelperController, RegisterController, HomeController, LogActivityController, LogTrackingController};
+use App\Http\Controllers\{LoginController, UserController, HelperController, RegisterController, HomeController, LogActivityController, LogTrackingController, SharebiayaController};
 use App\Http\Controllers\Ecoll\{EcollPController, EcollRController};
 use App\Http\Controllers\Inventaris\InventarisController as InventarisPengajuanController;
 use App\Http\Controllers\Inventaris\InventarisPenggantiController;
@@ -225,6 +225,10 @@ Route::group(['middleware' => ['permission', 'CekMaintenance']], function () {
         Route::patch('/tsi-permohonan-approve/{idEncrypt}', [BantuanTSIController::class, 'ResponApprove']);
         Route::patch('/tsi-permohonan-reject/{idEncrypt}', [BantuanTSIController::class, 'ResponReject']);
 
+        // Share Biaya
+        Route::resource('share-biaya', SharebiayaController::class)->parameters(['share-biaya' => 'shareBiaya']);
+        Route::patch('/share-biaya-approve/{idEncrypt}', [SharebiayaController::class, 'ResponApprove']);
+        Route::patch('/share-biaya-reject/{idEncrypt}', [SharebiayaController::class, 'ResponReject']);
 
         // log activity
         Route::resource('log-activity', LogActivityController::class)->parameters(['log-activity' => 'logActivity']);

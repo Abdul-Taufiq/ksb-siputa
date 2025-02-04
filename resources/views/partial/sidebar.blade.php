@@ -502,6 +502,19 @@
                 </li>
                 {{-- End Service IT --}}
 
+                {{-- Share Biaya --}}
+                @if (auth()->user()->jabatan == 'Pembukuan')
+                    <li class="nav-item {{ request()->is('share-biaya*') ? 'menu-open' : '' }}">
+                        <a href="/share-biaya" class="nav-link {{ Request::is('share-biaya*') ? 'active' : '' }}">
+                            <i class="nav-icon fa-solid fa-arrows-split-up-and-left"></i>
+                            <p>
+                                Share Biaya
+                            </p>
+                        </a>
+                    </li>
+                @endif
+                {{-- End Share Biaya --}}
+
                 {{-- Log Activity --}}
                 <li class="nav-item {{ request()->is('log-activity*') ? 'menu-open' : '' }}">
                     <a href="/log-activity" class="nav-link {{ Request::is('log-activity*') ? 'active' : '' }}">
