@@ -288,9 +288,7 @@
                 @endif
 
 
-                @if (auth()->user()->jabatan != 'SDM' &&
-                        auth()->user()->jabatan != 'Analis Area' &&
-                        auth()->user()->jabatan != 'Sekretariat')
+                @if (auth()->user()->jabatan != 'SDM' && auth()->user()->jabatan != 'Analis Area')
                     {{-- Pembatalan transaksi --}}
                     <li class="nav-item {{ request()->is('pembatalan*') ? 'active menu-is-opening menu-open' : '' }}">
                         <a href="#"

@@ -36,6 +36,7 @@ class AkuntansiController extends Controller
                 case 'Kasi Operasional':
                 case 'Kasi Komersial':
                 case 'Kepala Kantor Kas':
+                case 'Sekretariat':
                 case 'Pimpinan Cabang':
                     if (!empty($request->kode)) {
                         $data = Akuntansi::where('kode_form', $kode)
@@ -117,6 +118,7 @@ class AkuntansiController extends Controller
                         case 'Kasi Operasional':
                         case 'Kasi Komersial':
                         case 'Kepala Kantor Kas':
+                        case 'Sekretariat':
                             $status .= '<a class="btn btn-success btn-sm disabled">Terkirim</a>';
                             break;
 
@@ -160,7 +162,8 @@ class AkuntansiController extends Controller
                         case 'Kasi Operasional':
                         case 'Kasi Komersial':
                         case 'Kepala Kantor Kas':
-                            if ($data->status_pincab == "Approve" || $data->status_pincab == "Reject") {
+                        case 'Sekretariat':
+                            if ($data->status_pincab != null) {
                                 $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
                             } else {
                                 $button .= '<a data-toggle="modal" data-target="#modalEdit' . $data->id_akuntansi . '" id="' . $data->id_akuntansi . '"
@@ -247,13 +250,29 @@ class AkuntansiController extends Controller
         // Log Activity
         $LogAksi = '(+) Pengajuan Pembatalan Transaksi Akuntansi';
         $this->LogActivity($data, $LogAksi);
-        // Send Email
-        $userPenerima = User::where('id_cabang', auth()->user()->id_cabang)
-            ->where('jabatan', 'Pimpinan Cabang')->first();
-        $url = route('pembatalan-akuntansi.index');
-        $title = 'Terdapat Form Pengajuan Baru!';
-        $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-        $this->SendEmail($data, $userPenerima, $url, $title, $message);
+
+        if (auth()->user()->jabatan == 'Sekretariat') {
+            $data->update([
+                'nama_pincab' => 'Ditarik Oleh User Pembukuan',
+                'status_pincab' => '--',
+                'tgl_status_pincab' => null,
+            ]);
+
+            $userPenerima = User::where('jabatan', 'Pembukuan')->get();
+            $url = route('pembatalan-akuntansi.index');
+            $title = 'Terdapat Form Pengajuan Baru!';
+            $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
+            $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+        } else {
+            // Send Email
+            $userPenerima = User::where('id_cabang', auth()->user()->id_cabang)
+                ->where('jabatan', 'Pimpinan Cabang')->first();
+            $url = route('pembatalan-akuntansi.index');
+            $title = 'Terdapat Form Pengajuan Baru!';
+            $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
+            $this->SendEmail($data, $userPenerima, $url, $title, $message);
+        }
+
 
         return redirect('pembatalan-akuntansi')->with('AlertSuccess', "Pengajuan Pembatalan Transaksi Berhasil Dikirim!");
     }
