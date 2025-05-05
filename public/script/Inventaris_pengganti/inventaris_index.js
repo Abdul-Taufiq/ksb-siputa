@@ -3,7 +3,7 @@ $(document).ready(function () {
     loadtable();
 });
 
-function loadtable(min, max, cari) {
+function loadtable(min, max, id_cabang, cari) {
     $(document).ready(function () {
         // Mendapatkan nilai kode dari URL (jika ada)
         var urlParams = new URLSearchParams(window.location.search);
@@ -64,6 +64,7 @@ function loadtable(min, max, cari) {
                 data: {
                     min: min,
                     max: max,
+                    id_cabang: id_cabang,
                     kode: kode,
                     cari: cari,
                 },
@@ -146,8 +147,9 @@ function loadtable(min, max, cari) {
 $(document).on("click", "#btn-filter", function () {
     let min = $("#min").val();
     let max = $("#max").val();
+    let id_cabang = $("#id_cabang").val();
     $("#table_index").DataTable().destroy();
-    loadtable(min, max);
+    loadtable(min, max, id_cabang);
 });
 
 $(document).on("click", "#btn-refresh", function () {
@@ -158,7 +160,7 @@ $(document).on("click", "#btn-refresh", function () {
 $(document).on("click", "#btn-cari", function () {
     let cari = $("#cari").val().trim(); // Menggunakan trim() untuk menghapus spasi di awal dan akhir input.
     $("#table_index").DataTable().destroy();
-    loadtable(null, null, cari); // Menggunakan fungsi loadtable dengan tiga argumen, di mana argumen ketiga adalah nilai input pencarian.
+    loadtable(null, null, null, cari); // Menggunakan fungsi loadtable dengan tiga argumen, di mana argumen ketiga adalah nilai input pencarian.
 });
 // end datatables
 

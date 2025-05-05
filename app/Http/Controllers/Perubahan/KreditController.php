@@ -23,6 +23,7 @@ class KreditController extends Controller
         $id_cabang = Auth::user()->id_cabang;
         $awal = Carbon::parse($request->min)->startOfDay();
         $akhir = Carbon::parse($request->max)->endOfDay();
+        $reqCabang = $request->id_cabang;
         $kode = $request->kode;
 
 
@@ -46,6 +47,7 @@ class KreditController extends Controller
                         if (!empty($request->min)) {
                             $data = Kredit::where('id_cabang', $id_cabang)
                                 ->whereBetween('created_at', [$awal, $akhir])
+                                ->where('id_cabang', $id_cabang)
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
                             $data = Kredit::where('id_cabang', $id_cabang)
@@ -63,6 +65,7 @@ class KreditController extends Controller
                         if (!empty($request->min)) {
                             $data = Kredit::whereIn('status_pincab', ['Approve', '--'])
                                 ->whereBetween('created_at', [$awal, $akhir])
+                                ->when($reqCabang != 99, fn($query) => $query->where('id_cabang', $reqCabang))
                                 ->get();
                         } elseif (!empty($request->cari)) {
                             $data = Kredit::where('kode_form', $request->cari)
@@ -82,6 +85,7 @@ class KreditController extends Controller
                             $data = Kredit::where('status_pembukuan', "SendedToDirops")
                                 ->orwhere('status_pembukuan', 'Approve')
                                 ->whereBetween('created_at', [$awal, $akhir])
+                                ->when($reqCabang != 99, fn($query) => $query->where('id_cabang', $reqCabang))
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
                             $data = Kredit::where('status_pembukuan', "SendedToDirops")->orwhere('status_pembukuan', 'Approve')->orderBy('created_at', 'desc')->get();
@@ -96,6 +100,7 @@ class KreditController extends Controller
                         if (!empty($request->min)) {
                             $data = Kredit::where('status_dirops', 'Approve')
                                 ->whereBetween('created_at', [$awal, $akhir])
+                                ->when($reqCabang != 99, fn($query) => $query->where('id_cabang', $reqCabang))
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
                             $data = Kredit::where('status_dirops', 'Approve')->orderBy('created_at', 'desc')->get();

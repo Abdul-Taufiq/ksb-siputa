@@ -513,6 +513,18 @@
                 @endif
                 {{-- End Share Biaya --}}
 
+                {{-- Pengajuan Lainnya --}}
+                <li class="nav-item {{ request()->is('pengajuan-lainnya*') ? 'menu-open' : '' }}">
+                    <a href="/pengajuan-lainnya"
+                        class="nav-link {{ Request::is('pengajuan-lainnya*') ? 'active' : '' }}">
+                        <i class="nav-icon fa-solid fa-share-from-square"></i>
+                        <p>
+                            Pengajuan Lainnya
+                        </p>
+                    </a>
+                </li>
+                {{-- End Pengajuan Lainnya --}}
+
                 {{-- Log Activity --}}
                 <li class="nav-item {{ request()->is('log-activity*') ? 'menu-open' : '' }}">
                     <a href="/log-activity" class="nav-link {{ Request::is('log-activity*') ? 'active' : '' }}">

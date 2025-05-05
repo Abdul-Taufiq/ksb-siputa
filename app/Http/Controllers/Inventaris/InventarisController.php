@@ -25,6 +25,7 @@ class InventarisController extends Controller
         $id_cabang = Auth::user()->id_cabang;
         $awal = Carbon::parse($request->min)->startOfDay();
         $akhir = Carbon::parse($request->max)->endOfDay();
+        $reqCabang = $request->id_cabang;
         $kode = $request->kode;
 
         // pemberitahuan sudah dibaca
@@ -34,7 +35,7 @@ class InventarisController extends Controller
 
         if (request()->ajax()) {
             switch ($jabatan) {
-                    # kaops ...
+                # kaops ...
                 case 'Kasi Operasional':
                 case 'Kasi Komersial':
                 case 'Analis Area':
@@ -49,6 +50,7 @@ class InventarisController extends Controller
                         if (!empty($request->min)) {
                             $data = Inventaris::where('id_cabang', $id_cabang)
                                 ->whereBetween('created_at', [$awal, $akhir])
+                                ->where('id_cabang', $id_cabang)
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
                             $data = Inventaris::where('id_cabang', $id_cabang)
@@ -56,7 +58,7 @@ class InventarisController extends Controller
                         }
                     }
                     break;
-                    # Pimpinan Cabang ...
+                # Pimpinan Cabang ...
                 case 'Pembukuan':
                 case 'Internal Audit':
                     if (!empty($request->kode)) {
@@ -66,6 +68,7 @@ class InventarisController extends Controller
                         if (!empty($request->min)) {
                             $data = Inventaris::whereIn('status_pincab', ['Approve', '--'])
                                 ->whereBetween('created_at', [$awal, $akhir])
+                                ->when($reqCabang != 99, fn($query) => $query->where('id_cabang', $reqCabang))
                                 ->get();
                         } elseif (!empty($request->cari)) {
                             $data = Inventaris::where('kode_form', $request->cari)
@@ -87,6 +90,7 @@ class InventarisController extends Controller
                                 ->orwhere('status_tsi', '--')
                                 ->orwhere('status_tsi', 'Not Needed')
                                 ->whereBetween('created_at', [$awal, $akhir])
+                                ->when($reqCabang != 99, fn($query) => $query->where('id_cabang', $reqCabang))
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
                             $data = Inventaris::where('status_pembukuan', 'Approve')->orderBy('created_at', 'desc')->get();
@@ -102,6 +106,7 @@ class InventarisController extends Controller
                             $data = Inventaris::where('status_dirops', 'Approve')
                                 ->orWhere('status_pembukuan', 'Approve')
                                 ->whereBetween('created_at', [$awal, $akhir])
+                                ->when($reqCabang != 99, fn($query) => $query->where('id_cabang', $reqCabang))
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
                             $data = Inventaris::where('status_dirops', 'Approve')->orWhere('status_pembukuan', 'Approve')->orderBy('created_at', 'desc')->get();
@@ -217,7 +222,7 @@ class InventarisController extends Controller
 
                     # code pembagian user Aksi
                     switch (auth()->user()->jabatan) {
-                            # Kaops...
+                        # Kaops...
                         case 'Kasi Operasional':
                         case 'Kasi Komersial':
                         case 'Analis Area':
@@ -233,11 +238,11 @@ class InventarisController extends Controller
                                 $button .= '&nbsp;';
                             }
                             break;
-                            # Pincab...
+                        # Pincab...
                         case 'Pimpinan Cabang':
                             $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
                             break;
-                            # Pembukuan, Dirops & TSi...
+                        # Pembukuan, Dirops & TSi...
                         case 'Pembukuan':
                         case 'Direktur Operasional':
                             $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';

@@ -53,7 +53,7 @@
                     <td> {{ $cif->alasan }} </td>
                 </tr>
                 <tr style="border-bottom: 1px solid black;">
-                    <th>KTP</th>
+                    <th>File KTP/KK</th>
                     <td>
                         <a href="{{ asset('file_upload/perubahan data/' . $cif->ktp) }}" target="_blank">
                             {{ $cif->ktp ? $cif->ktp : 'null' }}

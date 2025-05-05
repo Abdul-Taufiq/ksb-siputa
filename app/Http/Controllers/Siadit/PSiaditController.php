@@ -23,12 +23,13 @@ class PSiaditController extends Controller
         $id_cabang = Auth::user()->id_cabang;
         $awal = Carbon::parse($request->min)->startOfDay();
         $akhir = Carbon::parse($request->max)->endOfDay();
+        $reqCabang = $request->id_cabang;
         $kode = $request->kode;
 
         if (request()->ajax()) {
             # code pembagian user...
             switch ($jabatan) {
-                    # kaops ...
+                # kaops ...
                 case 'Kasi Operasional':
                 case 'Kasi Komersial':
                 case 'Kepala Kantor Kas':
@@ -40,6 +41,7 @@ class PSiaditController extends Controller
                         if (!empty($request->min)) {
                             $data = PSiadit::where('id_cabang', $id_cabang)
                                 ->whereBetween('created_at', [$awal, $akhir])
+                                ->where('id_cabang', $id_cabang)
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
                             $data = PSiadit::where('id_cabang', $id_cabang)
@@ -47,7 +49,7 @@ class PSiaditController extends Controller
                         }
                     }
                     break;
-                    # Pimpinan Cabang ...
+                # Pimpinan Cabang ...
                 case 'Pembukuan':
                 case 'Internal Audit':
                     if (!empty($request->kode)) {
@@ -57,6 +59,7 @@ class PSiaditController extends Controller
                         if (!empty($request->min)) {
                             $data = PSiadit::whereIn('status_pincab', ['Approve', '--'])
                                 ->whereBetween('created_at', [$awal, $akhir])
+                                ->when($reqCabang != 99, fn($query) => $query->where('id_cabang', $reqCabang))
                                 ->get();
                         } elseif (!empty($request->cari)) {
                             $data = PSiadit::where('kode_form', $request->cari)
@@ -75,6 +78,7 @@ class PSiaditController extends Controller
                         if (!empty($request->min)) {
                             $data = PSiadit::where('status_pembukuan', 'Approve')
                                 ->whereBetween('created_at', [$awal, $akhir])
+                                ->when($reqCabang != 99, fn($query) => $query->where('id_cabang', $reqCabang))
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
                             $data = PSiadit::where('status_pembukuan', 'Approve')->orderBy('created_at', 'desc')->get();
@@ -87,11 +91,12 @@ class PSiaditController extends Controller
                             ->OrderBy('created_at', 'desc')->get();
                     } else {
                         if (!empty($request->min)) {
-                            $data = PSiadit::where('status_dirops', 'Approve')
+                            $data = PSiadit::where('status_pincab', 'Approve')
                                 ->whereBetween('created_at', [$awal, $akhir])
+                                ->when($reqCabang != 99, fn($query) => $query->where('id_cabang', $reqCabang))
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
-                            $data = PSiadit::where('status_dirops', 'Approve')->orderBy('created_at', 'desc')->get();
+                            $data = PSiadit::where('status_pincab', 'Approve')->orderBy('created_at', 'desc')->get();
                         }
                     }
                     break;
@@ -152,7 +157,7 @@ class PSiaditController extends Controller
 
                     # code pembagian user Aksi
                     switch (auth()->user()->jabatan) {
-                            # Kaops...
+                        # Kaops...
                         case 'Kasi Operasional':
                         case 'Kasi Komersial':
                             if ($data->status_pincab == "Approve" || $data->status_pincab == "Reject") {
@@ -164,11 +169,11 @@ class PSiaditController extends Controller
                                 $button .= '&nbsp;';
                             }
                             break;
-                            # Pincab...
+                        # Pincab...
                         case 'Pimpinan Cabang':
                             $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
                             break;
-                            # Pembukuan, Dirops & TSi...
+                        # Pembukuan, Dirops & TSi...
                         case 'Pembukuan':
                         case 'Direktur Operasional':
                         case 'TSI':
@@ -334,7 +339,7 @@ class PSiaditController extends Controller
                 $url = route('siadit-perubahan.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+                // $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
                 break;
 
             case 'Pembukuan':

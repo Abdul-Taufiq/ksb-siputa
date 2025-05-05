@@ -23,6 +23,7 @@ class EcollPController extends Controller
         $id_cabang = Auth::user()->id_cabang;
         $awal = Carbon::parse($request->min)->startOfDay();
         $akhir = Carbon::parse($request->max)->endOfDay();
+        $reqCabang = $request->id_cabang;
         $kode = $request->kode;
 
         // pemberitahuan sudah dibaca
@@ -46,6 +47,7 @@ class EcollPController extends Controller
                         if (!empty($request->min)) {
                             $data = EcollP::where('id_cabang', $id_cabang)
                                 ->whereBetween('created_at', [$awal, $akhir])
+                                ->where('id_cabang', $id_cabang)
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
                             $data = EcollP::where('id_cabang', $id_cabang)
@@ -63,6 +65,7 @@ class EcollPController extends Controller
                         if (!empty($request->min)) {
                             $data = EcollP::whereIn('status_pincab', ['Approve', '--'])
                                 ->whereBetween('created_at', [$awal, $akhir])
+                                ->when($reqCabang != 99, fn($query) => $query->where('id_cabang', $reqCabang))
                                 ->get();
                         } elseif (!empty($request->cari)) {
                             $data = EcollP::where('kode_form', $request->cari)
@@ -81,6 +84,7 @@ class EcollPController extends Controller
                         if (!empty($request->min)) {
                             $data = EcollP::where('status_sdm', 'Approve')
                                 ->whereBetween('created_at', [$awal, $akhir])
+                                ->when($reqCabang != 99, fn($query) => $query->where('id_cabang', $reqCabang))
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
                             $data = EcollP::where('status_sdm', 'Approve')->orderBy('created_at', 'desc')->get();
@@ -95,6 +99,7 @@ class EcollPController extends Controller
                         if (!empty($request->min)) {
                             $data = EcollP::where('status_dirops', 'Approve')
                                 ->whereBetween('created_at', [$awal, $akhir])
+                                ->when($reqCabang != 99, fn($query) => $query->where('id_cabang', $reqCabang))
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
                             $data = EcollP::where('status_dirops', 'Approve')->orderBy('created_at', 'desc')->get();

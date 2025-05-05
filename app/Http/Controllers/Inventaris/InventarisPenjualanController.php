@@ -24,6 +24,7 @@ class InventarisPenjualanController extends Controller
         $id_cabang = Auth::user()->id_cabang;
         $awal = Carbon::parse($request->min)->startOfDay();
         $akhir = Carbon::parse($request->max)->endOfDay();
+        $reqCabang = $request->id_cabang;
         $kode = $request->kode;
 
         // pemberitahuan sudah dibaca
@@ -48,6 +49,7 @@ class InventarisPenjualanController extends Controller
                         if (!empty($request->min)) {
                             $data = Penjualan::where('id_cabang', $id_cabang)
                                 ->whereBetween('created_at', [$awal, $akhir])
+                                ->where('id_cabang', $id_cabang)
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
                             $data = Penjualan::where('id_cabang', $id_cabang)
@@ -65,6 +67,7 @@ class InventarisPenjualanController extends Controller
                         if (!empty($request->min)) {
                             $data = Penjualan::whereIn('status_pincab', ['Approve', '--'])
                                 ->whereBetween('created_at', [$awal, $akhir])
+                                ->when($reqCabang != 99, fn($query) => $query->where('id_cabang', $reqCabang))
                                 ->get();
                         } elseif (!empty($request->cari)) {
                             $data = Penjualan::where('kode_form', $request->cari)
@@ -85,6 +88,7 @@ class InventarisPenjualanController extends Controller
                                 ->orwhere('status_pembukuan', 'Approve')
                                 ->orwhere('status_tsi', '--')
                                 ->whereBetween('created_at', [$awal, $akhir])
+                                ->when($reqCabang != 99, fn($query) => $query->where('id_cabang', $reqCabang))
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
                             $data = Penjualan::where('status_pembukuan', 'Approve')->orderBy('created_at', 'desc')->get();
@@ -100,6 +104,7 @@ class InventarisPenjualanController extends Controller
                             $data = Penjualan::where('status_dirops', 'Approve')
                                 ->orWhere('status_pembukuan', 'Approve')
                                 ->whereBetween('created_at', [$awal, $akhir])
+                                ->when($reqCabang != 99, fn($query) => $query->where('id_cabang', $reqCabang))
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
                             $data = Penjualan::where('status_dirops', 'Approve')->orWhere('status_pembukuan', 'Approve')->orderBy('created_at', 'desc')->get();

@@ -21,6 +21,7 @@ class PemeliharaanController extends Controller
         $id_cabang = Auth::user()->id_cabang;
         $awal = Carbon::parse($request->min)->startOfDay();
         $akhir = Carbon::parse($request->max)->endOfDay();
+        $reqCabang = $request->id_cabang;
         $kode = $request->kode;
 
         // pemberitahuan sudah dibaca
@@ -60,6 +61,7 @@ class PemeliharaanController extends Controller
                     } else {
                         if (!empty($request->min)) {
                             $data = Pemeliharaan::whereBetween('created_at', [$awal, $akhir])
+                                ->where('id_cabang', $reqCabang)
                                 ->get();
                         } elseif (!empty($request->cari)) {
                             $data = Pemeliharaan::where('kode_form', $request->cari)
@@ -76,6 +78,7 @@ class PemeliharaanController extends Controller
                     } else {
                         if (!empty($request->min)) {
                             $data = Pemeliharaan::whereBetween('created_at', [$awal, $akhir])
+                                ->where('id_cabang', $reqCabang)
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
                             $data = Pemeliharaan::orderBy('created_at', 'desc')->get();
@@ -89,6 +92,7 @@ class PemeliharaanController extends Controller
                     } else {
                         if (!empty($request->min)) {
                             $data = Pemeliharaan::whereBetween('created_at', [$awal, $akhir])
+                                ->where('id_cabang', $reqCabang)
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
                             $data = Pemeliharaan::orderBy('created_at', 'desc')->get();

@@ -18,6 +18,7 @@ class USiaditController extends Controller
         $id_cabang = Auth::user()->id_cabang;
         $awal = Carbon::parse($request->min)->startOfDay();
         $akhir = Carbon::parse($request->max)->endOfDay();
+        $reqCabang = $request->id_cabang;
         $kode = $request->kode;
 
         if (request()->ajax()) {
@@ -37,6 +38,7 @@ class USiaditController extends Controller
                         if (!empty($request->min)) {
                             $data = USiadit::where('id_cabang', $id_cabang)
                                 ->whereBetween('created_at', [$awal, $akhir])
+                                ->where('id_cabang', $id_cabang)
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
                             $data = USiadit::where('id_cabang', $id_cabang)
@@ -54,6 +56,7 @@ class USiaditController extends Controller
                         if (!empty($request->min)) {
                             $data = USiadit::whereIn('status_pincab', ['Approve', '--'])
                                 ->whereBetween('created_at', [$awal, $akhir])
+                                ->when($reqCabang != 99, fn($query) => $query->where('id_cabang', $reqCabang))
                                 ->get();
                         } elseif (!empty($request->cari)) {
                             $data = USiadit::where('kode_form', $request->cari)
@@ -72,6 +75,7 @@ class USiaditController extends Controller
                         if (!empty($request->min)) {
                             $data = USiadit::where('status_sdm', 'Approve')
                                 ->whereBetween('created_at', [$awal, $akhir])
+                                ->when($reqCabang != 99, fn($query) => $query->where('id_cabang', $reqCabang))
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
                             $data = USiadit::where('status_sdm', 'Approve')->orderBy('created_at', 'desc')->get();
@@ -86,6 +90,7 @@ class USiaditController extends Controller
                         if (!empty($request->min)) {
                             $data = USiadit::where('status_dirops', 'Approve')
                                 ->whereBetween('created_at', [$awal, $akhir])
+                                ->when($reqCabang != 99, fn($query) => $query->where('id_cabang', $reqCabang))
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
                             $data = USiadit::where('status_dirops', 'Approve')->orderBy('created_at', 'desc')->get();

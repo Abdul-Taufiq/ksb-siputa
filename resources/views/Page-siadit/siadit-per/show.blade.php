@@ -92,7 +92,7 @@
                         {{ $pSiadit->tgl_status_pincab ? $pSiadit->tgl_status_pincab->translatedFormat('d F Y, H:i') : ' ' }}
                     </td>
                 </tr>
-                <tr>
+                {{-- <tr>
                     <th>DirOps Approve?</th>
                     <td> {{ $pSiadit->status_dirops }} -
                         {{ $pSiadit->tgl_status_dirops ? $pSiadit->tgl_status_dirops->translatedFormat('d F Y, H:i') : ' ' }}
@@ -101,7 +101,7 @@
                 <tr>
                     <th>Catatan DirOps</th>
                     <td> {{ $pSiadit->catatan_dirops }} </td>
-                </tr>
+                </tr> --}}
                 <tr>
                     <th>TSI Approve?</th>
                     <td> {{ $pSiadit->status_tsi }} -
@@ -123,14 +123,14 @@
                     </td>
                 </tr>
 
-                <tr>
+                {{-- <tr>
                     <th>Keputusan Pembukuan</th>
                     <td> {{ $pSiadit->pelanggaran_pembukuan }} </td>
                 </tr>
                 <tr>
                     <th>Keputusan Dirops</th>
                     <td> {{ $pSiadit->pelanggaran_dirops }} </td>
-                </tr>
+                </tr> --}}
                 <tr>
                     <th>Keputusan TSI</th>
                     <td> {{ $pSiadit->pelanggaran_tsi }} </td>

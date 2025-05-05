@@ -61,9 +61,28 @@
                                         &nbsp;&nbsp;&nbsp;
                                     @endcan
                                     <strong class="mb-2 mr-4">
-                                        <span class="text">Filter Pertanggal</span>
+                                        <span class="text">Filter</span>
                                     </strong>
                                     <div class="d-flex align-items-end mr-2">
+                                        @if (auth()->user()->id_cabang == 0)
+                                            <div class="form-group mb-2">
+                                                <label for="id_cabang" class="sr-only">Cabang:</label>
+                                                <select name="id_cabang" id="id_cabang" class="form-control">
+                                                    <option selected value="99">All Cabang</option>
+                                                    <option value="1">KPO</option>
+                                                    <option value="2">Kc Temanggun</option>
+                                                    <option value="3">Kc Wonosobo</option>
+                                                    <option value="4">Kc Ambarawa</option>
+                                                    <option value="5">Kc Semarang</option>
+                                                    <option value="6">Kc Mranggen</option>
+                                                    <option value="7">Kc Sukorejo</option>
+                                                    <option value="8">Kc Weleri</option>
+                                                    <option value="9">Kc Delanggu</option>
+                                                    <option value="10">Kc Gombong</option>
+                                                    <option value="11">Kc Sokaraja</option>
+                                                </select>
+                                            </div>
+                                        @endif
                                         <div class="form-group mb-2">
                                             <label for="min" class="sr-only">From:</label>
                                             <input type="date" name="min" id="min" class="form-control">

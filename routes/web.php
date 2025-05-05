@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\{Artisan, Route, Auth};
 use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\{LoginController, UserController, HelperController, RegisterController, HomeController, LogActivityController, LogTrackingController, SharebiayaController};
+use App\Http\Controllers\{LoginController, UserController, HelperController, RegisterController, HomeController, LogActivityController, LogTrackingController, PLainnyaController, SharebiayaController};
 use App\Http\Controllers\Ecoll\{EcollPController, EcollRController};
 use App\Http\Controllers\Inventaris\InventarisController as InventarisPengajuanController;
 use App\Http\Controllers\Inventaris\InventarisPenggantiController;
@@ -234,5 +234,13 @@ Route::group(['middleware' => ['permission', 'CekMaintenance']], function () {
         Route::resource('log-activity', LogActivityController::class)->parameters(['log-activity' => 'logActivity']);
         Route::get('/pemberitahuan', [LogActivityController::class, 'Pemberitahuan']);
         Route::get('/mark-as-read-pemberitahuan', [LogActivityController::class, 'MarkAsRead']);
+
+
+        // Pengajuan lainnya
+        Route::resource('pengajuan-lainnya', PLainnyaController::class)->parameters(['pengajuan-lainnya' => 'pLainnya']);
+        Route::patch('/pengajuan-lainnya-approve/{idEncrypt}', [PLainnyaController::class, 'ResponApprove']);
+        Route::patch('/pengajuan-lainnya-reject/{idEncrypt}', [PLainnyaController::class, 'ResponReject']);
+        Route::get('/pengajuan-cetak/{idEncrypt}', [PLainnyaController::class, 'Print']);
+        Route::get('get-barang/{Id}', [InventarisPengajuanController::class, 'getBarang']);
     });
 });

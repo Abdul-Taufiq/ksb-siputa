@@ -99,8 +99,24 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="jabatan">Jabatan Karyawan :</label>
-                                        <input type="text" name="jabatan" id="jabatan" class="form-control input"
-                                            placeholder="Jabatan Karyawan" required>
+                                        @if (auth()->user()->jabatan == 'SDM')
+                                            <input type="text" name="jabatan" id="jabatan"
+                                                class="form-control input" placeholder="Jabatan Karyawan" required>
+                                        @else
+                                            <select name="jabatan" id="jabatan" class="form-control input" required>
+                                                <option disabled selected>-Pilih Jabatan-</option>
+                                                <option value="AO Landing">AO Landing</option>
+                                                <option value="AO Funding">AO Funding</option>
+                                                <option value="Analis Cabang">Analis Cabang</option>
+                                                <option value="Admin Tabdep">Admin Tabdep</option>
+                                                <option value="Remedial Cabang">Remedial Cabang</option>
+                                                <option value="Kasir">Kasir</option>
+                                                <option value="Legal (Adm Kredit)">Legal (Adm Kredit)</option>
+                                                <option value="Kasi Operasional">Kasi Operasional</option>
+                                                <option value="Kasi Komersial">Kasi Komersial</option>
+                                                <option value="Pimpinan Cabang">Pimpinan Cabang</option>
+                                            </select>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -145,8 +161,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="aktif" class="wajib">Masa Aktif Awal :</label>
-                                        <input type="date" name="aktif" id="aktif" class="form-control input"
-                                            placeholder="Masa Aktif Awal">
+                                        <input type="date" name="aktif" id="aktif"
+                                            class="form-control input" placeholder="Masa Aktif Awal">
                                     </div>
                                 </div>
                                 <div class="col-md-6" id="akhir">
@@ -244,8 +260,25 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="jabatan">Jabatan Karyawan :</label>
-                                        <input type="text" name="jabatan" id="jabatan_edit"
-                                            class="form-control input" placeholder="Jabatan Karyawan" required>
+                                        @if (auth()->user()->jabatan == 'SDM')
+                                            <input type="text" name="jabatan" id="jabatan_edit"
+                                                class="form-control input" placeholder="Jabatan Karyawan" required>
+                                        @else
+                                            <select name="jabatan" id="jabatan_edit" class="form-control input"
+                                                required>
+                                                <option disabled selected>-Pilih Jabatan-</option>
+                                                <option value="AO Landing">AO Landing</option>
+                                                <option value="AO Funding">AO Funding</option>
+                                                <option value="Analis Cabang">Analis Cabang</option>
+                                                <option value="Admin Tabdep">Admin Tabdep</option>
+                                                <option value="Remedial Cabang">Remedial Cabang</option>
+                                                <option value="Kasir">Kasir</option>
+                                                <option value="Legal (Adm Kredit)">Legal (Adm Kredit)</option>
+                                                <option value="Kasi Operasional">Kasi Operasional</option>
+                                                <option value="Kasi Komersial">Kasi Komersial</option>
+                                                <option value="Pimpinan Cabang">Pimpinan Cabang</option>
+                                            </select>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="col-md-6">
