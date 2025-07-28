@@ -56,14 +56,10 @@
                             <div class="row ml-2">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="kc">Kantor Cabang :</label>
-                                        <select name="kc" id="kc" autocomplete="off" required
-                                            class="form-control input">
-                                            <option disabled selected>- Pilih Kantor Cabang -</option>
+                                        <label for="kc_multiple">Kantor Cabang :</label>
+                                        <select name="kc[]" id="kc_multiple" multiple="multiple" autocomplete="off"
+                                            required class="form-control">
                                             <option value="All Cabang">All Cabang</option>
-                                            <option value="AREA 1">AREA 1</option>
-                                            <option value="AREA 2">AREA 2</option>
-                                            <option value="AREA 3">AREA 3</option>
                                             <option value="KPO">Kantor Pusat Operasional</option>
                                             <option value="KC Temanggung">KC Temanggung</option>
                                             <option value="KC Wonosobo">KC Wonosobo</option>
@@ -197,14 +193,10 @@
                             <div class="row ml-2">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="kc">Kantor Cabang :</label>
-                                        <select name="kc" id="kc" autocomplete="off"
-                                            class="form-control input">
-                                            <option disabled selected>- Pilih Kantor Cabang -</option>
+                                        <label for="kc_multiple">Kantor Cabang :</label>
+                                        <select name="kc[]" id="kc_multiple_edit" multiple="multiple"
+                                            autocomplete="off" required class="form-control">
                                             <option value="All Cabang">All Cabang</option>
-                                            <option value="AREA 1">AREA 1</option>
-                                            <option value="AREA 2">AREA 2</option>
-                                            <option value="AREA 3">AREA 3</option>
                                             <option value="KPO">Kantor Pusat Operasional</option>
                                             <option value="KC Temanggung">KC Temanggung</option>
                                             <option value="KC Wonosobo">KC Wonosobo</option>

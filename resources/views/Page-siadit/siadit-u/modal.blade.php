@@ -78,6 +78,13 @@
                                                 {{ old('keperluan') == 'Penghapusan User' ? 'selected' : null }}>
                                                 Penghapusan User
                                             </option>
+                                            <option value="Perubahan Jabatan"
+                                                {{ old('keperluan') == 'Perubahan Jabatan' ? 'selected' : null }}>
+                                                Perubahan
+                                                Jabatan</option>
+                                            <option value="Mutasi User"
+                                                {{ old('keperluan') == 'Mutasi User' ? 'selected' : null }}>Mutasi User
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -238,6 +245,13 @@
                                             <option value="Penghapusan User"
                                                 {{ old('keperluan') == 'Penghapusan User' ? 'selected' : null }}>
                                                 Penghapusan User
+                                            </option>
+                                            <option value="Perubahan Jabatan"
+                                                {{ old('keperluan') == 'Perubahan Jabatan' ? 'selected' : null }}>
+                                                Perubahan Jabatan
+                                            </option>
+                                            <option value="Mutasi User"
+                                                {{ old('keperluan') == 'Mutasi User' ? 'selected' : null }}>Mutasi User
                                             </option>
                                         </select>
                                     </div>

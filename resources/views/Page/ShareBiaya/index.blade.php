@@ -102,5 +102,12 @@
 @section('script')
     <script src="{{ asset('script/sharebiaya/share_index.js') }}"></script>
     <script src="{{ asset('script/sharebiaya/share_input.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#kc_multiple').select2();
+            $('#kc_multiple_edit').select2();
+        });
+    </script>
 @endsection
 @endsection

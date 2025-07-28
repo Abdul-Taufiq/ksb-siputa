@@ -77,16 +77,24 @@ class SharebiayaController extends Controller
 
     public function store(Request $request)
     {
+
         $share = new ShareBiaya();
-        if ($request->kc == 'AREA 1') {
-            $share->kc = 'AREA 1 (SMG, AMB, MRG, WLR, SOK)';
-        } else if ($request->kc == 'AREA 2') {
-            $share->kc = 'AREA 2 (KPO, TMG, SUK, DLG)';
-        } else if ($request->kc == 'AREA 3') {
-            $share->kc = 'AREA 3 (WSB, GMB)';
-        } else {
-            $share->kc = $request->kc;
+        // Konversi array menjadi string dengan koma sebagai pemisah
+        // $kc_save = is_array($request->kc) && count($request->kc) > 1 ? implode(', ', $request->kc) : $request->kc[0];
+        $kcList = $request->kc; // Tangkap input tanpa mengubah langsung $request
+
+        if (is_array($kcList)) {
+            $count = count($kcList);
+
+            if ($count > 1) {
+                $lastItem = array_pop($kcList); // Ambil elemen terakhir
+                $kc_save = implode(', ', $kcList) . ' dan ' . $lastItem; // Format sesuai kebutuhan
+            } else {
+                $kc_save = $kcList[0]; // Jika hanya satu item, simpan langsung
+            }
         }
+
+        $share->kc = $kc_save;
 
         $share->tgl_transaksi = $request->tgl_transaksi;
         $share->nominal = $request->nominal;
@@ -107,22 +115,18 @@ class SharebiayaController extends Controller
         $this->LogActivity($share, $LogAksi);
 
         // Send email
-        $cabangEmails = [
-            'AREA 1' => [4, 5, 6, 8, 11],
-            'AREA 2' => [1, 2, 7, 9],
-            'AREA 3' => [3, 10],
-            'All Cabang' => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-        ];
-
-        if (isset($cabangEmails[$request->kc])) {
-            foreach ($cabangEmails[$request->kc] as $id) {
-                $userPenerima = CabangEmail::find($id);
-                $this->SendMail($share, $userPenerima);
+        if ($kc_save == 'All Cabang') {
+            $penerima = CabangEmail::whereNot('id_cabang', 0)->whereNot('id_cabang', 20)->get();
+            foreach ($penerima as $cabang) {
+                $this->SendMail($share, $cabang);
             }
         } else {
-            $userPenerima = CabangEmail::where('cabang', $request->kc)->first();
-            $this->SendMail($share, $userPenerima);
+            foreach ($request->kc as $cabang) {
+                $penerima = CabangEmail::where('cabang', $cabang)->first();
+                $this->SendMail($share, $penerima);
+            }
         }
+
 
 
         return redirect()->route('share-biaya.index')->with('AlertSuccess', 'Data berhasil ditambahkan dan dikirim Email!');
@@ -150,17 +154,20 @@ class SharebiayaController extends Controller
 
     public function update(Request $request, ShareBiaya $shareBiaya)
     {
-        if (!empty($request->kc)) {
-            if ($request->kc == 'AREA 1') {
-                $shareBiaya->kc = 'AREA 1 (SMG, AMB, MRG, WLR, SOK)';
-            } else if ($request->kc == 'AREA 2') {
-                $shareBiaya->kc = 'AREA 2 (KPO, TMG, SUK, DLG)';
-            } else if ($request->kc == 'AREA 3') {
-                $shareBiaya->kc = 'AREA 3 (WSB, GMB)';
+        $kcList = $request->kc; // Tangkap input tanpa mengubah langsung $request
+
+        if (is_array($kcList)) {
+            $count = count($kcList);
+
+            if ($count > 1) {
+                $lastItem = array_pop($kcList); // Ambil elemen terakhir
+                $kc_save = implode(', ', $kcList) . ' dan ' . $lastItem; // Format sesuai kebutuhan
             } else {
-                $shareBiaya->kc = $request->kc;
+                $kc_save = $kcList[0]; // Jika hanya satu item, simpan langsung
             }
         }
+
+        $shareBiaya->kc = $kc_save;
         if (!empty($request->tgl_transaksi)) {
             $shareBiaya->tgl_transaksi = $request->tgl_transaksi;
         }
