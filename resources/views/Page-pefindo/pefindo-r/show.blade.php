@@ -103,19 +103,19 @@
                     <td>{{ $pefindoRe->catatan_dirops }}</td>
                 </tr>
                 <tr>
-                    <th>TSI Approve?</th>
+                    <th>Pembukuan Approve?</th>
                     <td>
-                        {{ $pefindoRe->status_tsi }} -
-                        {{ $pefindoRe->tgl_status_tsi ? $pefindoRe->tgl_status_tsi->translatedFormat('d F Y, H:i') : ' ' }}
+                        {{ $pefindoRe->status_pembukuan }} -
+                        {{ $pefindoRe->tgl_status_pembukuan ? $pefindoRe->tgl_status_pembukuan->translatedFormat('d F Y, H:i') : ' ' }}
                     </td>
                 </tr>
                 <tr>
-                    <th>Catatan TSI</th>
-                    <td>{{ $pefindoRe->catatan_tsi }}</td>
+                    <th>Catatan Pembukuan</th>
+                    <td>{{ $pefindoRe->catatan_pembukuan }}</td>
                 </tr>
                 <tr>
                     <th>Petugas Pelaksana</th>
-                    <td>{{ $pefindoRe->nama_tsi }}</td>
+                    <td>{{ $pefindoRe->nama_pembukuan }}</td>
                 </tr>
                 <tr>
                     <th>Status Akhir</th>

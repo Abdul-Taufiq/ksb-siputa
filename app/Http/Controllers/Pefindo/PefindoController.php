@@ -34,7 +34,7 @@ class PefindoController extends Controller
         if (request()->ajax()) {
             # code pembagian user...
             switch ($jabatan) {
-                    # kaops ...
+                # kaops ...
                 case 'Kasi Operasional':
                 case 'Kasi Komersial':
                 case 'Kepala Kantor Kas':
@@ -55,8 +55,8 @@ class PefindoController extends Controller
                         }
                     }
                     break;
-                    # Pimpinan Cabang ...
-                case 'SDM':
+                # Pimpinan Cabang ...
+                // case 'SDM':
                 case 'Internal Audit':
                     if (!empty($request->kode)) {
                         $data = Pefindo::where('kode_form', $kode)
@@ -95,10 +95,14 @@ class PefindoController extends Controller
                         }
                     }
                     break;
+                case 'Pembukuan':
                 case 'TSI':
                     if (!empty($request->kode)) {
                         $data = Pefindo::where('kode_form', $kode)
                             ->OrderBy('created_at', 'desc')->get();
+                    } elseif (!empty($request->cari)) {
+                        $data = Pefindo::where('kode_form', $request->cari)
+                            ->orderBy('created_at', 'desc')->get();
                     } else {
                         if (!empty($request->min)) {
                             $data = Pefindo::where('status_dirops', 'Approve')
@@ -148,7 +152,11 @@ class PefindoController extends Controller
                             break;
 
                         case 'TSI':
-                            $jabatan = $data->status_tsi;
+                            $status .= '<a class="btn btn-secondary btn-sm disabled">NoAct</a>';
+                            break;
+
+                        case 'Pembukuan':
+                            $jabatan = $data->status_pembukuan;
                             $statusAfter = $this->statusAfter($data, $jabatan, $statusDropdown);
                             return $statusAfter;
                             break;
@@ -167,7 +175,7 @@ class PefindoController extends Controller
 
                     # code pembagian user Aksi
                     switch (auth()->user()->jabatan) {
-                            # Kaops...
+                        # Kaops...
                         case 'Kasi Operasional':
                         case 'Kasi Komersial':
                             if ($data->status_pincab == "Approve" || $data->status_pincab == "Reject") {
@@ -179,7 +187,7 @@ class PefindoController extends Controller
                                 $button .= '&nbsp;';
                             }
                             break;
-                            # area...
+                        # area...
                         case 'Analis Area':
                             if ($data->status_sdm != null) {
                                 $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
@@ -190,11 +198,12 @@ class PefindoController extends Controller
                                 $button .= '&nbsp;';
                             }
                             break;
-                            # Pincab...
+                        # Pincab...
                         case 'Pimpinan Cabang':
                         case 'SDM':
                         case 'Direktur Operasional':
                         case 'TSI':
+                        case 'Pembukuan':
                             $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
                             break;
                     }
@@ -205,7 +214,7 @@ class PefindoController extends Controller
                 ->make(true);
         }
 
-        return view('Page-pefindo.pefindo-p.index', ['title' => 'Pengajuan User Pefindo']);
+        return view('Page-pefindo.pefindo-p.index', ['title' => 'Pengajuan User WebSakep']);
     }
 
 
@@ -230,18 +239,18 @@ class PefindoController extends Controller
         }
 
         if ($cek == 0) {
-            $nomer = $cabang . '/PFNDO-P/' . $thn . '/0001';
+            $nomer = $cabang . '/WBSKP-P/' . $thn . '/0001';
         } else {
             $ambil = Pefindo::all()->last();
             $cekTahun = substr($ambil->kode_form, -9, 4);
             if ($cekTahun != $thn) {
                 $urut = 0001;
-                $nomer = $cabang . '/PFNDO-P/' . $thn . '/0001';
+                $nomer = $cabang . '/WBSKP-P/' . $thn . '/0001';
             } else {
                 $urut = substr($ambil->kode_form, -4, 10);
                 $urut = (int)$urut + 1;
                 $urut = str_pad($urut, 4, '0', STR_PAD_LEFT); // Menggunakan str_pad untuk menambahkan nol di depan
-                $nomer = $cabang . '/PFNDO-P/' . $thn . '/' . $urut;
+                $nomer = $cabang . '/WBSKP-P/' . $thn . '/' . $urut;
             }
         }
 
@@ -259,7 +268,7 @@ class PefindoController extends Controller
 
 
         // Log Activity
-        $LogAksi = '(+) Pengajuan User PFNDO';
+        $LogAksi = '(+) Pengajuan User WebSakep';
         $this->LogActivity($data, $LogAksi);
         // Send Email
         if (auth()->user()->jabatan == 'Analis Area') {
@@ -283,7 +292,7 @@ class PefindoController extends Controller
             $this->SendEmail($data, $userPenerima, $url, $title, $message);
         }
 
-        return redirect('pefindo-pengajuan')->with('AlertSuccess', "Pengajuan Berhasil Dikirim!");
+        return redirect('user-websakep-pengajuan')->with('AlertSuccess', "Pengajuan Berhasil Dikirim!");
     }
 
 
@@ -315,10 +324,10 @@ class PefindoController extends Controller
 
 
         // Log Activity
-        $LogAksi = '(u) Update Pengajuan User PFNDO';
+        $LogAksi = '(u) Update Pengajuan User WebSakep';
         $this->LogActivity($pefindo, $LogAksi);
 
-        return redirect('pefindo-pengajuan')->with('AlertSuccess', "Pengajuan Berhasil Di Edit!");
+        return redirect('user-websakep-pengajuan')->with('AlertSuccess', "Pengajuan Berhasil Di Edit!");
     }
 
 
@@ -349,7 +358,7 @@ class PefindoController extends Controller
                 // Send Email Double
                 $userPenerima = User::where('jabatan', 'Direktur Operasional')->get();
                 // pemberitahuan database
-                $url = route('pefindo-pengajuan.index');
+                $url = route('user-websakep-pengajuan.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
                 $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
@@ -364,20 +373,30 @@ class PefindoController extends Controller
                     'status_akhir' => 'Proses'
                 ]);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'TSI')->get();
+                $userPenerima = User::where('jabatan', 'Pembukuan')->get();
                 // pemberitahuan database
-                $url = route('pefindo-pengajuan.index');
+                $url = route('user-websakep-pengajuan.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
                 $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
                 break;
 
-            case 'TSI':
+            case 'Pembukuan':
+                if ($data->nama_dirops == null && $data->status_dirops == null) {
+                    $data->update([
+                        'nama_dirops' => 'Ditarik Pembukuan',
+                        'status_dirops' => 'Approve',
+                        'tgl_status_dirops' => now(),
+                        'catatan_dirops' => 'Ditarik Pembukuan',
+                        'status_akhir' => 'Proses'
+                    ]);
+                }
+
                 $data->update([
-                    'nama_tsi' => $nama,
-                    'status_tsi' => 'Approve',
-                    'tgl_status_tsi' => now(),
-                    'catatan_tsi' => $request->catatan,
+                    'nama_pembukuan' => $nama,
+                    'status_pembukuan' => 'Approve',
+                    'tgl_status_pembukuan' => now(),
+                    'catatan_pembukuan' => $request->catatan,
                     'tgl_status_akhir' => now(),
                     'status_akhir' => 'Selesai'
                 ]);
@@ -386,16 +405,16 @@ class PefindoController extends Controller
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
                     ->where('jabatan', 'Kasi Operasional')->first();
                 // pemberitahuan database
-                $url = route('pefindo-pengajuan.index');
+                $url = route('user-websakep-pengajuan.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Approved!';
                 $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
-                $userPenerima = User::where('jabatan', 'TSI')
+                $userPenerima = User::where('jabatan', 'Pembukuan')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
-                $url = route('pefindo-pengajuan.index');
+                $url = route('user-websakep-pengajuan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
                 $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
@@ -407,10 +426,10 @@ class PefindoController extends Controller
         }
 
         // Log Activity
-        $LogAksi = '(cs) Approve Pengajuan Email';
+        $LogAksi = '(cs) Approve Pengajuan WebSakep';
         $this->LogActivity($data, $LogAksi);
 
-        return redirect('pefindo-pengajuan')->with('AlertSuccess', "Pengajuan Berhasil Dilakukan Perubahan Status!");
+        return redirect('user-websakep-pengajuan')->with('AlertSuccess', "Pengajuan Berhasil Dilakukan Perubahan Status!");
     }
 
 
@@ -437,7 +456,7 @@ class PefindoController extends Controller
                     ->where('jabatan', 'Kasi Operasional')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
-                $url = route('pefindo-pengajuan.index');
+                $url = route('user-websakep-pengajuan.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
                 $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
@@ -458,18 +477,18 @@ class PefindoController extends Controller
                     ->where('jabatan', 'Kasi Operasional')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
-                $url = route('pefindo-pengajuan.index');
+                $url = route('user-websakep-pengajuan.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
                 $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 break;
 
-            case 'TSI':
+            case 'Pembukuan':
                 $data->update([
-                    'nama_tsi' => $nama,
-                    'status_tsi' => 'Reject',
-                    'tgl_status_tsi' => now(),
-                    'catatan_tsi' => $request->catatan,
+                    'nama_pembukuan' => $nama,
+                    'status_pembukuan' => 'Reject',
+                    'tgl_status_pembukuan' => now(),
+                    'catatan_pembukuan' => $request->catatan,
                     'tgl_status_akhir' => now(),
                     'status_akhir' => 'Ditolak',
                     'tgl_status_akhir' => now(),
@@ -479,16 +498,16 @@ class PefindoController extends Controller
                     ->where('jabatan', 'Kasi Operasional')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
-                $url = route('pefindo-pengajuan.index');
+                $url = route('user-websakep-pengajuan.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
                 $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
-                $userPenerima = User::where('jabatan', 'TSI')
+                $userPenerima = User::where('jabatan', 'Pembukuan')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
-                $url = route('pefindo-pengajuan.index');
+                $url = route('user-websakep-pengajuan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
                 $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
@@ -500,10 +519,10 @@ class PefindoController extends Controller
         }
 
         // Log Activity
-        $LogAksi = '(cs) Rejected Pengajuan User Pefindo';
+        $LogAksi = '(cs) Rejected Pengajuan User WebSakep';
         $this->LogActivity($data, $LogAksi);
 
-        return redirect('pefindo-pengajuan')->with('AlertSuccess', "Pengajuan Berhasil Dilakukan Perubahan Status!");
+        return redirect('user-websakep-pengajuan')->with('AlertSuccess', "Pengajuan Berhasil Dilakukan Perubahan Status!");
     }
 
 
@@ -569,7 +588,7 @@ class PefindoController extends Controller
         ], function ($message) use ($userPenerima) {
             $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
             $message->to($userPenerima->email);
-            $message->subject('Pengajuan User Baru (Pefindo)');
+            $message->subject('Pengajuan User Baru (WebSakep)');
         });
 
         // pemberitahuan database
@@ -628,7 +647,7 @@ class PefindoController extends Controller
             ], function ($message) use ($user) {
                 $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
                 $message->to($user->email);
-                $message->subject('Pengajuan User Baru (Pefindo)');
+                $message->subject('Pengajuan User Baru (WebSakep)');
             });
         }
         // pemberitahuan database

@@ -467,7 +467,7 @@
                     </div>
 
                     {{-- Pefindo --}}
-                    <div class="col-md-6">
+                    {{-- <div class="col-md-6">
                         <div class="card card-widget card-outline card-secondary">
                             <div class="user-header bg-info">
                                 <h5 style="text-align: center; margin-top: 6px;">
@@ -521,10 +521,10 @@
                             </div>
                             <div class="card card-outline card-secondary mb-0"></div>
                         </div>
-                    </div>
+                    </div> --}}
 
                     {{-- Pefindo Reset --}}
-                    <div class="col-md-6">
+                    {{-- <div class="col-md-6">
                         <div class="card card-widget card-outline card-secondary">
                             <div class="user-header bg-info">
                                 <h5 style="text-align: center; margin-top: 6px;">
@@ -578,7 +578,7 @@
                             </div>
                             <div class="card card-outline card-secondary mb-0"></div>
                         </div>
-                    </div>
+                    </div> --}}
 
                 </div>
             </div>

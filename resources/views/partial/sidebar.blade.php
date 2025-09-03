@@ -261,7 +261,7 @@
                                 </li> --}}
 
                             {{-- Pefindo --}}
-                            <hr style="margin-left: 12px; margin-right: 5px;">
+                            {{-- <hr style="margin-left: 12px; margin-right: 5px;">
                             <p
                                 style="font-weight: bold; font-family: JetBrains Mono; font-size: 15px; margin-left: 20px;">
                                 Pefindo &rarr;
@@ -280,11 +280,50 @@
                                     <p>Reset Password</p>
                                 </a>
                             </li>
-                            <hr style="margin-left: 12px; margin-right: 5px;">
+                            <hr style="margin-left: 12px; margin-right: 5px;"> --}}
 
                         </ul>
                     </li>
                     {{-- end USER --}}
+                @endif
+
+                {{-- new websakep --}}
+                @if (auth()->user()->jabatan != 'Sekretariat')
+                    <li class="nav-item {{ request()->is('user*') ? 'active menu-is-opening menu-open' : '' }}">
+                        <a href="#"
+                            class="nav-link  {{ request()->is('user*') ? 'active aria-expanded= "true"' : 'collapsed' }}">
+                            <i class="fa fa-address-book nav-icon" aria-hidden="true"></i>
+                            <p>
+                                WebSakep
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview  {{ request()->is('user*') ? 'style="display: block;"' : '' }}">
+
+                            {{-- Websakep --}}
+                            <hr style="margin-left: 12px; margin-right: 15px;">
+                            <p
+                                style="font-weight: bold; font-family: JetBrains Mono; font-size: 15px; margin-left: 20px;">
+                                WebSakep &rarr;
+                            </p>
+                            <li class="nav-item">
+                                <a href="/user-websakep-pengajuan"
+                                    class="nav-link {{ Request::is('user-websakep-pengajuan*') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Pengajuan WebSakep</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/user-websakep-reset"
+                                    class="nav-link {{ Request::is('user-websakep-reset*') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Reset Password</p>
+                                </a>
+                            </li>
+
+                            <hr style="margin-left: 12px; margin-right: 5px;">
+                        </ul>
+                    </li>
                 @endif
 
 

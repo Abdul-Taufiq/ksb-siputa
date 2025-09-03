@@ -136,6 +136,16 @@ Route::group(['middleware' => ['permission', 'CekMaintenance']], function () {
         Route::patch('/pefindo-reset-reject/{idEncrypt}', [PefindoreController::class, 'ResponReject']);
 
 
+        // websakep
+        Route::resource('user-websakep-pengajuan', PefindoController::class)->parameters(['user-websakep-pengajuan' => 'pefindo']);
+        Route::patch('/user-websakep-pengajuan-approve/{idEncrypt}', [PefindoController::class, 'ResponApprove']);
+        Route::patch('/user-websakep-pengajuan-reject/{idEncrypt}', [PefindoController::class, 'ResponReject']);
+
+        Route::resource('user-websakep-reset', PefindoreController::class)->parameters(['user-websakep-reset' => 'pefindoRe']);
+        Route::patch('/user-websakep-reset-approve/{idEncrypt}', [PefindoreController::class, 'ResponApprove']);
+        Route::patch('/user-websakep-reset-reject/{idEncrypt}', [PefindoreController::class, 'ResponReject']);
+
+
         // pembatalan Transaksi
         Route::resource('pembatalan-akuntansi', AkuntansiController::class)->parameters(['pembatalan-akuntansi' => 'akuntansi']);
         Route::any('/pembatalan-akuntansi-approve/{idEncrypt}', [AkuntansiController::class, 'ResponApprove']);

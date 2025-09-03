@@ -46,7 +46,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="add" style="letter-spacing: 2px; font-weight: bold;">
-                        Tambah Pengajuan Reset Password Pefindo
+                        Tambah Pengajuan Reset Password WebSakep
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>

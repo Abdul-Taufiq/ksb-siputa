@@ -466,12 +466,12 @@
                         </div>
                     </div>
 
-                    {{-- Pefindo --}}
+                    {{-- WebSakep --}}
                     <div class="col-md-6">
                         <div class="card card-widget card-outline card-secondary">
                             <div class="user-header bg-info">
                                 <h5 style="text-align: center; margin-top: 6px;">
-                                    &rAarr; &nbsp; User Baru Pefindo &nbsp; &lAarr;
+                                    &rAarr; &nbsp; User Baru WebSakep &nbsp; &lAarr;
                                 </h5>
                             </div>
                             <div class="card-body">
@@ -514,7 +514,7 @@
 
                                 </div>
                                 <div style="margin: 10px 0px -10px 0px">
-                                    <a href="/pefindo-pengajuan">
+                                    <a href="/user-websakep-pengajuan">
                                         More info ... <i class="fas fa-arrow-circle-right"></i>
                                     </a>
                                 </div>
@@ -523,12 +523,12 @@
                         </div>
                     </div>
 
-                    {{-- Pefindo Reset --}}
+                    {{-- WebSakep Reset --}}
                     <div class="col-md-6">
                         <div class="card card-widget card-outline card-secondary">
                             <div class="user-header bg-info">
                                 <h5 style="text-align: center; margin-top: 6px;">
-                                    &rAarr; &nbsp; Reset User Pefindo &nbsp; &lAarr;
+                                    &rAarr; &nbsp; Reset User WebSakep &nbsp; &lAarr;
                                 </h5>
                             </div>
                             <div class="card-body">
@@ -571,7 +571,7 @@
 
                                 </div>
                                 <div style="margin: 10px 0px -10px 0px">
-                                    <a href="/pefindo-reset">
+                                    <a href="/user-websakep-reset">
                                         More info ... <i class="fas fa-arrow-circle-right"></i>
                                     </a>
                                 </div>
