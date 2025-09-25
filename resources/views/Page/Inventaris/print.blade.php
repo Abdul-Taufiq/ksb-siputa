@@ -175,6 +175,13 @@
                     </td>
                 </tr>
                 <tr>
+                    <th>Dirut Approve?</th>
+                    <td>
+                        {{ $inventaris->status_dirut }} -
+                        {{ $inventaris->tgl_status_dirut ? $inventaris->tgl_status_dirut->translatedFormat('d F Y, H:i') : ' ' }}
+                    </td>
+                </tr>
+                <tr>
                     <th>Catatan DirOps</th>
                     <td>{{ $inventaris->catatan_dirops }}</td>
                 </tr>

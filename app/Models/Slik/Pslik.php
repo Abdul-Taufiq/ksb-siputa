@@ -12,8 +12,14 @@ class Pslik extends Model
     protected $connection = 'ksb_sdm';
     protected $table = 'tb_slik';
     protected $dates = [
-        'created_at', 'updated_at', 'tgl_status_pincab',
-        'tgl_status_sdm', 'tgl_status_dirops', 'tgl_status_akhir', 'tgl_status_tsi'
+        'created_at',
+        'updated_at',
+        'tgl_status_pincab',
+        'tgl_status_sdm',
+        'tgl_status_dirops',
+        'tgl_status_akhir',
+        'tgl_status_tsi',
+        'tgl_status_dirut'
     ];
     protected $primaryKey = 'id_slik';
     protected $guarded = ['id_slik'];

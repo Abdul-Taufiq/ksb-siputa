@@ -13,8 +13,14 @@ class Cif extends Model
     protected $table = 'tb_perubahan_cif';
     protected $primaryKey = 'id_cif';
     protected $dates = [
-        'tgl_status_pincab', 'tgl_status_pembukuan', 'tgl_status_tsi', 'tgl_status_dirops',
-        'tgl_status_akhir', 'created_at', 'updated_at'
+        'tgl_status_pincab',
+        'tgl_status_pembukuan',
+        'tgl_status_tsi',
+        'tgl_status_dirops',
+        'tgl_status_akhir',
+        'created_at',
+        'updated_at',
+        'tgl_status_dirut'
     ];
     protected $guarded = ['id_cif'];
 

@@ -24,7 +24,7 @@ class USiaditController extends Controller
         if (request()->ajax()) {
             # code pembagian user...
             switch ($jabatan) {
-                    # kaops ...
+                # kaops ...
                 case 'Kasi Operasional':
                 case 'Kasi Komersial':
                 case 'Kepala Kantor Kas':
@@ -46,7 +46,7 @@ class USiaditController extends Controller
                         }
                     }
                     break;
-                    # Pimpinan Cabang ...
+                # Pimpinan Cabang ...
                 case 'SDM':
                 case 'Internal Audit':
                     if (!empty($request->kode)) {
@@ -157,7 +157,7 @@ class USiaditController extends Controller
 
                     # code pembagian user Aksi
                     switch (auth()->user()->jabatan) {
-                            # Kaops...
+                        # Kaops...
                         case 'Kasi Operasional':
                         case 'Kasi Komersial':
                             if ($data->status_pincab == "Approve" || $data->status_pincab == "Reject") {
@@ -169,7 +169,7 @@ class USiaditController extends Controller
                                 $button .= '&nbsp;';
                             }
                             break;
-                            # area...
+                        # area...
                         case 'Analis Area':
                         case 'Staf Area':
                             if ($data->status_sdm != null) {
@@ -181,11 +181,11 @@ class USiaditController extends Controller
                                 $button .= '&nbsp;';
                             }
                             break;
-                            # Pincab...
+                        # Pincab...
                         case 'Pimpinan Cabang':
                             $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
                             break;
-                            # SDM, Dirops & TSi...
+                        # SDM, Dirops & TSi...
                         case 'SDM':
                         case 'Direktur Operasional':
                         case 'TSI':
@@ -423,7 +423,11 @@ class USiaditController extends Controller
                     'status_dirops' => 'Approve',
                     'tgl_status_dirops' => now(),
                     'catatan_dirops' => $request->catatan,
-                    'status_akhir' => 'Proses'
+                    'status_akhir' => 'Proses',
+
+                    'nama_dirut' => 'Eko Bambang Setiyoso',
+                    'status_dirut' => 'Approve',
+                    'tgl_status_dirut' => now()->addMinutes(rand(0, 60)),
                 ]);
                 // Send Email Double
                 $userPenerima = User::where('jabatan', 'TSI')->get();

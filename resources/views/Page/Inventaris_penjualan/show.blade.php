@@ -144,6 +144,13 @@
                     </td>
                 </tr>
                 <tr>
+                    <th>Dirut Approve?</th>
+                    <td>
+                        {{ $penjualan->status_dirut }} -
+                        {{ $penjualan->tgl_status_dirut ? $penjualan->tgl_status_dirut->translatedFormat('d F Y, H:i') : ' ' }}
+                    </td>
+                </tr>
+                <tr>
                     <th>Catatan DirOps</th>
                     <td>{{ $penjualan->catatan_dirops }}</td>
                 </tr>

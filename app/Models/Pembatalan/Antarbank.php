@@ -13,8 +13,13 @@ class Antarbank extends Model
     protected $table = 'tb_pembatalan_antar_bank';
     protected $primaryKey = 'id_antar_bank';
     protected $dates = [
-        'tgl_status_pincab', 'tgl_status_pembukuan', 'tgl_status_dirops',
-        'tgl_status_akhir', 'created_at', 'updated_at'
+        'tgl_status_pincab',
+        'tgl_status_pembukuan',
+        'tgl_status_dirops',
+        'tgl_status_akhir',
+        'created_at',
+        'updated_at',
+        'tgl_status_dirut'
     ];
 
     protected $guarded = ['id_antar_bank'];

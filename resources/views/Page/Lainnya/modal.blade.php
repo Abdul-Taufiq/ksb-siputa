@@ -75,6 +75,9 @@
                                             <option value="Ganti Provider WIFI"
                                                 {{ old('jns_pengajuan') == 'Ganti Provider WIFI' ? 'selected' : null }}>
                                                 Ganti Provider WIFI</option>
+                                            <option value="Maintenance/Pembersihan"
+                                                {{ old('jns_pengajuan') == 'Maintenance/Pembersihan' ? 'selected' : null }}>
+                                                Maintenance/Pembersihan</option>
                                         </select>
                                     </div>
                                 </div>

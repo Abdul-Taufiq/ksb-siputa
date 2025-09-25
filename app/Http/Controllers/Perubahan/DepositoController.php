@@ -35,7 +35,7 @@ class DepositoController extends Controller
 
         if (request()->ajax()) {
             switch ($jabatan) {
-                    # kaops ...
+                # kaops ...
                 case 'Kasi Operasional':
                 case 'Kasi Komersial':
                 case 'Kepala Kantor Kas':
@@ -55,7 +55,7 @@ class DepositoController extends Controller
                         }
                     }
                     break;
-                    # Pimpinan Cabang ...
+                # Pimpinan Cabang ...
                 case 'Pembukuan':
                 case 'Internal Audit':
                     if (!empty($request->kode)) {
@@ -165,7 +165,7 @@ class DepositoController extends Controller
 
                     # code pembagian user Aksi
                     switch (auth()->user()->jabatan) {
-                            # Kaops...
+                        # Kaops...
                         case 'Kasi Operasional':
                         case 'Kasi Komersial':
                         case 'Kepala Kantor Kas':
@@ -178,11 +178,11 @@ class DepositoController extends Controller
                                 $button .= '&nbsp;';
                             }
                             break;
-                            # Pincab...
+                        # Pincab...
                         case 'Pimpinan Cabang':
                             $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
                             break;
-                            # SDM, Dirops & TSi...
+                        # SDM, Dirops & TSi...
                         case 'Pembukuan':
                         case 'Direktur Operasional':
                         case 'TSI':
@@ -415,7 +415,11 @@ class DepositoController extends Controller
                     'tgl_status_dirops' => now(),
                     'pelanggaran_dirops' => $request->pelanggaran,
                     'catatan_dirops' => $request->catatan,
-                    'status_akhir' => 'Proses'
+                    'status_akhir' => 'Proses',
+
+                    'nama_dirut' => 'Eko Bambang Setiyoso',
+                    'status_dirut' => 'Approve',
+                    'tgl_status_dirut' => now()->addMinutes(rand(0, 60)),
                 ]);
                 // Send Email Double
                 $userPenerima = User::where('jabatan', 'TSI')->get();

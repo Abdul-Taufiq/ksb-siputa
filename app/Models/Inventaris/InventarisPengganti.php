@@ -19,7 +19,8 @@ class InventarisPengganti extends Model
         'tgl_status_dirops',
         'tgl_status_akhir',
         'tgl_status_tsi',
-        'tgl_pembelian'
+        'tgl_pembelian',
+        'tgl_status_dirut'
     ];
     protected $primaryKey = 'id_inventaris_pengganti';
 

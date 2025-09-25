@@ -12,8 +12,16 @@ class EcollR extends Model
     protected $connection = 'ksb_sdm';
     protected $table = 'tb_ecoll_r';
     protected $dates = [
-        'created_at', 'updated_at', 'aktif', 'non_aktif', 'tgl_status_pincab', 'tgl_status_sdm',
-        'tgl_status_dirops', 'tgl_status_akhir', 'tgl_status_tsi'
+        'created_at',
+        'updated_at',
+        'aktif',
+        'non_aktif',
+        'tgl_status_pincab',
+        'tgl_status_sdm',
+        'tgl_status_dirops',
+        'tgl_status_akhir',
+        'tgl_status_tsi',
+        'tgl_status_dirut'
     ];
     protected $primaryKey = 'id_ecoll_r';
     protected $guarded = ['id_ecoll_r'];

@@ -332,7 +332,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Nomor Terbesar: " + counter);
         counter++;
 
-        if (counter <= 5) {
+        if (counter <= 20) {
             // Buat elemen-elemen baru
             var newDiv = document.createElement("div");
             newDiv.className = "col-md-6";

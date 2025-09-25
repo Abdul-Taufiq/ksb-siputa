@@ -34,7 +34,7 @@ class CifController extends Controller
 
         if (request()->ajax()) {
             switch ($jabatan) {
-                    # kaops ...
+                # kaops ...
                 case 'Kasi Operasional':
                 case 'Kasi Komersial':
                 case 'Kepala Kantor Kas':
@@ -54,7 +54,7 @@ class CifController extends Controller
                         }
                     }
                     break;
-                    # Pimpinan Cabang ...
+                # Pimpinan Cabang ...
                 case 'Pembukuan':
                 case 'Internal Audit':
                     if (!empty($request->kode)) {
@@ -164,7 +164,7 @@ class CifController extends Controller
 
                     # code pembagian user Aksi
                     switch (auth()->user()->jabatan) {
-                            # Kaops...
+                        # Kaops...
                         case 'Kasi Operasional':
                         case 'Kasi Komersial':
                         case 'Kepala Kantor Kas':
@@ -177,11 +177,11 @@ class CifController extends Controller
                                 $button .= '&nbsp;';
                             }
                             break;
-                            # Pincab...
+                        # Pincab...
                         case 'Pimpinan Cabang':
                             $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
                             break;
-                            # SDM, Dirops & TSi...
+                        # SDM, Dirops & TSi...
                         case 'Pembukuan':
                         case 'Direktur Operasional':
                         case 'TSI':
@@ -255,26 +255,16 @@ class CifController extends Controller
             $data->ktp = $fileName;
             $data->nama_ibu = $request->nama_ibu;
 
-            switch ($request) {
-                case $request->no_cif_merger_5 != '':
-                    $data->no_cif_merger = $request->no_cif_merger_1 . ', ' . $request->no_cif_merger_2
-                        . ', ' . $request->no_cif_merger_3 . ', ' . $request->no_cif_merger_5;
-                    break;
-                case $request->no_cif_merger_4 != '':
-                    $data->no_cif_merger = $request->no_cif_merger_1 . ', ' . $request->no_cif_merger_2
-                        . ', ' . $request->no_cif_merger_3 . ', ' . $request->no_cif_merger_4;
-                    break;
-                case $request->no_cif_merger_3 != '':
-                    $data->no_cif_merger = $request->no_cif_merger_1 . ', ' . $request->no_cif_merger_2
-                        . ', ' . $request->no_cif_merger_3;
-                    break;
-                case $request->no_cif_merger_2 != '':
-                    $data->no_cif_merger = $request->no_cif_merger_1 . ', ' . $request->no_cif_merger_2;
-                    break;
-                case $request->no_cif_merger_1 != '':
-                    $data->no_cif_merger = $request->no_cif_merger_1;
-                    break;
+            $mergedCif = [];
+
+            for ($i = 1; $i <= 20; $i++) { // Ubah batas sesuai kebutuhan
+                $field = 'no_cif_merger_' . $i;
+                if (!empty($request->$field)) {
+                    $mergedCif[] = $request->$field;
+                }
             }
+
+            $data->no_cif_merger = implode(', ', $mergedCif);
         } else {
             $gambar = $request->file('ktp');
             $fileName = $gambar->getClientOriginalName();
@@ -439,7 +429,11 @@ class CifController extends Controller
                     'tgl_status_dirops' => now(),
                     'catatan_dirops' => $request->catatan,
                     'pelanggaran_dirops' => $request->pelanggaran,
-                    'status_akhir' => 'Proses'
+                    'status_akhir' => 'Proses',
+
+                    'nama_dirut' => 'Eko Bambang Setiyoso',
+                    'status_dirut' => 'Approve',
+                    'tgl_status_dirut' => now()->addMinutes(rand(0, 60)),
                 ]);
                 // Send Email Double
                 $userPenerima = User::where('jabatan', 'TSI')->get();
