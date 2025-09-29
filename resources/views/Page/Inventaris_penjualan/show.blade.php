@@ -112,10 +112,9 @@
         <div class="card-body">
             <table class="table table-striped">
                 <tr>
-                    <th>Creator</th>
+                    <th>Nama Maker</th>
                     <td>
-                        {{ $penjualan->nama_kaops }} -
-                        {{ $penjualan->created_at ? $penjualan->created_at->translatedFormat('d F Y, H:i') : ' ' }}
+                        {{ $penjualan->nama_kaops }}
                     </td>
                 </tr>
                 <tr>
@@ -159,7 +158,7 @@
                     <th>Status Akhir</th>
                     <td>
                         {{ $penjualan->status_akhir }} -
-                        {{ $penjualan->updated_at ? $penjualan->updated_at->translatedFormat('d F Y, H:i') : ' ' }}
+                        {{ $penjualan->tgl_status_akhir ? $penjualan->tgl_status_akhir->translatedFormat('d F Y, H:i') : ' ' }}
                     </td>
                 </tr>
 

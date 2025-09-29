@@ -81,6 +81,7 @@ class PLainnyaController extends Controller
                     }
                     break;
                 case 'Direktur Operasional':
+                case 'Direktur Utama':
                     if (!empty($request->kode)) {
                         $data = PLainnya::where('kode_form', $kode)
                             ->OrderBy('created_at', 'desc')->get();
@@ -104,13 +105,13 @@ class PLainnyaController extends Controller
                             ->OrderBy('created_at', 'desc')->get();
                     } else {
                         if (!empty($request->min)) {
-                            $data = PLainnya::where('status_dirops', 'Approve')
+                            $data = PLainnya::where('status_dirut', 'Approve')
                                 ->orWhere('status_pembukuan', 'Approve')
                                 ->whereBetween('created_at', [$awal, $akhir])
                                 ->when($reqCabang != 99, fn($query) => $query->where('id_cabang', $reqCabang))
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
-                            $data = PLainnya::where('status_dirops', 'Approve')->orWhere('status_pembukuan', 'Approve')->orderBy('created_at', 'desc')->get();
+                            $data = PLainnya::where('status_dirut', 'Approve')->orWhere('status_pembukuan', 'Approve')->orderBy('created_at', 'desc')->get();
                         }
                     }
                     break;
@@ -154,10 +155,14 @@ class PLainnyaController extends Controller
                             break;
 
                         case 'Direktur Operasional':
+                            $status .= '<a class="btn btn-info btn-sm disabled">NotNeeded</a>';
+                            break;
+
+                        case 'Direktur Utama':
                             switch ($data->jns_pengajuan) {
                                 case 'Upgrade Bandwidth WIFI':
                                     if ($data->status_tsi != null) {
-                                        $jabatan = $data->status_dirops;
+                                        $jabatan = $data->status_dirut;
                                         $statusAfter = $this->statusAfter($data, $jabatan, $statusDropdown);
                                         return $statusAfter;
                                     } else {
@@ -166,7 +171,7 @@ class PLainnyaController extends Controller
                                     break;
                                 case 'Ganti Provider WIFI':
                                     if ($data->status_tsi != null) {
-                                        $jabatan = $data->status_dirops;
+                                        $jabatan = $data->status_dirut;
                                         $statusAfter = $this->statusAfter($data, $jabatan, $statusDropdown);
                                         return $statusAfter;
                                     } else {
@@ -175,7 +180,7 @@ class PLainnyaController extends Controller
                                     break;
 
                                 default:
-                                    $jabatan = $data->status_dirops;
+                                    $jabatan = $data->status_dirut;
                                     $statusAfter = $this->statusAfter($data, $jabatan, $statusDropdown);
                                     return $statusAfter;
                                     break;
@@ -242,7 +247,7 @@ class PLainnyaController extends Controller
                         case 'Pimpinan Cabang':
                             $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
                             break;
-                        # Pembukuan, Dirops & TSi...
+                        # Pembukuan, dirut & TSi...
                         case 'Pembukuan':
                         case 'Direktur Operasional':
                         case 'TSI':
@@ -297,7 +302,7 @@ class PLainnyaController extends Controller
 
         $data = new PLainnya();
         $data->id_cabang = auth()->user()->id_cabang;
-        $data->nama_creator = auth()->user()->nama;
+        $data->nama_kaops = auth()->user()->nama;
         $data->kode_form = $nomer;
         $data->jns_pengajuan = $request->jns_pengajuan;
         $data->detail_kerusakan = $request->detail_kerusakan;
@@ -500,10 +505,11 @@ class PLainnyaController extends Controller
                 break;
 
             case 'Direktur Operasional':
+            case 'Direktur Utama':
                 $data->update([
-                    'nama_dirops' => $nama,
-                    'status_dirops' => 'Approve',
-                    'tgl_status_dirops' => now(),
+                    'nama_dirut' => $nama,
+                    'status_dirut' => 'Approve',
+                    'tgl_status_dirut' => now(),
                     'catatan_dirops' => $request->catatan,
                     'tgl_status_akhir' => now(),
                     'status_akhir' => 'Selesai',
@@ -638,10 +644,11 @@ class PLainnyaController extends Controller
                 break;
 
             case 'Direktur Operasional':
+            case 'Direktur Utama':
                 $data->update([
-                    'nama_dirops' => $nama,
-                    'status_dirops' => 'Reject',
-                    'tgl_status_dirops' => now(),
+                    'nama_dirut' => $nama,
+                    'status_dirut' => 'Reject',
+                    'tgl_status_dirut' => now(),
                     'catatan_dirops' => $request->catatan,
                     'status_akhir' => 'Ditolak',
                     'tgl_status_akhir' => now(),

@@ -113,10 +113,9 @@
         <div class="card-body">
             <table class="table table-striped">
                 <tr>
-                    <th>Creator</th>
+                    <th>Nama Maker</th>
                     <td>
-                        {{ $inventaris->nama_kaops }} -
-                        {{ $inventaris->created_at ? $inventaris->created_at->translatedFormat('d F Y, H:i') : ' ' }}
+                        {{ $inventaris->nama_kaops }}
                     </td>
                 </tr>
                 <tr>
@@ -176,7 +175,7 @@
                     <th>Status Akhir</th>
                     <td>
                         {{ $inventaris->status_akhir }} -
-                        {{ $inventaris->updated_at ? $inventaris->updated_at->translatedFormat('d F Y, H:i') : ' ' }}
+                        {{ $inventaris->tgl_status_akhir ? $inventaris->tgl_status_akhir->translatedFormat('d F Y, H:i') : ' ' }}
                     </td>
                 </tr>
 

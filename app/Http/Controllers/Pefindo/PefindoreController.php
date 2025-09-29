@@ -258,6 +258,7 @@ class PefindoreController extends Controller
 
         $data = new PefindoRe();
         $data->id_cabang = auth()->user()->id_cabang;
+        $data->nama_kaops = auth()->user()->nama;
         $data->kode_form = $nomer;
         $data->keperluan = $request->keperluan;
         $data->nik = $request->nik;

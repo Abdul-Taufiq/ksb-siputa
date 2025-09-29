@@ -173,10 +173,9 @@
         <div class="card-body">
             <table class="table table-striped">
                 <tr>
-                    <th>Creator</th>
+                    <th>Nama Maker</th>
                     <td>
-                        {{ $inventarisPengganti->nama_kaops }} -
-                        {{ $inventarisPengganti->created_at ? $inventarisPengganti->created_at->translatedFormat('d F Y, H:i') : ' ' }}
+                        {{ $inventarisPengganti->nama_kaops }}
                     </td>
                 </tr>
                 <tr>
@@ -197,22 +196,22 @@
                     <th>Catatan Pembukuan</th>
                     <td>{{ $inventarisPengganti->catatan_pembukuan }}</td>
                 </tr>
-                <tr>
+                {{-- <tr>
                     <th>DirOps Approve?</th>
                     <td>
                         {{ $inventarisPengganti->status_dirops }} -
                         {{ $inventarisPengganti->tgl_status_dirops ? $inventarisPengganti->tgl_status_dirops->translatedFormat('d F Y, H:i') : ' ' }}
                     </td>
-                </tr>
+                </tr> --}}
                 <tr>
                     <th>Dirut Approve?</th>
                     <td>
-                        {{ $inventarisPengganti->status_dirut }} -
+                        {{ $inventarisPengganti->nama_dirut }} - {{ $inventarisPengganti->status_dirut }} -
                         {{ $inventarisPengganti->tgl_status_dirut ? $inventarisPengganti->tgl_status_dirut->translatedFormat('d F Y, H:i') : ' ' }}
                     </td>
                 </tr>
                 <tr>
-                    <th>Catatan DirOps</th>
+                    <th>Catatan Dirut</th>
                     <td>{{ $inventarisPengganti->catatan_dirops }}</td>
                 </tr>
 
@@ -236,7 +235,7 @@
                     <th>Status Akhir</th>
                     <td>
                         {{ $inventarisPengganti->status_akhir }} -
-                        {{ $inventarisPengganti->updated_at ? $inventarisPengganti->updated_at->translatedFormat('d F Y, H:i') : ' ' }}
+                        {{ $inventarisPengganti->tgl_status_akhir ? $inventarisPengganti->tgl_status_akhir->translatedFormat('d F Y, H:i') : ' ' }}
                     </td>
                 </tr>
 

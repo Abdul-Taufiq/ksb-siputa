@@ -84,6 +84,12 @@
         <div class="card-body">
             <table style="width: 100%" class="table table-striped">
                 <tr>
+                    <th>Nama Maker</th>
+                    <td>
+                        {{ $pslik->nama_kaops }}
+                    </td>
+                </tr>
+                <tr>
                     <th>Pincab Approve?</th>
                     <td>
                         {{ $pslik->status_pincab }} -

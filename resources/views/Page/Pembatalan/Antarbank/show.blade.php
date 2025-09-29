@@ -72,10 +72,9 @@
         <div class="card-body">
             <table style="width: 100%" class="table table-striped">
                 <tr>
-                    <th>Creator</th>
+                    <th>Nama Maker</th>
                     <td>
-                        {{ $antarbank->nama_kaops }} -
-                        {{ $antarbank->created_at ? $antarbank->created_at->translatedFormat('d F Y, H:i') : ' ' }}
+                        {{ $antarbank->nama_kaops }}
                     </td>
                 </tr>
                 <tr>

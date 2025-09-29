@@ -241,7 +241,7 @@ $(document).ready(function () {
                 }
 
                 var catatan_tsi = document.getElementById("catatan_tsi");
-                if (jabatan == "Direktur Operasional") {
+                if (jabatan == "Direktur Operasional" || jabatan == "Direktur Utama") {
                     if (
                         data.inventaris.jns_pembelian ==
                         "Pembelian Dengan Speksifikasi KPM"

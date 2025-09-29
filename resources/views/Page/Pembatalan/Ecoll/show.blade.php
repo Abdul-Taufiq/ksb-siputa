@@ -77,10 +77,9 @@
         <div class="card-body">
             <table style="width: 100%" class="table table-striped">
                 <tr>
-                    <th>Creator</th>
+                    <th>Nama Maker</th>
                     <td>
-                        {{ $pEcoll->nama_kaops }} -
-                        {{ $pEcoll->created_at ? $pEcoll->created_at->translatedFormat('d F Y, H:i') : ' ' }}
+                        {{ $pEcoll->nama_kaops }}
                     </td>
                 </tr>
                 <tr>

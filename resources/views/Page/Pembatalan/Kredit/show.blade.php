@@ -78,10 +78,9 @@
         <div class="card-body">
             <table style="width: 100%" class="table table-striped">
                 <tr>
-                    <th>Creator</th>
+                    <th>Nama Maker</th>
                     <td>
-                        {{ $kredit->nama_kaops }} -
-                        {{ $kredit->created_at ? $kredit->created_at->translatedFormat('d F Y, H:i') : ' ' }}
+                        {{ $kredit->nama_kaops }}
                     </td>
                 </tr>
                 <tr>

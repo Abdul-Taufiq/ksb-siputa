@@ -73,6 +73,11 @@
             <table style="width: 100%" class="table table-striped">
 
                 <tr>
+                    <th>Nama Maker</th>
+                    <td> {{ $emailP->nama_kaops }}
+                    </td>
+                </tr>
+                <tr>
                     <th>Pincab Approve?</th>
                     <td> {{ $emailP->status_pincab }} -
                         {{ $emailP->tgl_status_pincab ? $emailP->tgl_status_pincab->translatedFormat('d F Y, H:i') : ' ' }}

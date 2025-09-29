@@ -82,10 +82,9 @@
         <div class="card-body">
             <table style="width: 100%" class="table table-striped">
                 <tr>
-                    <th>Creator</th>
+                    <th>Nama Maker</th>
                     <td>
-                        {{ $cif->nama_kaops }} -
-                        {{ $cif->created_at ? $cif->created_at->translatedFormat('d F Y, H:i') : ' ' }}
+                        {{ $cif->nama_kaops }}
                     </td>
                 </tr>
                 <tr>

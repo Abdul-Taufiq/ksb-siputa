@@ -36,7 +36,7 @@
             border-bottom: 1px solid #ddd;
             text-align: left;
             vertical-align: center;
-            height: 15px;
+            height: 20px;
         }
 
         .spesial {
@@ -49,13 +49,13 @@
 <body>
     <div class="card card-outline card-primary">
         <div class="card-header">
-            <h3><b>Data Pengajuan </b></h3>
+            <h3 style="text-transform: uppercase; color: green"><b>Data Pengajuan </b></h3>
             <hr>
         </div>
         <div class="card-body">
             <table class="spesial">
                 <tr>
-                    <th>Kode</th>
+                    <th style="width: 35%">Kode</th>
                     <td>{{ $penjualan->kode_form }}</td>
                 </tr>
                 <tr>
@@ -96,9 +96,10 @@
         <div class="card card-outline card-primary mb-0"></div>
     </div>
 
+    <br>
     <div class="card card-outline card-warning">
         <div class="card-header">
-            <h3><b>Data Barang (Perbandingan)</b></h3>
+            <h3 style="text-transform: uppercase; color: green"><b>Data Barang (Perbandingan)</b></h3>
             <hr>
         </div>
         <div class="card-body">
@@ -126,18 +127,18 @@
         <div class="card card-outline card-warning mb-0"></div>
     </div>
 
+    <br>
     <div class="card card-outline card-danger">
         <div class="card-header">
-            <h3><b>Tracking </b></h3>
+            <h3 style="text-transform: uppercase; color: green"><b>Tracking </b></h3>
             <hr>
         </div>
         <div class="card-body">
             <table class="spesial">
                 <tr>
-                    <th>Creator</th>
+                    <th style="width: 30%">Nama Maker</th>
                     <td>
-                        {{ $penjualan->nama_kaops }} -
-                        {{ $penjualan->created_at ? $penjualan->created_at->translatedFormat('d F Y, H:i') : ' ' }}
+                        {{ $penjualan->nama_kaops }}
                     </td>
                 </tr>
                 <tr>
@@ -181,7 +182,7 @@
                     <th>Status Akhir</th>
                     <td>
                         {{ $penjualan->status_akhir }} -
-                        {{ $penjualan->updated_at ? $penjualan->updated_at->translatedFormat('d F Y, H:i') : ' ' }}
+                        {{ $penjualan->tgl_status_akhir ? $penjualan->tgl_status_akhir->translatedFormat('d F Y, H:i') : ' ' }}
                     </td>
                 </tr>
 

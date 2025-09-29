@@ -97,10 +97,9 @@
         <div class="card-body">
             <table class="table table-striped">
                 <tr>
-                    <th>Creator</th>
+                    <th>Nama Maker</th>
                     <td>
-                        {{ $pemeliharaan->nama_kaops }} -
-                        {{ $pemeliharaan->created_at ? $pemeliharaan->created_at->translatedFormat('d F Y, H:i') : ' ' }}
+                        {{ $pemeliharaan->nama_kaops }}
                     </td>
                 </tr>
 

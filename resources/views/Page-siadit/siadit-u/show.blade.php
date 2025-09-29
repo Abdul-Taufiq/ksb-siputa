@@ -84,6 +84,11 @@
             <table style="width: 100%" class="table table-striped">
 
                 <tr>
+                    <th>Nama Maker</th>
+                    <td> {{ $uSiadit->nama_kaops }}
+                    </td>
+                </tr>
+                <tr>
                     <th>Pincab Approve?</th>
                     <td> {{ $uSiadit->status_pincab }} -
                         {{ $uSiadit->tgl_status_pincab ? $uSiadit->tgl_status_pincab->translatedFormat('d F Y, H:i') : ' ' }}

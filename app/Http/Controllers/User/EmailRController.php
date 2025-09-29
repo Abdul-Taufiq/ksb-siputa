@@ -168,7 +168,7 @@ class EmailRController extends Controller
 
                     # code pembagian user Aksi
                     switch (auth()->user()->jabatan) {
-                            # Kaops...
+                        # Kaops...
                         case 'Kasi Operasional':
                         case 'Kasi Komersial':
                             if ($data->status_pincab == "Approve" || $data->status_pincab == "Reject") {
@@ -180,7 +180,7 @@ class EmailRController extends Controller
                                 $button .= '&nbsp;';
                             }
                             break;
-                            # area...
+                        # area...
                         case 'Analis Area':
                         case 'Staf Area':
                             if ($data->status_sdm != null) {
@@ -192,11 +192,11 @@ class EmailRController extends Controller
                                 $button .= '&nbsp;';
                             }
                             break;
-                            # Pincab...
+                        # Pincab...
                         case 'Pimpinan Cabang':
                             $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
                             break;
-                            # SDM, Dirops & TSi...
+                        # SDM, Dirops & TSi...
                         case 'SDM':
                         case 'Direktur Operasional':
                         case 'TSI':
@@ -260,6 +260,7 @@ class EmailRController extends Controller
 
         $data = new EmailR();
         $data->id_cabang = auth()->user()->id_cabang;
+        $data->nama_kaops = auth()->user()->nama;
         $data->kode_form = $nomer;
         $data->keperluan = $request->keperluan;
         $data->nik = $request->nik;

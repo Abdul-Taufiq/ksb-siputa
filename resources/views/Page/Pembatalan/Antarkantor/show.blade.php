@@ -66,10 +66,9 @@
         <div class="card-body">
             <table style="width: 100%" class="table table-striped">
                 <tr>
-                    <th>Creator</th>
+                    <th>Nama Maker</th>
                     <td>
-                        {{ $antarkantor->nama_kaops }} -
-                        {{ $antarkantor->created_at ? $antarkantor->created_at->translatedFormat('d F Y, H:i') : ' ' }}
+                        {{ $antarkantor->nama_kaops }}
                     </td>
                 </tr>
                 <tr>

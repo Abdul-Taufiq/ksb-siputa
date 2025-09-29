@@ -75,10 +75,9 @@
         <div class="card-body">
             <table style="width: 100%" class="table table-striped">
                 <tr>
-                    <th>Creator</th>
+                    <th>Nama Maker</th>
                     <td>
-                        {{ $inventaris->nama_kaops }} -
-                        {{ $inventaris->created_at ? $inventaris->created_at->translatedFormat('d F Y, H:i') : ' ' }}
+                        {{ $inventaris->nama_kaops }}
                     </td>
                 </tr>
                 <tr>

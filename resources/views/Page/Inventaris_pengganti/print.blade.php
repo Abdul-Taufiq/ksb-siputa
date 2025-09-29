@@ -36,7 +36,7 @@
             border-bottom: 1px solid #ddd;
             text-align: left;
             vertical-align: center;
-            height: 15px;
+            height: 20px;
         }
 
         .spesial {
@@ -49,13 +49,13 @@
 <body>
     <div class="card card-outline card-primary">
         <div class="card-header">
-            <h3><b>Data Pengajuan </b></h3>
+            <h3 style="text-transform: uppercase; color: green"><b>Data Pengajuan </b></h3>
             <hr>
         </div>
         <div class="card-body">
             <table class="spesial">
                 <tr>
-                    <th>Kode</th>
+                    <th style="width: 35%">Kode</th>
                     <td>{{ $inventarisPengganti->kode_form }}</td>
                 </tr>
                 <tr>
@@ -99,7 +99,7 @@
     <br>
     <div class="card card-outline card-secondary">
         <div class="card-header">
-            <h3><b>Data Barang Yang Akan Diganti </b></h3>
+            <h3 style="text-transform: uppercase; color: green"><b>Data Barang Yang Akan Diganti </b></h3>
             <hr>
         </div>
         <div class="card-body">
@@ -129,7 +129,7 @@
     <br>
     <div class="card card-outline card-warning">
         <div class="card-header">
-            <h3><b>History Pemeliharaan Barang</b></h3>
+            <h3 style="text-transform: uppercase; color: green"><b>History Pemeliharaan Barang</b></h3>
             <hr>
         </div>
         <div class="card-body">
@@ -162,7 +162,7 @@
     <br>
     <div class="card card-outline card-success">
         <div class="card-header">
-            <h3><b>Data Barang (Perbandingan) </b></h3>
+            <h3 style="text-transform: uppercase; color: green"><b>Data Barang (Perbandingan) </b></h3>
             <hr>
         </div>
         <div class="card-body">
@@ -202,16 +202,15 @@
     <br>
     <div class="card card-outline card-danger">
         <div class="card-header">
-            <h3><b>Tracking</b></h3>
+            <h3 style="text-transform: uppercase; color: green"><b>Tracking</b></h3>
             <hr>
         </div>
         <div class="card-body">
             <table class="spesial">
                 <tr>
-                    <th>Creator</th>
+                    <th style="width: 35%">Nama Maker</th>
                     <td>
-                        {{ $inventarisPengganti->nama_kaops }} -
-                        {{ $inventarisPengganti->created_at ? $inventarisPengganti->created_at->translatedFormat('d F Y, H:i') : ' ' }}
+                        {{ $inventarisPengganti->nama_kaops }}
                     </td>
                 </tr>
                 <tr>
@@ -232,22 +231,22 @@
                     <th>Catatan Pembukuan</th>
                     <td>{{ $inventarisPengganti->catatan_pembukuan }}</td>
                 </tr>
-                <tr>
+                {{-- <tr>
                     <th>DirOps Approve?</th>
                     <td>
                         {{ $inventarisPengganti->status_dirops }} -
                         {{ $inventarisPengganti->tgl_status_dirops ? $inventarisPengganti->tgl_status_dirops->translatedFormat('d F Y, H:i') : ' ' }}
                     </td>
-                </tr>
+                </tr> --}}
                 <tr>
                     <th>Dirut Approve?</th>
                     <td>
-                        {{ $inventarisPengganti->status_dirut }} -
+                        {{ $inventarisPengganti->nama_dirut }} - {{ $inventarisPengganti->status_dirut }} -
                         {{ $inventarisPengganti->tgl_status_dirut ? $inventarisPengganti->tgl_status_dirut->translatedFormat('d F Y, H:i') : ' ' }}
                     </td>
                 </tr>
                 <tr>
-                    <th>Catatan DirOps</th>
+                    <th>Catatan Dirut</th>
                     <td>{{ $inventarisPengganti->catatan_dirops }}</td>
                 </tr>
 

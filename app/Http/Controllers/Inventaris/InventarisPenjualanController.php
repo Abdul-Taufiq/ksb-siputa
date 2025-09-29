@@ -79,6 +79,7 @@ class InventarisPenjualanController extends Controller
                     }
                     break;
                 case 'Direktur Operasional':
+                case 'Direktur Utama':
                     if (!empty($request->kode)) {
                         $data = Penjualan::where('kode_form', $kode)
                             ->OrderBy('created_at', 'desc')->get();
@@ -101,13 +102,13 @@ class InventarisPenjualanController extends Controller
                             ->OrderBy('created_at', 'desc')->get();
                     } else {
                         if (!empty($request->min)) {
-                            $data = Penjualan::where('status_dirops', 'Approve')
+                            $data = Penjualan::where('status_dirut', 'Approve')
                                 ->orWhere('status_pembukuan', 'Approve')
                                 ->whereBetween('created_at', [$awal, $akhir])
                                 ->when($reqCabang != 99, fn($query) => $query->where('id_cabang', $reqCabang))
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
-                            $data = Penjualan::where('status_dirops', 'Approve')->orWhere('status_pembukuan', 'Approve')->orderBy('created_at', 'desc')->get();
+                            $data = Penjualan::where('status_dirut', 'Approve')->orWhere('status_pembukuan', 'Approve')->orderBy('created_at', 'desc')->get();
                         }
                     }
                     break;
@@ -133,7 +134,7 @@ class InventarisPenjualanController extends Controller
                         case 'Kepala Kantor Kas':
                             if ($data->status_akhir == 'Selesai') {
                                 $status .= '<a class="btn btn-success btn-sm disabled">Selesai</a>';
-                            } elseif ($data->status_dirops == 'Approve') {
+                            } elseif ($data->status_dirut == 'Approve') {
                                 $status = '';
                                 $status .= '<div class="dropdown">';
                                 $status .= '<button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="statusDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
@@ -161,8 +162,17 @@ class InventarisPenjualanController extends Controller
                             break;
 
                         case 'Direktur Operasional':
+                            $status .= '<a class="btn btn-info btn-sm disabled">NotNeeded</a>';
+                            // if ($data->status_pembukuan != null) {
+                            //     $jabatan = $data->status_dirut;
+                            //     $statusAfter = $this->statusAfter($data, $jabatan, $statusDropdown);
+                            //     return $statusAfter;
+                            // }
+                            break;
+
+                        case 'Direktur Utama':
                             if ($data->status_pembukuan != null) {
-                                $jabatan = $data->status_dirops;
+                                $jabatan = $data->status_dirut;
                                 $statusAfter = $this->statusAfter($data, $jabatan, $statusDropdown);
                                 return $statusAfter;
                             }
@@ -202,9 +212,10 @@ class InventarisPenjualanController extends Controller
                         case 'Pimpinan Cabang':
                             $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
                             break;
-                        # Pembukuan, Dirops & TSi...
+                        # Pembukuan, dirut & TSi...
                         case 'Pembukuan':
                         case 'Direktur Operasional':
+                        case 'Direktur Utama':
                             $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
                             break;
                     }
@@ -481,16 +492,17 @@ class InventarisPenjualanController extends Controller
                 break;
 
             case 'Direktur Operasional':
+            case 'Direktur Utama':
                 $data->update([
-                    'nama_dirops' => $nama,
-                    'status_dirops' => 'Approve',
-                    'tgl_status_dirops' => now(),
+                    'nama_dirut' => $nama,
+                    'status_dirut' => 'Approve',
+                    'tgl_status_dirut' => now(),
                     'catatan_dirops' => $request->catatan,
                     'status_akhir' => 'Proses',
 
-                    'nama_dirut' => 'Eko Bambang Setiyoso',
-                    'status_dirut' => 'Approve',
-                    'tgl_status_dirut' => now()->addMinutes(rand(0, 60)),
+                    // 'nama_dirut' => 'Eko Bambang Setiyoso',
+                    // 'status_dirut' => 'Approve',
+                    // 'tgl_status_dirut' => now()->addMinutes(rand(0, 60)),
                 ]);
 
                 $userPenerima = User::where('jabatan', 'Kasi Operasional')->first();
@@ -587,10 +599,11 @@ class InventarisPenjualanController extends Controller
                 break;
 
             case 'Direktur Operasional':
+            case 'Direktur Dirut':
                 $data->update([
-                    'nama_dirops' => $nama,
-                    'status_dirops' => 'Reject',
-                    'tgl_status_dirops' => now(),
+                    'nama_dirut' => $nama,
+                    'status_dirut' => 'Reject',
+                    'tgl_status_dirut' => now(),
                     'catatan_dirops' => $request->catatan,
                     'status_akhir' => 'Ditolak',
                     'tgl_status_akhir' => now(),

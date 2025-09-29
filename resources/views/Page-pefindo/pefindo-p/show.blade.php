@@ -85,6 +85,12 @@
             <table style="width: 100%" class="table table-striped">
 
                 <tr>
+                    <th>Nama Maker</th>
+                    <td>
+                        {{ $pefindo->nama_kaops }}
+                    </td>
+                </tr>
+                <tr>
                     <th>Pincab Approve?</th>
                     <td>
                         {{ $pefindo->status_pincab }} -

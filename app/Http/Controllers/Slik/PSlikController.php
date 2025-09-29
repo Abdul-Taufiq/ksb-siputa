@@ -254,6 +254,7 @@ class PSlikController extends Controller
 
         $data = new Pslik();
         $data->id_cabang = auth()->user()->id_cabang;
+        $data->nama_kaops = auth()->user()->nama;
         $data->kode_form = $nomer;
         $data->keperluan = $request->keperluan;
         $data->nik = $request->nik;

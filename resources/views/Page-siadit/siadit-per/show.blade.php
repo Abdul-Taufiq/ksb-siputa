@@ -79,10 +79,9 @@
         <div class="card-body">
             <table style="width: 100%" class="table table-striped">
                 <tr>
-                    <th>Creator</th>
+                    <th>Nama Maker</th>
                     <td>
-                        {{ $pSiadit->nama_kaops }} -
-                        {{ $pSiadit->created_at ? $pSiadit->created_at->translatedFormat('d F Y, H:i') : ' ' }}
+                        {{ $pSiadit->nama_kaops }}
                     </td>
                 </tr>
                 {{-- wajib --}}

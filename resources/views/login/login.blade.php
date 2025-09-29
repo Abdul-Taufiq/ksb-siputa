@@ -171,7 +171,7 @@
         <script>
             Swal.fire({
                 title: 'Gagal Login nihh!',
-                html: 'User atau password yang kamu masukin salah! <br> <i>Note: Pastikan bahwa user kamu terdaftar dalam aplikasi atau hubungi bagian TSI KSB </i>  <br> <i>#Salam Hangat TSI|KSB</i> 😉',
+                html: '{{ session('loginError') }}',
                 icon: 'error',
                 confirmButtonText: 'OK'
             });

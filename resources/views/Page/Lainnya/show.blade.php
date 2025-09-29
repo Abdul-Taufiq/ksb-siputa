@@ -82,10 +82,10 @@
             <table style="width: 100%" class="table table-striped">
 
                 <tr>
-                    <th style="width: 20%">Nama Creator</th>
+                    <th style="width: 20%">Nama Maker</th>
                     <td style="width: 1%">:</td>
                     <td>
-                        {{ $pLainnya->nama_creator }}
+                        {{ $pLainnya->nama_kaops }}
                     </td>
                 </tr>
                 <tr>

@@ -17,20 +17,16 @@ class CekLevel
     public function handle(Request $request, Closure $next, ...$levels)
     {
 
-        if (in_array($request->user()->jabatan,$levels)) {
+        if (in_array($request->user()->jabatan, $levels)) {
             return $next($request);
-        } 
-        elseif ($request->user()->jabatan == 'Direktur Operasional' || $request->user()->jabatan == 'SDM' || $request->user()->jabatan == 'TSI'|| $request->user()->jabatan == 'Pembukuan') {
+        } elseif ($request->user()->jabatan == 'Direktur Utama' || $request->user()->jabatan == 'Direktur Operasional' || $request->user()->jabatan == 'SDM' || $request->user()->jabatan == 'TSI' || $request->user()->jabatan == 'Pembukuan') {
             return $next($request);
-
         } elseif ($request->user()->level == 'MEDIUM USER') {
             $request->query->add(['id_cabang' => $request->user()->id_cabang]);
             $request->query->add(['nama' => $request->user()->nama]);
             return $next($request);
         }
 
-       return redirect('/home');
-
-
+        return redirect('/home');
     }
 }

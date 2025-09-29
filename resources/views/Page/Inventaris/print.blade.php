@@ -36,7 +36,8 @@
             border-bottom: 1px solid #ddd;
             text-align: left;
             vertical-align: center;
-            height: 15px;
+            /* border-spacing: 12px; */
+            height: 20px;
         }
 
         .spesial {
@@ -49,13 +50,13 @@
 <body>
     <div class="card card-outline card-primary">
         <div class="card-header">
-            <h3><b>Data Pengajuan </b></h3>
+            <h3 style="text-transform: uppercase; color: green"><b>Data Pengajuan </b></h3>
             <hr>
         </div>
         <div class="card-body">
             <table class="spesial">
                 <tr>
-                    <th>Kode</th>
+                    <th style="width: 35%">Kode</th>
                     <td>{{ $inventaris->kode_form }}</td>
                 </tr>
                 <tr>
@@ -96,9 +97,10 @@
         <div class="card card-outline card-primary mb-0"></div>
     </div>
 
+    <br>
     <div class="card card-outline card-warning">
         <div class="card-header">
-            <h3><b>Data Barang (Perbandingan)</b></h3>
+            <h3 style="text-transform: uppercase; color: green"><b>Data Barang (Perbandingan)</b></h3>
             <hr>
         </div>
         <div class="card-body">
@@ -134,19 +136,19 @@
         </div>
         <div class="card card-outline card-warning mb-0"></div>
     </div>
+    <br>
 
     <div class="card card-outline card-danger">
         <div class="card-header">
-            <h3><b>Tracking </b></h3>
+            <h3 style="text-transform: uppercase; color: green"><b>Tracking </b></h3>
             <hr>
         </div>
         <div class="card-body">
             <table class="spesial">
                 <tr>
-                    <th>Creator</th>
+                    <th style="width: 30%">Nama Maker</th>
                     <td>
-                        {{ $inventaris->nama_kaops }} -
-                        {{ $inventaris->created_at ? $inventaris->created_at->translatedFormat('d F Y, H:i') : ' ' }}
+                        {{ $inventaris->nama_kaops }}
                     </td>
                 </tr>
                 <tr>

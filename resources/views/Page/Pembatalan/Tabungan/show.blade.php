@@ -74,10 +74,9 @@
         <div class="card-body">
             <table style="width: 100%" class="table table-striped">
                 <tr>
-                    <th>Creator</th>
+                    <th>Nama Maker</th>
                     <td>
-                        {{ $tabungan->nama_kaops }} -
-                        {{ $tabungan->created_at ? $tabungan->created_at->translatedFormat('d F Y, H:i') : ' ' }}
+                        {{ $tabungan->nama_kaops }}
                     </td>
                 </tr>
                 <tr>
