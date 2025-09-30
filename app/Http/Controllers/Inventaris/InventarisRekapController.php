@@ -41,25 +41,19 @@ class InventarisRekapController extends Controller
                     // setting tanggal akhir apakah null apa tidak
                     if ($max == '11-11-1111') {
                         // Pembelian Baru
-                        $pembelian = Inventaris::with(['BarangBaru' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $pembelian = Inventaris::with('BarangBaru')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
 
                         // Pembelian Pengganti
-                        $pengganti = InventarisPengganti::with(['BarangBaruPengganti' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }, 'diganti'])
+                        $pengganti = InventarisPengganti::with('BarangBaruPengganti')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
 
                         // Penjualan
-                        $penjualan = Penjualan::with(['penawar' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $penjualan = Penjualan::with('penawar')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
@@ -67,25 +61,19 @@ class InventarisRekapController extends Controller
                     // jika max tidak null 
                     else {
                         // Pembelian Baru
-                        $pembelian = Inventaris::with(['BarangBaru' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $pembelian = Inventaris::with('BarangBaru')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
 
                         // Pembelian Pengganti
-                        $pengganti = InventarisPengganti::with(['BarangBaruPengganti' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }, 'diganti'])
+                        $pengganti = InventarisPengganti::with('BarangBaruPengganti')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
 
                         // Penjualan
-                        $penjualan = Penjualan::with(['penawar' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $penjualan = Penjualan::with('penawar')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
@@ -98,9 +86,7 @@ class InventarisRekapController extends Controller
                     // setting tanggal akhir apakah null apa tidak
                     if ($max == '11-11-1111') {
                         // Pembelian Baru
-                        $pembelian = Inventaris::with(['BarangBaru' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $pembelian = Inventaris::with('BarangBaru')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
@@ -108,9 +94,7 @@ class InventarisRekapController extends Controller
                     // jika max tidak null 
                     else {
                         // Pembelian Baru
-                        $pembelian = Inventaris::with(['BarangBaru' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $pembelian = Inventaris::with('BarangBaru')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
@@ -123,9 +107,7 @@ class InventarisRekapController extends Controller
                     // setting tanggal akhir apakah null apa tidak
                     if ($max == '11-11-1111') {
                         // Pembelian Pengganti
-                        $pengganti = InventarisPengganti::with(['BarangBaruPengganti' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }, 'diganti'])
+                        $pengganti = InventarisPengganti::with('BarangBaruPengganti')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
@@ -133,9 +115,7 @@ class InventarisRekapController extends Controller
                     // jika max tidak null 
                     else {
                         // Pembelian Pengganti
-                        $pengganti = InventarisPengganti::with(['BarangBaruPengganti' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }, 'diganti'])
+                        $pengganti = InventarisPengganti::with('BarangBaruPengganti')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
@@ -148,9 +128,7 @@ class InventarisRekapController extends Controller
                     // setting tanggal akhir apakah null apa tidak
                     if ($max == '11-11-1111') {
                         // Penjualan
-                        $penjualan = Penjualan::with(['penawar' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $penjualan = Penjualan::with('penawar')
                             ->whereBetween('created_at', [$awal, $akhir])
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
@@ -158,9 +136,7 @@ class InventarisRekapController extends Controller
                     // jika max tidak null 
                     else {
                         // Penjualan
-                        $penjualan = Penjualan::with(['penawar' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $penjualan = Penjualan::with('penawar')
                             ->whereBetween('created_at', [$awal, $akhir])
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
@@ -176,27 +152,21 @@ class InventarisRekapController extends Controller
                     // setting tanggal akhir apakah null apa tidak
                     if ($max == '11-11-1111') {
                         // Pembelian Baru
-                        $pembelian = Inventaris::with(['BarangBaru' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $pembelian = Inventaris::with('BarangBaru')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('id_cabang', $id_cabang)
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
 
                         // Pembelian Pengganti
-                        $pengganti = InventarisPengganti::with(['BarangBaruPengganti' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }, 'diganti'])
+                        $pengganti = InventarisPengganti::with('BarangBaruPengganti')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('id_cabang', $id_cabang)
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
 
                         // Penjualan
-                        $penjualan = Penjualan::with(['penawar' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $penjualan = Penjualan::with('penawar')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('id_cabang', $id_cabang)
                             ->where('status_akhir', 'Selesai')
@@ -205,27 +175,21 @@ class InventarisRekapController extends Controller
                     // jika max tidak null 
                     else {
                         // Pembelian Baru
-                        $pembelian = Inventaris::with(['BarangBaru' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $pembelian = Inventaris::with('BarangBaru')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('id_cabang', $id_cabang)
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
 
                         // Pembelian Pengganti
-                        $pengganti = InventarisPengganti::with(['BarangBaruPengganti' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }, 'diganti'])
+                        $pengganti = InventarisPengganti::with('BarangBaruPengganti')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('id_cabang', $id_cabang)
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
 
                         // Penjualan
-                        $penjualan = Penjualan::with(['penawar' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $penjualan = Penjualan::with('penawar')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('id_cabang', $id_cabang)
                             ->where('status_akhir', 'Selesai')
@@ -239,9 +203,7 @@ class InventarisRekapController extends Controller
                     // setting tanggal akhir apakah null apa tidak
                     if ($max == '11-11-1111') {
                         // Pembelian Baru
-                        $pembelian = Inventaris::with(['BarangBaru' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $pembelian = Inventaris::with('BarangBaru')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('id_cabang', $id_cabang)
                             ->where('status_akhir', 'Selesai')
@@ -250,9 +212,7 @@ class InventarisRekapController extends Controller
                     // jika max tidak null 
                     else {
                         // Pembelian Baru
-                        $pembelian = Inventaris::with(['BarangBaru' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $pembelian = Inventaris::with('BarangBaru')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('id_cabang', $id_cabang)
                             ->where('status_akhir', 'Selesai')
@@ -266,9 +226,7 @@ class InventarisRekapController extends Controller
                     // setting tanggal akhir apakah null apa tidak
                     if ($max == '11-11-1111') {
                         // Pembelian Pengganti
-                        $pengganti = InventarisPengganti::with(['BarangBaruPengganti' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }, 'diganti'])
+                        $pengganti = InventarisPengganti::with('BarangBaruPengganti')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('id_cabang', $id_cabang)
                             ->where('status_akhir', 'Selesai')
@@ -277,9 +235,7 @@ class InventarisRekapController extends Controller
                     // jika max tidak null 
                     else {
                         // Pembelian Pengganti
-                        $pengganti = InventarisPengganti::with(['BarangBaruPengganti' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }, 'diganti'])
+                        $pengganti = InventarisPengganti::with('BarangBaruPengganti')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('id_cabang', $id_cabang)
                             ->where('status_akhir', 'Selesai')
@@ -293,9 +249,7 @@ class InventarisRekapController extends Controller
                     // setting tanggal akhir apakah null apa tidak
                     if ($max == '11-11-1111') {
                         // Penjualan
-                        $penjualan = Penjualan::with(['penawar' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $penjualan = Penjualan::with('penawar')
                             ->whereBetween('created_at', [$awal, $akhir])
                             ->where('id_cabang', $id_cabang)
                             ->where('status_akhir', 'Selesai')
@@ -304,9 +258,7 @@ class InventarisRekapController extends Controller
                     // jika max tidak null 
                     else {
                         // Penjualan
-                        $penjualan = Penjualan::with(['penawar' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $penjualan = Penjualan::with('penawar')
                             ->whereBetween('created_at', [$awal, $akhir])
                             ->where('id_cabang', $id_cabang)
                             ->where('status_akhir', 'Selesai')
@@ -339,25 +291,19 @@ class InventarisRekapController extends Controller
                     // setting tanggal akhir apakah null apa tidak
                     if ($max == '11-11-1111') {
                         // Pembelian Baru
-                        $pembelian = Inventaris::with(['BarangBaru' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $pembelian = Inventaris::with('BarangBaru')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
 
                         // Pembelian Pengganti
-                        $pengganti = InventarisPengganti::with(['BarangBaruPengganti' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }, 'diganti'])
+                        $pengganti = InventarisPengganti::with('BarangBaruPengganti')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
 
                         // Penjualan
-                        $penjualan = Penjualan::with(['penawar' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $penjualan = Penjualan::with('penawar')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
@@ -365,32 +311,26 @@ class InventarisRekapController extends Controller
                     // jika max tidak null 
                     else {
                         // Pembelian Baru
-                        $pembelian = Inventaris::with(['BarangBaru' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $pembelian = Inventaris::with('BarangBaru')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
 
                         // Pembelian Pengganti
-                        $pengganti = InventarisPengganti::with(['BarangBaruPengganti' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }, 'diganti'])
+                        $pengganti = InventarisPengganti::with('BarangBaruPengganti')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
 
                         // Penjualan
-                        $penjualan = Penjualan::with(['penawar' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $penjualan = Penjualan::with('penawar')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
                     }
 
                     $pdf = Pdf::loadView('Page.Inventaris_rekap.print_all', compact('pembelian', 'pengganti', 'penjualan'));
-                    $pdf->setPaper('A4', 'landscape');
+                    $pdf->setPaper('Legal', 'landscape');
                     return $pdf->stream('Laporan Inventaris ' . $pilih_laporan . '-' . $id_cabang . '.pdf');
                     break;
 
@@ -398,9 +338,7 @@ class InventarisRekapController extends Controller
                     // setting tanggal akhir apakah null apa tidak
                     if ($max == '11-11-1111') {
                         // Pembelian Baru
-                        $pembelian = Inventaris::with(['BarangBaru' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $pembelian = Inventaris::with('BarangBaru')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
@@ -408,16 +346,14 @@ class InventarisRekapController extends Controller
                     // jika max tidak null 
                     else {
                         // Pembelian Baru
-                        $pembelian = Inventaris::with(['BarangBaru' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $pembelian = Inventaris::with('BarangBaru')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
                     }
 
                     $pdf = Pdf::loadView('Page.Inventaris_rekap.print_pembelian_baru', compact('pembelian'));
-                    $pdf->setPaper('A4', 'landscape');
+                    $pdf->setPaper('Legal', 'landscape');
                     return $pdf->stream('Laporan Inventaris ' . $pilih_laporan . '-' . $id_cabang . '.pdf');
                     break;
 
@@ -425,9 +361,7 @@ class InventarisRekapController extends Controller
                     // setting tanggal akhir apakah null apa tidak
                     if ($max == '11-11-1111') {
                         // Pembelian Pengganti
-                        $pengganti = InventarisPengganti::with(['BarangBaruPengganti' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }, 'diganti'])
+                        $pengganti = InventarisPengganti::with('BarangBaruPengganti')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
@@ -435,16 +369,14 @@ class InventarisRekapController extends Controller
                     // jika max tidak null 
                     else {
                         // Pembelian Pengganti
-                        $pengganti = InventarisPengganti::with(['BarangBaruPengganti' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }, 'diganti'])
+                        $pengganti = InventarisPengganti::with('BarangBaruPengganti')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
                     }
 
                     $pdf = Pdf::loadView('Page.Inventaris_rekap.print_pembelian_pengganti', compact('pengganti'));
-                    $pdf->setPaper('A4', 'landscape');
+                    $pdf->setPaper('Legal', 'landscape');
                     return $pdf->stream('Laporan Inventaris ' . $pilih_laporan . '-' . $id_cabang . '.pdf');
                     break;
 
@@ -452,9 +384,7 @@ class InventarisRekapController extends Controller
                     // setting tanggal akhir apakah null apa tidak
                     if ($max == '11-11-1111') {
                         // Penjualan
-                        $penjualan = Penjualan::with(['penawar' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $penjualan = Penjualan::with('penawar')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
@@ -462,16 +392,14 @@ class InventarisRekapController extends Controller
                     // jika max tidak null 
                     else {
                         // Penjualan
-                        $penjualan = Penjualan::with(['penawar' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $penjualan = Penjualan::with('penawar')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
                     }
 
                     $pdf = Pdf::loadView('Page.Inventaris_rekap.print_penjualan', compact('penjualan'));
-                    $pdf->setPaper('A4', 'landscape');
+                    $pdf->setPaper('Legal', 'landscape');
                     return $pdf->stream('Laporan Inventaris ' . $pilih_laporan . '-' . $id_cabang . '.pdf');
                     break;
             }
@@ -482,27 +410,21 @@ class InventarisRekapController extends Controller
                     // setting tanggal akhir apakah null apa tidak
                     if ($max == '11-11-1111') {
                         // Pembelian Baru
-                        $pembelian = Inventaris::with(['BarangBaru' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $pembelian = Inventaris::with('BarangBaru')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('id_cabang', $id_cabang)
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
 
                         // Pembelian Pengganti
-                        $pengganti = InventarisPengganti::with(['BarangBaruPengganti' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }, 'diganti'])
+                        $pengganti = InventarisPengganti::with('BarangBaruPengganti')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('id_cabang', $id_cabang)
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
 
                         // Penjualan
-                        $penjualan = Penjualan::with(['penawar' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $penjualan = Penjualan::with('penawar')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('id_cabang', $id_cabang)
                             ->where('status_akhir', 'Selesai')
@@ -511,27 +433,21 @@ class InventarisRekapController extends Controller
                     // jika max tidak null 
                     else {
                         // Pembelian Baru
-                        $pembelian = Inventaris::with(['BarangBaru' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $pembelian = Inventaris::with('BarangBaru')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('id_cabang', $id_cabang)
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
 
                         // Pembelian Pengganti
-                        $pengganti = InventarisPengganti::with(['BarangBaruPengganti' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }, 'diganti'])
+                        $pengganti = InventarisPengganti::with('BarangBaruPengganti')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('id_cabang', $id_cabang)
                             ->where('status_akhir', 'Selesai')
                             ->orderBy('tgl_status_akhir', 'desc')->get();
 
                         // Penjualan
-                        $penjualan = Penjualan::with(['penawar' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $penjualan = Penjualan::with('penawar')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('id_cabang', $id_cabang)
                             ->where('status_akhir', 'Selesai')
@@ -539,7 +455,7 @@ class InventarisRekapController extends Controller
                     }
 
                     $pdf = Pdf::loadView('Page.Inventaris_rekap.print_all', compact('pembelian', 'pengganti', 'penjualan'));
-                    $pdf->setPaper('A4', 'landscape');
+                    $pdf->setPaper('Legal', 'landscape');
                     return $pdf->stream('Laporan Inventaris ' . $pilih_laporan . '-' . $id_cabang . '.pdf');
                     break;
 
@@ -547,9 +463,7 @@ class InventarisRekapController extends Controller
                     // setting tanggal akhir apakah null apa tidak
                     if ($max == '11-11-1111') {
                         // Pembelian Baru
-                        $pembelian = Inventaris::with(['BarangBaru' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $pembelian = Inventaris::with('BarangBaru')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('id_cabang', $id_cabang)
                             ->where('status_akhir', 'Selesai')
@@ -558,9 +472,7 @@ class InventarisRekapController extends Controller
                     // jika max tidak null 
                     else {
                         // Pembelian Baru
-                        $pembelian = Inventaris::with(['BarangBaru' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $pembelian = Inventaris::with('BarangBaru')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('id_cabang', $id_cabang)
                             ->where('status_akhir', 'Selesai')
@@ -568,7 +480,7 @@ class InventarisRekapController extends Controller
                     }
 
                     $pdf = Pdf::loadView('Page.Inventaris_rekap.print_pembelian_baru', compact('pembelian'));
-                    $pdf->setPaper('A4', 'landscape');
+                    $pdf->setPaper('Legal', 'landscape');
                     return $pdf->stream('Laporan Inventaris ' . $pilih_laporan . '-' . $id_cabang . '.pdf');
                     break;
 
@@ -576,9 +488,7 @@ class InventarisRekapController extends Controller
                     // setting tanggal akhir apakah null apa tidak
                     if ($max == '11-11-1111') {
                         // Pembelian Pengganti
-                        $pengganti = InventarisPengganti::with(['BarangBaruPengganti' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }, 'diganti'])
+                        $pengganti = InventarisPengganti::with('BarangBaruPengganti')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('id_cabang', $id_cabang)
                             ->where('status_akhir', 'Selesai')
@@ -587,9 +497,7 @@ class InventarisRekapController extends Controller
                     // jika max tidak null 
                     else {
                         // Pembelian Pengganti
-                        $pengganti = InventarisPengganti::with(['BarangBaruPengganti' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }, 'diganti'])
+                        $pengganti = InventarisPengganti::with('BarangBaruPengganti')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('id_cabang', $id_cabang)
                             ->where('status_akhir', 'Selesai')
@@ -597,7 +505,7 @@ class InventarisRekapController extends Controller
                     }
 
                     $pdf = Pdf::loadView('Page.Inventaris_rekap.print_pembelian_pengganti', compact('pengganti'));
-                    $pdf->setPaper('A4', 'landscape');
+                    $pdf->setPaper('Legal', 'landscape');
                     return $pdf->stream('Laporan Inventaris ' . $pilih_laporan . '-' . $id_cabang . '.pdf');
                     break;
 
@@ -605,9 +513,7 @@ class InventarisRekapController extends Controller
                     // setting tanggal akhir apakah null apa tidak
                     if ($max == '11-11-1111') {
                         // Penjualan
-                        $penjualan = Penjualan::with(['penawar' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $penjualan = Penjualan::with('penawar')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('id_cabang', $id_cabang)
                             ->where('status_akhir', 'Selesai')
@@ -616,9 +522,7 @@ class InventarisRekapController extends Controller
                     // jika max tidak null 
                     else {
                         // Penjualan
-                        $penjualan = Penjualan::with(['penawar' => function ($query) {
-                            $query->where('dipilih', 'True');
-                        }])
+                        $penjualan = Penjualan::with('penawar')
                             ->whereBetween('tgl_status_akhir', [$awal, $akhir])
                             ->where('id_cabang', $id_cabang)
                             ->where('status_akhir', 'Selesai')
@@ -626,7 +530,7 @@ class InventarisRekapController extends Controller
                     }
 
                     $pdf = Pdf::loadView('Page.Inventaris_rekap.print_penjualan', compact('penjualan'));
-                    $pdf->setPaper('A4', 'landscape');
+                    $pdf->setPaper('Legal', 'landscape');
                     return $pdf->stream('Laporan Inventaris ' . $pilih_laporan . '-' . $id_cabang . '.pdf');
                     break;
             }

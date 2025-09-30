@@ -82,6 +82,7 @@
 
             {{-- Direktur Operasional --}}
             @case('Direktur Operasional')
+            @case('Direktur Utama')
                 @include('home.dirops')
             @break
 

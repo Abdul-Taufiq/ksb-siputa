@@ -232,7 +232,7 @@ $(document).ready(function () {
                     if (
                         jns_pembelian ==
                             "Pembelian Dengan Speksifikasi Cabang" &&
-                        data.harga_terkecil <= 500000
+                        data.harga_terkecil <= 1000000
                     ) {
                         selectPincab.classList.remove("d-none");
                     } else {

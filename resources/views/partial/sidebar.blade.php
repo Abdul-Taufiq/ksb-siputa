@@ -148,7 +148,9 @@
                 </li>
 
 
-                @if (auth()->user()->jabatan != 'Pembukuan' && auth()->user()->jabatan != 'Sekretariat')
+                @if (auth()->user()->jabatan != 'Pembukuan' &&
+                        auth()->user()->jabatan != 'Sekretariat' &&
+                        auth()->user()->jabatan != 'Direktur Utama')
                     {{-- USER --}}
                     <li
                         class="nav-item {{ request()->is('user-email-reset*', 'user-email-pengajuan*', 'user-siadit', 'user-ecoll*', 'reset-ecoll*', 'slik-pengajuan*', 'slik-reset*', 'pefindo-pengajuan*', 'pefindo-reset*', 'mso-pengajuan*', 'mso-reset*') ? 'active menu-is-opening menu-open' : '' }}">
@@ -288,7 +290,7 @@
                 @endif
 
                 {{-- new websakep --}}
-                @if (auth()->user()->jabatan != 'Sekretariat')
+                @if (auth()->user()->jabatan != 'Sekretariat' && auth()->user()->jabatan != 'Direktur Utama')
                     <li class="nav-item {{ request()->is('user*') ? 'active menu-is-opening menu-open' : '' }}">
                         <a href="#"
                             class="nav-link  {{ request()->is('user*') ? 'active aria-expanded= "true"' : 'collapsed' }}">
@@ -327,7 +329,9 @@
                 @endif
 
 
-                @if (auth()->user()->jabatan != 'SDM' && auth()->user()->jabatan != 'Analis Area')
+                @if (auth()->user()->jabatan != 'SDM' &&
+                        auth()->user()->jabatan != 'Analis Area' &&
+                        auth()->user()->jabatan != 'Direktur Utama')
                     {{-- Pembatalan transaksi --}}
                     <li class="nav-item {{ request()->is('pembatalan*') ? 'active menu-is-opening menu-open' : '' }}">
                         <a href="#"
@@ -494,49 +498,51 @@
                 {{-- End Pengajuan Inventaris --}}
 
                 {{-- Service IT --}}
-                <li
-                    class="nav-item {{ request()->is('pemeliharaan*', 'tsi*') ? 'active menu-is-opening menu-open' : '' }}">
-                    <a href="#"
-                        class="nav-link  {{ request()->is('pemeliharaan*', 'tsi*') ? 'active aria-expanded= "true"' : 'collapsed' }}">
-                        <i class="fa-solid fa-microchip nav-icon" aria-hidden="true"></i>
-                        <p>
-                            Bantuan TSI
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul
-                        class="nav nav-treeview  {{ request()->is('pemeliharaan*', 'tsi*') ? 'style="display: block;"' : '' }}">
-                        <li class="nav-item">
-                            <a href="/pemeliharaan-perangkat"
-                                class="nav-link {{ Request::is('pemeliharaan-perangkat*') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Pemeliharaan/Trouble</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/tsi-permohonan"
-                                class="nav-link {{ Request::is('tsi-permohonan*') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Permohonan Bantuan</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/tsi-barang-elektro"
-                                class="nav-link {{ Request::is('tsi-barang-elektro*') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Barang Elektronik</p>
-                            </a>
-                        </li>
+                @if (auth()->user()->jabatan != 'Direktur Utama')
+                    <li
+                        class="nav-item {{ request()->is('pemeliharaan*', 'tsi*') ? 'active menu-is-opening menu-open' : '' }}">
+                        <a href="#"
+                            class="nav-link  {{ request()->is('pemeliharaan*', 'tsi*') ? 'active aria-expanded= "true"' : 'collapsed' }}">
+                            <i class="fa-solid fa-microchip nav-icon" aria-hidden="true"></i>
+                            <p>
+                                Bantuan TSI
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul
+                            class="nav nav-treeview  {{ request()->is('pemeliharaan*', 'tsi*') ? 'style="display: block;"' : '' }}">
+                            <li class="nav-item">
+                                <a href="/pemeliharaan-perangkat"
+                                    class="nav-link {{ Request::is('pemeliharaan-perangkat*') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Pemeliharaan/Trouble</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/tsi-permohonan"
+                                    class="nav-link {{ Request::is('tsi-permohonan*') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Permohonan Bantuan</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/tsi-barang-elektro"
+                                    class="nav-link {{ Request::is('tsi-barang-elektro*') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Barang Elektronik</p>
+                                </a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a href="/pemeliharaan-history"
-                                class="nav-link {{ Request::is('pemeliharaan-history*') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>History Pemeliharaan</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                            <li class="nav-item">
+                                <a href="/pemeliharaan-history"
+                                    class="nav-link {{ Request::is('pemeliharaan-history*') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>History Pemeliharaan</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
                 {{-- End Service IT --}}
 
                 {{-- Share Biaya --}}

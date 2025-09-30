@@ -654,7 +654,7 @@ class InventarisPenggantiController extends Controller
                     }
                     $terkecil = min($hargaArray);
 
-                    if ($terkecil < 500000) {
+                    if ($terkecil < 1000000) {
                         # code...
                         $pembanding = BarangBaruPengganti::where('id_barang_pembanding_pengganti', $request->pembanding_dipilih)->update([
                             'dipilih' => 'True'
@@ -775,7 +775,7 @@ class InventarisPenggantiController extends Controller
                 break;
 
             case 'Direktur Utama':
-                $pembanding = BarangBaruPengganti::where('id_inventaris_pengganti', $request->pembanding_dipilih)->update([
+                $pembanding = BarangBaruPengganti::where('id_barang_pembanding_pengganti', $request->pembanding_dipilih)->update([
                     'dipilih' => 'True'
                 ]);
                 $data->update([

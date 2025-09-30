@@ -83,40 +83,64 @@
         <div class="card-body">
             <table class="table">
                 <thead>
-                    <th>#</th>
-                    <th>Cabang</th>
-                    <th>Kode Form</th>
-                    <th>No Inventaris</th>
-                    <th>Detail Barang</th>
-                    <th>Detail Penawar</th>
-                    <th>Tanggal Selesai</th>
+                    <th style="width: 3%">#</th>
+                    <th style="width: 17%">Detail Form</th>
+                    <th style="width: 30%;">Detail Barang</th>
+                    <th style="width: 40%;">Detail Penawar</th>
+                    <th style="width: 10%">Tanggal Selesai</th>
                 </thead>
                 <tbody>
-                    @foreach ($penjualan as $penjualans)
+                    @if ($penjualan->isEmpty())
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $penjualans->cabang->cabang }}</td>
-                            <td>{{ $penjualans->kode_form }}</td>
-                            <td>{{ $penjualans->no_inventaris }}</td>
-                            <td>
-                                - <b>Detail Barang: </b>{!! $penjualans->detail_barang !!}
-                                - <b>Kondisi Terakhir: </b> {!! $penjualans->kondisi_terakhir !!}
-                                - <b>Keterangan: </b> {!! $penjualans->keterangan !!}
-                            </td>
-                            <td>
-                                @foreach ($penjualans->penawar as $penawar)
-                                    - <b>NIK: </b> {{ $penawar->nik }} <br>
-                                    - <b>Nama: </b> {{ $penawar->nama }} <br>
-                                    - <b>Alamat: </b> {{ $penawar->alamat }} <br>
-                                    - <b>Harga: </b> {{ 'Rp ' . number_format($penawar->harga_tawar, 0, ',', '.') }}
-                                    <br>
-                                @endforeach
-                            </td>
-                            <td>
-                                {{ $penjualans->tgl_status_akhir->translatedFormat('d M Y, H:i') . ' WIB' }}
-                            </td>
+                            <td colspan="6">Tidak ada data</td>
                         </tr>
-                    @endforeach
+                    @else
+                        @foreach ($penjualan as $penjualans)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>
+                                    - <b>{{ $penjualans->cabang->cabang }}</b><br>
+                                    - <b>Kode: </b> {{ $penjualans->kode_form }} <br>
+                                </td>
+                                <td>
+                                    - <b>No Inventaris: </b> {{ $penjualans->no_inventaris }} <br>
+                                    - <b>Detail Barang: </b>{!! $penjualans->detail_barang !!}
+                                    - <b>Kondisi Terakhir: </b> {!! $penjualans->kondisi_terakhir !!}
+                                    - <b>Keterangan: </b> {!! $penjualans->keterangan !!}
+                                </td>
+                                <td>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 2%;">#</th>
+                                                <th>NIK</th>
+                                                <th>Nama</th>
+                                                <th>Alamat</th>
+                                                <th>Harga Tawar</th>
+                                                <th>Dipilih?</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($penjualans->penawar as $data)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $data->nik }}</td>
+                                                    <td>{{ $data->nama }}</td>
+                                                    <td>{{ $data->alamat }}</td>
+                                                    <td>{{ 'Rp ' . number_format($data->harga_tawar, 0, ',', '.') }}
+                                                    </td>
+                                                    <td>{{ $data->dipilih == null ? 'x' : 'v' }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td>
+                                    {{ $penjualans->tgl_status_akhir->translatedFormat('d M Y, H:i') . ' WIB' }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -134,7 +158,7 @@
         <table style="width: 100%; text-align: center; font-size: 11pt">
             <tr>
                 <td style="width: 45%;   padding: 3px 0; text-align: center;">
-                    <b>Direktur Operasional</b>
+                    <b>Kepala Bidang Operasional</b>
                 </td>
                 <td style="padding: 4px 0; width: 55%; text-align: center;">
                     <b>Direktur Utama</b>
@@ -143,7 +167,7 @@
             <tr style="text-align: center;">
                 <td style="width: 45%;   padding: 3px 0; text-align: center;">
                     <br><br><br><br><br>
-                    (<b>Renard Fabian Aquaristaputra</b>)
+                    (<b>Sigid Setiyawan</b>)
                 </td>
                 <td style="padding: 4px 0; width: 55%; text-align: center;">
                     <br><br><br><br><br>

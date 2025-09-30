@@ -604,7 +604,7 @@ class InventarisController extends Controller
                     }
                     $terkecil = min($hargaArray);
 
-                    if ($terkecil < 500000) {
+                    if ($terkecil < 1000000) {
                         $pembanding = BarangBaru::where('id_barang_pembanding_baru', $request->pembanding_dipilih)->update([
                             'dipilih' => 'True'
                         ]);
@@ -722,7 +722,6 @@ class InventarisController extends Controller
                     $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
                     $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 }
-
                 break;
 
             case 'Direktur Operasional':

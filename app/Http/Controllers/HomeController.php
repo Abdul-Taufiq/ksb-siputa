@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Ecoll\{EcollP, EcollR};
 use App\Models\Inventaris\Inventaris as InventarisInventaris;
 use App\Models\Inventaris\InventarisPengganti;
+use App\Models\Inventaris\InventarisPenjualan;
 use App\Models\LastVersion;
 use App\Models\MBS\{UserP, UserR};
 use App\Models\Pefindo\{Pefindo, PefindoRe};
 use App\Models\Pembatalan\{Akuntansi, Antarbank, Antarkantor, Inventaris, Kredit, PDeposito, PEcoll, Tabungan};
 use App\Models\PermissionTokens;
 use App\Models\Perubahan\{Cif, Kredit as perKredit, Deposito as perDeposito};
+use App\Models\PLainnya;
 use App\Models\Siadit\{PSiadit, USiadit};
 use App\Models\Slik\Pslik;
 use App\Models\TSI\BantuanTSI;
@@ -88,11 +90,15 @@ class HomeController extends Controller
         // Pengajuan Inventaris
         $inv_baru = InventarisInventaris::all();
         $inv_pengganti = InventarisPengganti::all();
+        $inv_dijual = InventarisPenjualan::all();
 
 
         // Pemeliharaan Traoubel
         $pemeliharaan = Pemeliharaan::all();
         $bantuan_tsi = BantuanTSI::all();
+
+        // Lainnya
+        $plainnya = PLainnya::all();
 
 
 
@@ -126,6 +132,8 @@ class HomeController extends Controller
                 'inv_pengganti',
                 'pemeliharaan',
                 'bantuan_tsi',
+                'plainnya',
+                'inv_dijual',
             ),
             ['title' => 'Dashboard']
         );

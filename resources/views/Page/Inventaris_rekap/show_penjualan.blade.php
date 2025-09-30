@@ -46,6 +46,7 @@
     {{-- Header --}}
     <h5>REKAP INVENTARIS</h5>
     <br>
+
     {{-- Inventaris Penjualan --}}
     <div class="card card-outline card-info">
         <div class="card-header">
@@ -54,40 +55,64 @@
         <div class="card-body">
             <table class="table">
                 <thead>
-                    <th>#</th>
-                    <th>Cabang</th>
-                    <th>Kode Form</th>
-                    <th>No Inventaris</th>
-                    <th>Detail Barang</th>
-                    <th>Detail Penawar</th>
-                    <th>Tanggal Selesai</th>
+                    <th style="width: 3%">#</th>
+                    <th style="width: 17%">Detail Form</th>
+                    <th style="width: 30%;">Detail Barang</th>
+                    <th style="width: 40%;">Detail Penawar</th>
+                    <th style="width: 10%">Tanggal Selesai</th>
                 </thead>
                 <tbody>
-                    @foreach ($penjualan as $penjualans)
+                    @if ($penjualan->isEmpty())
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $penjualans->cabang->cabang }}</td>
-                            <td>{{ $penjualans->kode_form }}</td>
-                            <td>{{ $penjualans->no_inventaris }}</td>
-                            <td>
-                                - <b>Detail Barang: </b>{!! $penjualans->detail_barang !!}
-                                - <b>Kondisi Terakhir: </b> {!! $penjualans->kondisi_terakhir !!}
-                                - <b>Keterangan: </b> {!! $penjualans->keterangan !!}
-                            </td>
-                            <td>
-                                @foreach ($penjualans->penawar as $penawar)
-                                    - <b>NIK: </b> {{ $penawar->nik }} <br>
-                                    - <b>Nama: </b> {{ $penawar->nama }} <br>
-                                    - <b>Alamat: </b> {{ $penawar->alamat }} <br>
-                                    - <b>Harga: </b> {{ 'Rp ' . number_format($penawar->harga_tawar, 0, ',', '.') }}
-                                    <br>
-                                @endforeach
-                            </td>
-                            <td>
-                                {{ $penjualans->tgl_status_akhir->translatedFormat('d M Y, H:i') . ' WIB' }}
-                            </td>
+                            <td colspan="6">Tidak ada data</td>
                         </tr>
-                    @endforeach
+                    @else
+                        @foreach ($penjualan as $penjualans)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>
+                                    - <b>{{ $penjualans->cabang->cabang }}</b><br>
+                                    - <b>Kode: </b> {{ $penjualans->kode_form }} <br>
+                                </td>
+                                <td>
+                                    - <b>No Inventaris: </b> {{ $penjualans->no_inventaris }} <br>
+                                    - <b>Detail Barang: </b>{!! $penjualans->detail_barang !!}
+                                    - <b>Kondisi Terakhir: </b> {!! $penjualans->kondisi_terakhir !!}
+                                    - <b>Keterangan: </b> {!! $penjualans->keterangan !!}
+                                </td>
+                                <td>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 2%;">#</th>
+                                                <th>NIK</th>
+                                                <th>Nama</th>
+                                                <th>Alamat</th>
+                                                <th>Harga Tawar</th>
+                                                <th>Dipilih?</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($penjualans->penawar as $data)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $data->nik }}</td>
+                                                    <td>{{ $data->nama }}</td>
+                                                    <td>{{ $data->alamat }}</td>
+                                                    <td>{{ 'Rp ' . number_format($data->harga_tawar, 0, ',', '.') }}
+                                                    </td>
+                                                    <td>{{ $data->dipilih == null ? 'x' : 'v' }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td>
+                                    {{ $penjualans->tgl_status_akhir->translatedFormat('d M Y, H:i') . ' WIB' }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>

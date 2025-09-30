@@ -82,37 +82,68 @@
         <div class="card-body">
             <table class="table">
                 <thead>
-                    <th>#</th>
-                    <th>Cabang</th>
-                    <th>Detail Form</th>
-                    <th>Detail Barang</th>
-                    <th>Qty</th>
-                    <th>Tanggal Selesai</th>
+                    <th style="width: 2%">#</th>
+                    <th style="width: 25%">Detail Form</th>
+                    <th style="width: 59%">Detail Pembanding</th>
+                    <th style="width: 4%">Qty</th>
+                    <th style="width: 10%">Tanggal Selesai</th>
                 </thead>
                 <tbody>
-                    @foreach ($pembelian as $pembelians)
+                    @if ($pembelian->isEmpty())
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $pembelians->cabang->cabang }}</td>
-                            <td>
-                                - <b>Kode: </b> {{ $pembelians->kode_form }} <br>
-                                - <b>Kategori: </b> {{ $pembelians->kategori_barang }} <br>
-                                - <b>Keterangan: </b> {{ $pembelians->keterangan }} <br>
-                            </td>
-                            <td>
-                                @foreach ($pembelians->BarangBaru as $barang)
-                                    - <b>Jenis Barang: </b> {{ $barang->jns_barang }} <br>
-                                    - <b>Merk/Type: </b> {{ $barang->merk . '/' . $barang->type }} <br>
-                                    - <b>Nama Toko: </b> {{ $barang->nama_toko }} <br>
-                                    - <b>Harga: </b> {{ $barang->harga }} <br>
-                                @endforeach
-                            </td>
-                            <td>{{ $pembelians->qty }}</td>
-                            <td>
-                                {{ $pembelians->tgl_status_akhir->translatedFormat('d M Y, H:i') . ' WIB' }}
-                            </td>
+                            <td colspan="6">Tidak ada data</td>
                         </tr>
-                    @endforeach
+                    @else
+                        @foreach ($pembelian as $pembelians)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>
+                                    - <b>{{ $pembelians->cabang->cabang }} </b> <br>
+                                    - <b>Kode: </b> {{ $pembelians->kode_form }} <br>
+                                    - <b>Kategori: </b> {{ $pembelians->kategori_barang }} <br>
+                                    - <b>Keterangan: </b> {{ $pembelians->keterangan }} <br>
+                                </td>
+                                <td>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Kategori/Jns</th>
+                                                <th>Merk/Type</th>
+                                                <th>Nama/Detail Toko</th>
+                                                <th>Harga</th>
+                                                <th>Dipilih?</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($pembelians->BarangBaru as $data)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $data->kategori_barang }}/
+                                                        {{ $data->jns_barang }}
+                                                    </td>
+                                                    <td>{{ $data->merk }}/{{ $data->type }}</td>
+                                                    <td>{{ $data->nama_toko }} /
+                                                        <a href="{{ asset('file_upload/barang_inventaris_pengganti/' . $data->file_detail_toko) }}"
+                                                            target="_blank">
+                                                            {{ $data->file_detail_toko ? $data->file_detail_toko : 'null' }}
+                                                        </a>
+                                                    </td>
+                                                    <td>{{ $data->harga }}</td>
+                                                    <td>{{ $data->dipilih == null ? 'x' : 'v' }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+
+                                    </table>
+                                </td>
+                                <td>{{ $pembelians->qty }}</td>
+                                <td>
+                                    {{ $pembelians->tgl_status_akhir->translatedFormat('d M Y, H:i') . ' WIB' }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -130,7 +161,7 @@
         <table style="width: 100%; text-align: center; font-size: 11pt">
             <tr>
                 <td style="width: 45%;   padding: 3px 0; text-align: center;">
-                    <b>Direktur Operasional</b>
+                    <b>Kepala Bidang Operasional</b>
                 </td>
                 <td style="padding: 4px 0; width: 55%; text-align: center;">
                     <b>Direktur Utama</b>
@@ -139,7 +170,7 @@
             <tr style="text-align: center;">
                 <td style="width: 45%;   padding: 3px 0; text-align: center;">
                     <br><br><br><br><br>
-                    (<b>Renard Fabian Aquaristaputra</b>)
+                    (<b>Sigid Setiyawan</b>)
                 </td>
                 <td style="padding: 4px 0; width: 55%; text-align: center;">
                     <br><br><br><br><br>

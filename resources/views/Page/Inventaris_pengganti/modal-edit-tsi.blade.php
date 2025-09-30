@@ -227,7 +227,7 @@
             </div>
             <div class="form-group d-flex justify-content-end">
                 <button id="simpan" type="submit" class="btn btn-primary" style="letter-spacing: 2px;">
-                    <i class="fa-regular fa-floppy-disk"></i> &nbsp; <b>Kirim ke DirOps</b></button>
+                    <i class="fa-regular fa-floppy-disk"></i> &nbsp; <b>Kirim ke Direksi</b></button>
             </div>
         </div>
         <div class="card card-outline card-primary mb-0"></div>

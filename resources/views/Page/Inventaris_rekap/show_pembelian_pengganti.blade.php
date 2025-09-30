@@ -47,6 +47,7 @@
     <h5>REKAP INVENTARIS</h5>
     <br>
 
+
     {{-- Inventaris Pengganti --}}
     <div class="card card-outline card-warning">
         <div class="card-header">
@@ -55,54 +56,85 @@
         <div class="card-body">
             <table class="table">
                 <thead>
-                    <th>#</th>
-                    <th>Cabang</th>
-                    <th>Detail Form</th>
-                    <th>Detail Barang Diganti</th>
-                    <th>Detail Barang Pengganti</th>
-                    <th>Qty</th>
-                    <th>Tanggal Selesai</th>
+                    <th style="width: 2%">#</th>
+                    <th style="width: 20%">Detail Form</th>
+                    <th style="width: 30%">Detail Barang Diganti</th>
+                    <th style="width: 40%">Detail Barang Pengganti</th>
+                    <th style="width: 3%">Qty</th>
+                    <th style="width: 10%;">Tanggal Selesai</th>
                 </thead>
                 <tbody>
-                    @foreach ($pengganti as $penggantis)
+                    @if ($pengganti->isEmpty())
                         <tr>
-
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $penggantis->cabang->cabang }}</td>
-                            <td>
-                                - <b>Kode: </b> {{ $penggantis->kode_form }} <br>
-                                - <b>Kategori: </b> {{ $penggantis->kategori_barang }} <br>
-                                - <b>Keterangan: </b> {{ $penggantis->keterangan }} <br>
-                            </td>
-                            <td>
-                                @foreach ($penggantis->diganti as $barang)
-                                    - <b>No Inventaris: </b> {{ $barang->kode_inventaris }}<br>
-                                    - <b>No Nilai Buku: </b> {{ $barang->nilai_buku_terakhir }}<br>
-                                    - <b>Tgl Pembelian: </b>
-                                    {{ $barang->tgl_pembelian->translatedFormat('d M Y') }}<br>
-                                    - <b>Kondisi Terakhir: </b> {{ $barang->kondisi_akhir }}<br>
-                                @endforeach
-                            </td>
-                            <td>
-                                @foreach ($penggantis->BarangBaruPengganti as $barangPengganti)
-                                    - <b>Jenis Barang: </b> {{ $barangPengganti->jns_barang }} <br>
-                                    - <b>Merk/Type: </b> {{ $barangPengganti->merk . '/' . $barangPengganti->type }}
-                                    <br>
-                                    - <b>Nama Toko: </b> {{ $barangPengganti->nama_toko }} <br>
-                                    - <b>Harga: </b> {{ $barangPengganti->harga }} <br>
-                                @endforeach
-                            </td>
-                            <td>{{ $penggantis->qty }}</td>
-                            <td>
-                                {{ $penggantis->tgl_status_akhir->translatedFormat('d M Y, H:i') . ' WIB' }}
-                            </td>
+                            <td colspan="6">Tidak ada data</td>
                         </tr>
-                    @endforeach
+                    @else
+                        @foreach ($pengganti as $penggantis)
+                            <tr>
+
+                                <td>{{ $loop->iteration }}</td>
+                                <td>
+                                    - <b>{{ $penggantis->cabang->cabang }}</b><br>
+                                    - <b>Kode: </b> {{ $penggantis->kode_form }} <br>
+                                    - <b>Kategori: </b> {{ $penggantis->kategori_barang }} <br>
+                                    - <b>Keterangan: </b> {{ $penggantis->keterangan }} <br>
+                                </td>
+                                <td style="margin-left: 5px">
+                                    @foreach ($penggantis->diganti as $barang)
+                                        - <b>No Inventaris: </b> {{ $barang->kode_inventaris }}<br>
+                                        - <b>No Nilai Buku: </b> {{ $barang->nilai_buku_terakhir }}<br>
+                                        - <b>Tgl Pembelian: </b>
+                                        {{ $barang->tgl_pembelian->translatedFormat('d M Y') }}<br>
+                                        - <b>Kondisi Terakhir: </b> {{ $barang->kondisi_akhir }}
+                                        <hr>
+                                    @endforeach
+                                </td>
+                                <td>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 2%;">#</th>
+                                                <th>Kategori/Jns</th>
+                                                <th>Merk/Type</th>
+                                                <th>Detail Toko</th>
+                                                <th>Harga</th>
+                                                <th style="width: 3%;">Dipilih?</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($penggantis->BarangBaruPengganti as $data)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $data->kategori_barang }}/
+                                                        {{ $data->jns_barang }}
+                                                    </td>
+                                                    <td>{{ $data->merk }}/{{ $data->type }}</td>
+                                                    <td>{{ $data->nama_toko }} /
+                                                        <a href="{{ asset('file_upload/barang_inventaris_pengganti/' . $data->file_detail_toko) }}"
+                                                            target="_blank">
+                                                            {{ $data->file_detail_toko ? $data->file_detail_toko : 'null' }}
+                                                        </a>
+                                                    </td>
+                                                    <td>{{ $data->harga }}</td>
+                                                    <td>{{ $data->dipilih == null ? 'x' : 'v' }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td>{{ $penggantis->qty }}</td>
+                                <td>
+                                    {{ $penggantis->tgl_status_akhir->translatedFormat('d M Y, H:i') . ' WIB' }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
         <div class="card card-outline card-warning mb-0"></div>
     </div>
+
 
 </body>
 

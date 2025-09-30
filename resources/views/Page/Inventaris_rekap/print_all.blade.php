@@ -50,6 +50,14 @@
             width: 100%;
             font-size: 8pt;
         }
+
+        .table th {
+            padding: 5px;
+        }
+
+        .table td {
+            padding: 2px;
+        }
     </style>
 </head>
 
@@ -83,12 +91,11 @@
         <div class="card-body">
             <table class="table">
                 <thead>
-                    <th>#</th>
-                    <th>Cabang</th>
-                    <th>Detail Form</th>
-                    <th>Detail Barang</th>
-                    <th>Qty</th>
-                    <th>Tanggal Selesai</th>
+                    <th style="width: 2%">#</th>
+                    <th style="width: 25%">Detail Form</th>
+                    <th style="width: 59%">Detail Pembanding</th>
+                    <th style="width: 4%">Qty</th>
+                    <th style="width: 10%">Tanggal Selesai</th>
                 </thead>
                 <tbody>
                     @if ($pembelian->isEmpty())
@@ -99,19 +106,45 @@
                         @foreach ($pembelian as $pembelians)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $pembelians->cabang->cabang }}</td>
                                 <td>
+                                    - <b>{{ $pembelians->cabang->cabang }} </b> <br>
                                     - <b>Kode: </b> {{ $pembelians->kode_form }} <br>
                                     - <b>Kategori: </b> {{ $pembelians->kategori_barang }} <br>
                                     - <b>Keterangan: </b> {{ $pembelians->keterangan }} <br>
                                 </td>
                                 <td>
-                                    @foreach ($pembelians->BarangBaru as $barang)
-                                        - <b>Jenis Barang: </b> {{ $barang->jns_barang }} <br>
-                                        - <b>Merk/Type: </b> {{ $barang->merk . '/' . $barang->type }} <br>
-                                        - <b>Nama Toko: </b> {{ $barang->nama_toko }} <br>
-                                        - <b>Harga: </b> {{ $barang->harga }} <br>
-                                    @endforeach
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Kategori/Jns</th>
+                                                <th>Merk/Type</th>
+                                                <th>Nama/Detail Toko</th>
+                                                <th>Harga</th>
+                                                <th>Dipilih?</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($pembelians->BarangBaru as $data)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $data->kategori_barang }}/
+                                                        {{ $data->jns_barang }}
+                                                    </td>
+                                                    <td>{{ $data->merk }}/{{ $data->type }}</td>
+                                                    <td>{{ $data->nama_toko }} /
+                                                        <a href="{{ asset('file_upload/barang_inventaris_pengganti/' . $data->file_detail_toko) }}"
+                                                            target="_blank">
+                                                            {{ $data->file_detail_toko ? $data->file_detail_toko : 'null' }}
+                                                        </a>
+                                                    </td>
+                                                    <td>{{ $data->harga }}</td>
+                                                    <td>{{ $data->dipilih == null ? 'x' : 'v' }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+
+                                    </table>
                                 </td>
                                 <td>{{ $pembelians->qty }}</td>
                                 <td>
@@ -134,13 +167,12 @@
         <div class="card-body">
             <table class="table">
                 <thead>
-                    <th>#</th>
-                    <th>Cabang</th>
-                    <th>Detail Form</th>
-                    <th>Detail Barang Diganti</th>
-                    <th>Detail Barang Pengganti</th>
-                    <th>Qty</th>
-                    <th>Tanggal Selesai</th>
+                    <th style="width: 2%">#</th>
+                    <th style="width: 20%">Detail Form</th>
+                    <th style="width: 30%">Detail Barang Diganti</th>
+                    <th style="width: 40%">Detail Barang Pengganti</th>
+                    <th style="width: 3%">Qty</th>
+                    <th style="width: 10%;">Tanggal Selesai</th>
                 </thead>
                 <tbody>
                     @if ($pengganti->isEmpty())
@@ -152,30 +184,54 @@
                             <tr>
 
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $penggantis->cabang->cabang }}</td>
                                 <td>
+                                    - <b>{{ $penggantis->cabang->cabang }}</b><br>
                                     - <b>Kode: </b> {{ $penggantis->kode_form }} <br>
                                     - <b>Kategori: </b> {{ $penggantis->kategori_barang }} <br>
                                     - <b>Keterangan: </b> {{ $penggantis->keterangan }} <br>
                                 </td>
-                                <td>
+                                <td style="margin-left: 5px">
                                     @foreach ($penggantis->diganti as $barang)
                                         - <b>No Inventaris: </b> {{ $barang->kode_inventaris }}<br>
                                         - <b>No Nilai Buku: </b> {{ $barang->nilai_buku_terakhir }}<br>
                                         - <b>Tgl Pembelian: </b>
                                         {{ $barang->tgl_pembelian->translatedFormat('d M Y') }}<br>
-                                        - <b>Kondisi Terakhir: </b> {{ $barang->kondisi_akhir }}<br>
+                                        - <b>Kondisi Terakhir: </b> {{ $barang->kondisi_akhir }}
+                                        <hr>
                                     @endforeach
                                 </td>
                                 <td>
-                                    @foreach ($penggantis->BarangBaruPengganti as $barangPengganti)
-                                        - <b>Jenis Barang: </b> {{ $barangPengganti->jns_barang }} <br>
-                                        - <b>Merk/Type: </b>
-                                        {{ $barangPengganti->merk . '/' . $barangPengganti->type }}
-                                        <br>
-                                        - <b>Nama Toko: </b> {{ $barangPengganti->nama_toko }} <br>
-                                        - <b>Harga: </b> {{ $barangPengganti->harga }} <br>
-                                    @endforeach
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 2%;">#</th>
+                                                <th>Kategori/Jns</th>
+                                                <th>Merk/Type</th>
+                                                <th>Detail Toko</th>
+                                                <th>Harga</th>
+                                                <th style="width: 3%;">Dipilih?</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($penggantis->BarangBaruPengganti as $data)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $data->kategori_barang }}/
+                                                        {{ $data->jns_barang }}
+                                                    </td>
+                                                    <td>{{ $data->merk }}/{{ $data->type }}</td>
+                                                    <td>{{ $data->nama_toko }} /
+                                                        <a href="{{ asset('file_upload/barang_inventaris_pengganti/' . $data->file_detail_toko) }}"
+                                                            target="_blank">
+                                                            {{ $data->file_detail_toko ? $data->file_detail_toko : 'null' }}
+                                                        </a>
+                                                    </td>
+                                                    <td>{{ $data->harga }}</td>
+                                                    <td>{{ $data->dipilih == null ? 'x' : 'v' }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </td>
                                 <td>{{ $penggantis->qty }}</td>
                                 <td>
@@ -198,13 +254,11 @@
         <div class="card-body">
             <table class="table">
                 <thead>
-                    <th>#</th>
-                    <th>Cabang</th>
-                    <th>Kode Form</th>
-                    <th>No Inventaris</th>
-                    <th>Detail Barang</th>
-                    <th>Detail Penawar</th>
-                    <th>Tanggal Selesai</th>
+                    <th style="width: 3%">#</th>
+                    <th style="width: 17%">Detail Form</th>
+                    <th style="width: 30%;">Detail Barang</th>
+                    <th style="width: 40%;">Detail Penawar</th>
+                    <th style="width: 10%">Tanggal Selesai</th>
                 </thead>
                 <tbody>
                     @if ($penjualan->isEmpty())
@@ -215,23 +269,42 @@
                         @foreach ($penjualan as $penjualans)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $penjualans->cabang->cabang }}</td>
-                                <td>{{ $penjualans->kode_form }}</td>
-                                <td>{{ $penjualans->no_inventaris }}</td>
                                 <td>
+                                    - <b>{{ $penjualans->cabang->cabang }}</b><br>
+                                    - <b>Kode: </b> {{ $penjualans->kode_form }} <br>
+                                </td>
+                                <td>
+                                    - <b>No Inventaris: </b> {{ $penjualans->no_inventaris }} <br>
                                     - <b>Detail Barang: </b>{!! $penjualans->detail_barang !!}
                                     - <b>Kondisi Terakhir: </b> {!! $penjualans->kondisi_terakhir !!}
                                     - <b>Keterangan: </b> {!! $penjualans->keterangan !!}
                                 </td>
                                 <td>
-                                    @foreach ($penjualans->penawar as $penawar)
-                                        - <b>NIK: </b> {{ $penawar->nik }} <br>
-                                        - <b>Nama: </b> {{ $penawar->nama }} <br>
-                                        - <b>Alamat: </b> {{ $penawar->alamat }} <br>
-                                        - <b>Harga: </b>
-                                        {{ 'Rp ' . number_format($penawar->harga_tawar, 0, ',', '.') }}
-                                        <br>
-                                    @endforeach
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 2%;">#</th>
+                                                <th>NIK</th>
+                                                <th>Nama</th>
+                                                <th>Alamat</th>
+                                                <th>Harga Tawar</th>
+                                                <th>Dipilih?</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($penjualans->penawar as $data)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $data->nik }}</td>
+                                                    <td>{{ $data->nama }}</td>
+                                                    <td>{{ $data->alamat }}</td>
+                                                    <td>{{ 'Rp ' . number_format($data->harga_tawar, 0, ',', '.') }}
+                                                    </td>
+                                                    <td>{{ $data->dipilih == null ? 'x' : 'v' }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </td>
                                 <td>
                                     {{ $penjualans->tgl_status_akhir->translatedFormat('d M Y, H:i') . ' WIB' }}
@@ -257,7 +330,7 @@
         <table style="width: 100%; text-align: center; font-size: 11pt">
             <tr>
                 <td style="width: 45%;   padding: 3px 0; text-align: center;">
-                    <b>Direktur Operasional</b>
+                    <b>Kepala Bidang Operasional</b>
                 </td>
                 <td style="padding: 4px 0; width: 55%; text-align: center;">
                     <b>Direktur Utama</b>
@@ -266,7 +339,7 @@
             <tr style="text-align: center;">
                 <td style="width: 45%;   padding: 3px 0; text-align: center;">
                     <br><br><br><br><br>
-                    (<b>Renard Fabian Aquaristaputra</b>)
+                    (<b>Sigid Setiyawan</b>)
                 </td>
                 <td style="padding: 4px 0; width: 55%; text-align: center;">
                     <br><br><br><br><br>

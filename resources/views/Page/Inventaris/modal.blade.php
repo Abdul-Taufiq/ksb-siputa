@@ -341,7 +341,7 @@
                         </div>
                     @endif
 
-                    @if ($jabatan == 'Direktur Operasional')
+                    @if ($jabatan == 'Direktur Operasional' || $jabatan == 'Direktur Utama')
                         <div class="form-group">
                             <label for="pembanding_dipilih">Pilih data barang (pembanding) :</label>
                             <select name="pembanding_dipilih" id="pembanding_dipilih"
