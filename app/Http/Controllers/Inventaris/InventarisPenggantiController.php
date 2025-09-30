@@ -189,7 +189,9 @@ class InventarisPenggantiController extends Controller
                             break;
 
                         case 'Direktur Utama':
-                            if ($data->status_tsi != null) {
+                            if ($data->status_dirops != null) {
+                                $status .= '<a class="btn btn-success btn-sm disabled">Finish</a>';
+                            } else if ($data->status_tsi != null) {
                                 $jabatan = $data->status_dirut;
                                 $statusAfter = $this->statusAfter($data, $jabatan, $statusDropdown);
                                 return $statusAfter;
