@@ -45,7 +45,7 @@
                     </div>
                 @endif --}}
 
-                <form action="/login" method="post">
+                <form action="/login" method="post" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="Email" id="email" name="email"

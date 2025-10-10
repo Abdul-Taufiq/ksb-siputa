@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Inventaris;
 
 use App\Http\Controllers\Controller;
-use App\Models\Inventaris\{InventarisPenjualan as Penjualan, InventarisPenjualanPenawar as Penawar};
+use App\Models\Inventaris\{InventarisPenjualan as Penjualan, InventarisPenjualanPenawar as Penawar, InventarisPenjualanPenawar};
 use App\Models\LogActivity;
 use App\Models\User;
 use App\Notifications\NotifikasiPengajuan;
@@ -335,6 +335,18 @@ class InventarisPenjualanController extends Controller
     }
 
 
+    public function getBarang($Id)
+    {
+        $ids = Crypt::decrypt($Id);
+        $penawar = InventarisPenjualanPenawar::where('id_inventaris_penjualan', $ids)->get();
+
+        return response()->json([
+            'status' => 200,
+            'data' => $penawar,
+        ]);
+    }
+
+
     public function edit(Penjualan $penjualan)
     {
         return view('Page.Inventaris_penjualan.modal-edit', compact('penjualan'), ['title' => 'Penjualan']);
@@ -497,6 +509,10 @@ class InventarisPenjualanController extends Controller
 
             case 'Direktur Operasional':
             case 'Direktur Utama':
+                $pembanding = InventarisPenjualanPenawar::where('id_penawar', $request->pembanding_dipilih)->update([
+                    'dipilih' => 'True'
+                ]);
+
                 $data->update([
                     'nama_dirut' => $nama,
                     'status_dirut' => 'Approve',

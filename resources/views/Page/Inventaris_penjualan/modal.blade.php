@@ -342,6 +342,13 @@
                     @endif
 
                     @if ($jabatan != 'Kasi Operasional')
+                        @if ($jabatan == 'Direktur Operasional' || $jabatan == 'Direktur Utama')
+                            <div class="form-group">
+                                <label for="pembanding_dipilih">Pilih data barang (pembanding) :</label>
+                                <select name="pembanding_dipilih" id="pembanding_dipilih"
+                                    class="form-control input"></select>
+                            </div>
+                        @endif
                         <div class="form-group">
                             <label for="catatan">Catatan Approve:</label>
                             <textarea class="form-control input" id="catatan" name="catatan" required></textarea>

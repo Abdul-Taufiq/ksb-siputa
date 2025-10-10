@@ -74,6 +74,10 @@
                                                 {{ old('keperluan') == 'Penghapusan Data SPK' ? 'selected' : null }}>
                                                 Penghapusan Data SPK
                                             </option>
+                                            <option value="Print Ulang SPPK/PK"
+                                                {{ old('keperluan') == 'Print Ulang SPPK/PK' ? 'selected' : null }}>
+                                                Print Ulang SPPK/PK
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -181,6 +185,10 @@
                                         <option value="Penghapusan Data SPK"
                                             {{ old('keperluan') == 'Penghapusan Data SPK' ? 'selected' : null }}>
                                             Penghapusan Data SPK
+                                        </option>
+                                        <option value="Print Ulang SPPK/PK"
+                                            {{ old('keperluan') == 'Print Ulang SPPK/PK' ? 'selected' : null }}>
+                                            Print Ulang SPPK/PK
                                         </option>
                                     </select>
                                 </div>

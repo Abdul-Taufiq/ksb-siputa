@@ -576,6 +576,7 @@ class InventarisController extends Controller
     // RESPON APPROVE STATUS PENGAJUAN
     public function ResponApprove(Request $request, $idEncrypt)
     {
+        dd($request->all());
         $ids = Crypt::decrypt($idEncrypt);
         $data = Inventaris::where('id_inventaris_baru', $ids)->first();
         $jabatan = auth()->user()->jabatan;

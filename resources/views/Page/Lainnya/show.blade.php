@@ -112,16 +112,16 @@
                     <td>{!! $pLainnya->catatan_pembukuan !!}</td>
                 </tr>
                 <tr>
-                    <th>DirOps Approve?</th>
+                    <th>Dirut Approve?</th>
                     <td style="width: 1%">:</td>
                     <td>
-                        {{ $pLainnya->nama_dirops }} -
-                        {{ $pLainnya->status_dirops }} -
-                        {{ $pLainnya->tgl_status_dirops ? $pLainnya->tgl_status_dirops->translatedFormat('d F Y, H:i') : ' ' }}
+                        {{ $pLainnya->nama_dirut }} -
+                        {{ $pLainnya->status_dirut }} -
+                        {{ $pLainnya->tgl_status_dirut ? $pLainnya->tgl_status_dirut->translatedFormat('d F Y, H:i') : ' ' }}
                     </td>
                 </tr>
                 <tr>
-                    <th>Catatan DirOps</th>
+                    <th>Catatan Dirut</th>
                     <td style="width: 1%">:</td>
                     <td>{!! $pLainnya->catatan_dirops !!}</td>
                 </tr>

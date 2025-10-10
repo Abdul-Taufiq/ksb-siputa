@@ -1310,7 +1310,7 @@
                                         <div class="col-sm-3 border-right bg-warning">
                                             <div class="description-block">
                                                 <h5 class="description-header">
-                                                    {{ $inv_baru->wherenull('status_dirut')->where('status_pembukuan', 'Approve')->count() }}
+                                                    {{ $inv_baru->wherenull('status_dirut')->wherenull('status_dirops')->where('status_pembukuan', 'Approve')->count() }}
                                                 </h5>
                                                 <span class="description-text">NEED ACTION</span>
                                             </div>
@@ -1367,7 +1367,7 @@
                                         <div class="col-sm-3 border-right bg-warning">
                                             <div class="description-block">
                                                 <h5 class="description-header">
-                                                    {{ $inv_pengganti->wherenull('status_dirut')->where('status_pembukuan', 'Approve')->count() }}
+                                                    {{ $inv_pengganti->wherenull('status_dirut')->wherenull('status_dirops')->where('status_pembukuan', 'Approve')->count() }}
                                                 </h5>
                                                 <span class="description-text">NEED ACTION</span>
                                             </div>
@@ -1424,7 +1424,7 @@
                                         <div class="col-sm-3 border-right bg-warning">
                                             <div class="description-block">
                                                 <h5 class="description-header">
-                                                    {{ $inv_dijual->wherenull('status_dirut')->where('status_pembukuan', 'Approve')->count() }}
+                                                    {{ $inv_dijual->wherenull('status_dirut')->wherenull('status_dirops')->where('status_pembukuan', 'Approve')->count() }}
                                                 </h5>
                                                 <span class="description-text">NEED ACTION</span>
                                             </div>
@@ -1441,7 +1441,7 @@
 
                                     </div>
                                     <div style="margin: 10px 0px -10px 0px">
-                                        <a href="/inventaris-pengganti">
+                                        <a href="/inventaris-penjualan">
                                             More info ... <i class="fas fa-arrow-circle-right"></i>
                                         </a>
                                     </div>
@@ -1504,7 +1504,7 @@
                                         <div class="col-sm-3 border-right bg-warning">
                                             <div class="description-block">
                                                 <h5 class="description-header">
-                                                    {{ $plainnya->wherenull('status_dirut')->where('status_pembukuan', 'Approve')->count() }}
+                                                    {{ $plainnya->wherenull('status_dirut')->wherenull('status_dirops')->where('status_pembukuan', 'Approve')->count() }}
                                                 </h5>
                                                 <span class="description-text">NEED ACTION</span>
                                             </div>

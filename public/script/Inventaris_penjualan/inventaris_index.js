@@ -210,7 +210,12 @@ $(document).ready(function () {
 //
 //
 //approve data modal
+
 $(document).ready(function () {
+    function formatRupiah(angka) {
+        return 'Rp ' + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+
     $("body").on("click", ".approve", function () {
         var idKredit = $(this).data("id");
         var NoSPK = $(this).data("kode_form");
@@ -222,6 +227,35 @@ $(document).ready(function () {
         // Ubah action form untuk menyertakan ID
         var formAction = "/inventaris-penjualan-approve/" + idKredit;
         $("#approveForm").attr("action", formAction);
+
+
+        // Fungsi untuk mengambil data barang dan menambahkannya ke select option
+        $.ajax({
+            url: "/get-pembeli/" + idKredit,
+            type: "GET",
+            success: function (data) {
+                // untuk mengisi select barang pembanding
+                var select = $("#pembanding_dipilih");
+                select.empty(); // Kosongkan opsi sebelumnya
+                select.append(
+                    '<option selected disabled value="">Pilih Barang</option>'
+                ); // Tambahkan opsi default
+                data.data.forEach(function (item) {
+                    select.append(
+                        '<option value="' +
+                            item.id_penawar +
+                            '">' +
+                            item.nama +
+                            " &nbsp; | &nbsp; " +
+                            formatRupiah(item.harga_tawar) +
+                            "</option>"
+                    );
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+            },
+        });
     });
 
     $("#approveForm").submit(function (event) {

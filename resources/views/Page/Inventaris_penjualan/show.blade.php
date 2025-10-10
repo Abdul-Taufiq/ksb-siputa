@@ -88,6 +88,7 @@
                     <th>Nama</th>
                     <th>Alamat</th>
                     <th>Harga Tawaran</th>
+                    <th>Dipilih?</th>
                 </tr>
                 @foreach ($penjualan->penawar as $item)
                     <tr>
@@ -98,6 +99,7 @@
                         <td>
                             {{ $item->harga_tawar ? 'Rp ' . number_format($item->harga_tawar, 0, ',', '.') : 'belum ada data' }}
                         </td>
+                        <td>{{ $item->dipilih == null ? '☓' : '✔' }}</td>
                     </tr>
                 @endforeach
             </table>
@@ -135,13 +137,13 @@
                     <th>Catatan Pembukuan</th>
                     <td>{{ $penjualan->catatan_pembukuan }}</td>
                 </tr>
-                <tr>
+                {{-- <tr>
                     <th>DirOps Approve?</th>
                     <td>
                         {{ $penjualan->status_dirops }} -
                         {{ $penjualan->tgl_status_dirops ? $penjualan->tgl_status_dirops->translatedFormat('d F Y, H:i') : ' ' }}
                     </td>
-                </tr>
+                </tr> --}}
                 <tr>
                     <th>Dirut Approve?</th>
                     <td>
@@ -150,7 +152,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>Catatan DirOps</th>
+                    <th>Catatan Dirut</th>
                     <td>{{ $penjualan->catatan_dirops }}</td>
                 </tr>
 

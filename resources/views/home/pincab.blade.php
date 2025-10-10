@@ -1390,6 +1390,63 @@
                         </div>
                     </div>
 
+                    {{-- dijual --}}
+                    <div class="col-md-6">
+                        <div class="card card-widget card-outline card-secondary">
+                            <div class="user-header bg-info">
+                                <h5 style="text-align: center; margin-top: 6px;">
+                                    &rAarr; &nbsp; Inventaris Dijual &nbsp; &lAarr;
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-3 border-right bg-info">
+                                        <div class="description-block">
+                                            <h5 class="description-header">
+                                                {{ $inv_dijual->where('id_cabang', $id_cabang)->count() }}
+                                            </h5>
+                                            <span class="description-text">ALL</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-3 border-right bg-success">
+                                        <div class="description-block">
+                                            <h5 class="description-header">
+                                                {{ $inv_dijual->where('status_pincab', 'Approve')->where('id_cabang', $id_cabang)->count() }}
+                                            </h5>
+                                            <span class="description-text">APPROVED</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-3 border-right bg-warning">
+                                        <div class="description-block">
+                                            <h5 class="description-header">
+                                                {{ $inv_dijual->wherenull('status_pincab')->where('id_cabang', $id_cabang)->count() }}
+                                            </h5>
+                                            <span class="description-text">NEED ACTION</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-3 bg-danger">
+                                        <div class="description-block">
+                                            <h5 class="description-header">
+                                                {{ $inv_dijual->where('status_pincab', 'Reject')->where('id_cabang', $id_cabang)->count() }}
+                                            </h5>
+                                            <span class="description-text">REJECTED</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div style="margin: 10px 0px -10px 0px">
+                                    <a href="/inventaris-penjualan">
+                                        More info ... <i class="fas fa-arrow-circle-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card card-outline card-secondary mb-0"></div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <div class="card card-outline card-danger mb-0"></div>

@@ -136,13 +136,13 @@
                     <th>Catatan Pembukuan</th>
                     <td>{{ $inventaris->catatan_pembukuan }}</td>
                 </tr>
-                <tr>
+                {{-- <tr>
                     <th>DirOps Approve?</th>
                     <td>
                         {{ $inventaris->status_dirops }} -
                         {{ $inventaris->tgl_status_dirops ? $inventaris->tgl_status_dirops->translatedFormat('d F Y, H:i') : ' ' }}
                     </td>
-                </tr>
+                </tr> --}}
                 <tr>
                     <th>Dirut Approve?</th>
                     <td>
@@ -151,7 +151,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>Catatan DirOps</th>
+                    <th>Catatan Dirut</th>
                     <td>{{ $inventaris->catatan_dirops }}</td>
                 </tr>
 
