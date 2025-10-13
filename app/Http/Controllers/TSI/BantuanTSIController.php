@@ -119,11 +119,11 @@ class BantuanTSIController extends Controller
                             ->OrderBy('created_at', 'desc')->get();
                     } else {
                         if (!empty($request->min)) {
-                            $data = BantuanTSI::where('status_sdm', 'Approve')->whereBetween('created_at', [$awal, $akhir])
+                            $data = BantuanTSI::where('status_pincab', 'Approve')->whereBetween('created_at', [$awal, $akhir])
                                 ->where('id_cabang', $id_cabang)
                                 ->get();
                         } else {
-                            $data = BantuanTSI::where('status_sdm', 'Approve')->OrderBy('created_at', 'desc')->get();
+                            $data = BantuanTSI::where('status_pincab', 'Approve')->OrderBy('created_at', 'desc')->get();
                         }
                     }
                     break;
@@ -192,7 +192,7 @@ class BantuanTSIController extends Controller
 
                     # code pembagian user Aksi
                     switch (auth()->user()->jabatan) {
-                            # Kaops...
+                        # Kaops...
                         case 'Kasi Operasional':
                         case 'Kasi Komersial':
                             if ($data->status_pincab == "Approve" || $data->status_pincab == "Reject") {
@@ -204,7 +204,7 @@ class BantuanTSIController extends Controller
                                 $button .= '&nbsp;';
                             }
                             break;
-                            # area...
+                        # area...
                         case 'Analis Area':
                         case 'Staf Area':
                             if ($data->status_sdm != null) {
@@ -216,11 +216,11 @@ class BantuanTSIController extends Controller
                                 $button .= '&nbsp;';
                             }
                             break;
-                            # Pincab...
+                        # Pincab...
                         case 'Pimpinan Cabang':
                             $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
                             break;
-                            # SDM, Dirops & TSi...
+                        # SDM, Dirops & TSi...
                         case 'SDM':
                         case 'Direktur Operasional':
                         case 'TSI':
