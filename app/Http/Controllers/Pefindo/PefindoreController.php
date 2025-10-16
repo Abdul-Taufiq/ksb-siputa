@@ -286,6 +286,22 @@ class PefindoreController extends Controller
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
             $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+        } elseif (auth()->user()->jabatan == 'SDM') {
+            $data->update([
+                'nama_pincab' => 'Maker User SDM',
+                'status_pincab' => '--',
+                'tgl_status_pincab' => null,
+                'nama_sdm' => auth()->user()->nama,
+                'status_sdm' => 'Approve',
+                'tgl_status_sdm' => now(),
+
+            ]);
+
+            $userPenerima = User::where('jabatan', 'Direktur Operasional')->first();
+            $url = route('user-email-pengajuan.index');
+            $title = 'Terdapat Form Pengajuan Baru!';
+            $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
+            $this->SendEmail($data, $userPenerima, $url, $title, $message);
         } else {
             $userPenerima = User::where('id_cabang', auth()->user()->id_cabang)
                 ->where('jabatan', 'Pimpinan Cabang')->first();
