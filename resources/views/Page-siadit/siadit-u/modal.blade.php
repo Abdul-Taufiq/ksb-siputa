@@ -122,6 +122,7 @@
                                                 <option value="Kasi Operasional">Kasi Operasional</option>
                                                 <option value="Kasi Komersial">Kasi Komersial</option>
                                                 <option value="Pimpinan Cabang">Pimpinan Cabang</option>
+                                                <option value="Team Leader">Team Leader</option>
                                             </select>
                                         @endif
                                     </div>
@@ -291,6 +292,7 @@
                                                 <option value="Kasi Operasional">Kasi Operasional</option>
                                                 <option value="Kasi Komersial">Kasi Komersial</option>
                                                 <option value="Pimpinan Cabang">Pimpinan Cabang</option>
+                                                <option value="Team Leader">Team Leader</option>
                                             </select>
                                         @endif
                                     </div>
