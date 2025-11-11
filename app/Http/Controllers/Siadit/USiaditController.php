@@ -294,7 +294,6 @@ class USiaditController extends Controller
                 'nama_sdm' => auth()->user()->nama,
                 'status_sdm' => 'Approve',
                 'tgl_status_sdm' => now(),
-
             ]);
 
             $userPenerima = User::where('jabatan', 'Direktur Operasional')->first();
@@ -472,7 +471,9 @@ class USiaditController extends Controller
                 $url = route('user-siadit.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                if ($userPenerima) {
+                    $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                }
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'TSI')
@@ -558,7 +559,9 @@ class USiaditController extends Controller
                 $url = route('user-siadit.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                if ($userPenerima) {
+                    $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                }
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'SDM')
@@ -587,7 +590,9 @@ class USiaditController extends Controller
                 $url = route('user-siadit.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                if ($userPenerima) {
+                    $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                }
                 break;
 
             case 'TSI':
@@ -608,7 +613,9 @@ class USiaditController extends Controller
                 $url = route('user-siadit.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                if ($userPenerima) {
+                    $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                }
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'TSI')

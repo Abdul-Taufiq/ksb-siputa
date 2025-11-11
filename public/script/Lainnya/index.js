@@ -122,8 +122,8 @@ function loadtable(min, max, id_cabang, cari) {
                 "<'row'<'col-md-5'i><'col-md-7'p>>",
             buttons: buttons,
             lengthMenu: [
-                [5, 10, 20, 50, -1],
-                [5, 10, 20, 50, "Semua"],
+                [10, 20, 50, -1],
+                [10, 20, 50, "Semua"],
             ],
         });
     });

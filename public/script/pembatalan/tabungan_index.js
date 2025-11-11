@@ -10,12 +10,12 @@ function loadtable(min, max, id_cabang, cari) {
         var kode = urlParams.get("kode");
 
         // kondisi memunculkan button export
-        var level = $("#user").val();
+        var level = document.getElementById('user'); 
+        
+        var show = false;
         var buttons = ["colvis"];
-        if (level == "SUPER USER" || level == "DIREKTUR") {
-            var show = true;
-        } else {
-            var show = false;
+        if (level.value == "SUPER USER" || level.value == "DIREKTUR") {
+            show = true;
         }
 
         if (show) {
@@ -156,8 +156,8 @@ function loadtable(min, max, id_cabang, cari) {
                 "<'row'<'col-md-5'i><'col-md-7'p>>",
             buttons: buttons,
             lengthMenu: [
-                [5, 10, 20, 50, -1],
-                [5, 10, 20, 50, "Semua"],
+                [10, 20, 50, -1],
+                [10, 20, 50, "Semua"],
             ],
         });
     });
