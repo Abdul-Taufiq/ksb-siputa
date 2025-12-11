@@ -117,7 +117,7 @@
                     <td>
                         {{ $pLainnya->nama_dirut }} -
                         {{ $pLainnya->status_dirut }} -
-                        {{ $pLainnya->tgl_status_dirut != null ? $pLainnya->tgl_status_dirut->translatedFormat('d F Y, H:i') : ' ' }}
+                        {{ $pLainnya->tgl_status_dirut ? $pLainnya->tgl_status_dirut->translatedFormat('d F Y, H:i') : ' ' }}
                     </td>
                 </tr>
                 <tr>

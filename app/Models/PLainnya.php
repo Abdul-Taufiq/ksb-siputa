@@ -17,7 +17,8 @@ class PLainnya extends Model
         'tgl_status_pembukuan',
         'tgl_status_dirops',
         'tgl_status_akhir',
-        'tgl_status_tsi'
+        'tgl_status_tsi',
+        'tgl_status_dirut',
     ];
     protected $primaryKey = 'id';
 
