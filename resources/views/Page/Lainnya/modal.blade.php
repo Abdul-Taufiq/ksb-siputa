@@ -78,6 +78,9 @@
                                             <option value="Maintenance/Pembersihan"
                                                 {{ old('jns_pengajuan') == 'Maintenance/Pembersihan' ? 'selected' : null }}>
                                                 Maintenance/Pembersihan</option>
+                                            <option value="Biaya Operasiona/Lainnya"
+                                                {{ old('jns_pengajuan') == 'Biaya Operasiona/Lainnya' ? 'selected' : null }}>
+                                                Biaya Operasiona/Lainnya</option>
                                         </select>
                                     </div>
                                 </div>
