@@ -417,7 +417,7 @@ class UserPController extends Controller
                 // send email untuk user satunya
 
                 $userPenerima = User::where('jabatan', 'SDM')
-                    ->where('nama', '!=', $nama)->first();
+                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                 // pemberitahuan database
                 $url = route('mso-pengajuan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
@@ -438,7 +438,7 @@ class UserPController extends Controller
                     'tgl_status_dirut' => now()->addMinutes(rand(0, 60)),
                 ]);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'TSI')->get();
+                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'NOT LIKE', '%dummy%')->get();
                 // pemberitahuan database
                 $url = route('mso-pengajuan.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
@@ -469,7 +469,7 @@ class UserPController extends Controller
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'TSI')
-                    ->where('nama', '!=', $nama)->first();
+                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                 // pemberitahuan database
                 $url = route('mso-pengajuan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
@@ -559,7 +559,7 @@ class UserPController extends Controller
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'SDM')
-                    ->where('nama', '!=', $nama)->first();
+                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                 // pemberitahuan database
                 $url = route('mso-pengajuan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
@@ -613,7 +613,7 @@ class UserPController extends Controller
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'TSI')
-                    ->where('nama', '!=', $nama)->first();
+                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                 // pemberitahuan database
                 $url = route('mso-pengajuan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';

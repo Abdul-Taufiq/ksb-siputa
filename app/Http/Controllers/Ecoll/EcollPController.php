@@ -77,6 +77,7 @@ class EcollPController extends Controller
                     }
                     break;
                 case 'Direktur Operasional':
+                case 'Direktur Utama':
                     if (!empty($request->kode)) {
                         $data = EcollP::where('kode_form', $kode)
                             ->OrderBy('created_at', 'desc')->get();
@@ -140,6 +141,7 @@ class EcollPController extends Controller
                             break;
 
                         case 'Direktur Operasional':
+                        case 'Direktur Utama':
                             $jabatan = $data->status_dirops;
                             $statusAfter = $this->statusAfter($data, $jabatan, $statusDropdown);
                             return $statusAfter;
@@ -192,6 +194,7 @@ class EcollPController extends Controller
                         case 'Pimpinan Cabang':
                         case 'SDM':
                         case 'Direktur Operasional':
+                        case 'Direktur Utama':
                         case 'TSI':
                             $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
                             break;
@@ -267,7 +270,7 @@ class EcollPController extends Controller
                 'tgl_status_pincab' => null,
             ]);
 
-            $userPenerima = User::where('jabatan', 'SDM')->get();
+            $userPenerima = User::where('jabatan', 'SDM')->where('email', 'NOT LIKE', '%dummy%')->get();
             $url = route('user-email-pengajuan.index');
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
@@ -359,7 +362,7 @@ class EcollPController extends Controller
                     'status_akhir' => 'Proses'
                 ]);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'SDM')->get();
+                $userPenerima = User::where('jabatan', 'SDM')->where('email', 'NOT LIKE', '%dummy%')->get();
                 // pemberitahuan database
                 $url = route('user-ecoll.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
@@ -398,7 +401,7 @@ class EcollPController extends Controller
                 // send email untuk user satunya
 
                 $userPenerima = User::where('jabatan', 'SDM')
-                    ->where('nama', '!=', $nama)->first();
+                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                 // pemberitahuan database
                 $url = route('user-ecoll.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
@@ -414,12 +417,12 @@ class EcollPController extends Controller
                     'catatan_dirops' => $request->catatan,
                     'status_akhir' => 'Proses',
 
-                    'nama_dirut' => 'Eko Bambang Setiyoso',
-                    'status_dirut' => 'Approve',
-                    'tgl_status_dirut' => now()->addMinutes(rand(0, 60)),
+                    // 'nama_dirut' => 'Eko Bambang Setiyoso',
+                    // 'status_dirut' => 'Approve',
+                    // 'tgl_status_dirut' => now()->addMinutes(rand(0, 60)),
                 ]);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'TSI')->get();
+                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'NOT LIKE', '%dummy%')->get();
                 // pemberitahuan database
                 $url = route('user-ecoll.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
@@ -450,7 +453,7 @@ class EcollPController extends Controller
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'TSI')
-                    ->where('nama', '!=', $nama)->first();
+                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                 // pemberitahuan database
                 $url = route('user-ecoll.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
@@ -538,7 +541,7 @@ class EcollPController extends Controller
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'SDM')
-                    ->where('nama', '!=', $nama)->first();
+                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                 // pemberitahuan database
                 $url = route('user-ecoll.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
@@ -547,6 +550,7 @@ class EcollPController extends Controller
                 break;
 
             case 'Direktur Operasional':
+            case 'Direktur Utama':
                 $data->update([
                     'nama_dirops' => $nama,
                     'status_dirops' => 'Reject',
@@ -592,7 +596,7 @@ class EcollPController extends Controller
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'TSI')
-                    ->where('nama', '!=', $nama)->first();
+                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                 // pemberitahuan database
                 $url = route('user-ecoll.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';

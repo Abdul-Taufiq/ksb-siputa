@@ -31,7 +31,7 @@ class PemeliharaanController extends Controller
 
         if (request()->ajax()) {
             switch ($jabatan) {
-                    # kaops ...
+                # kaops ...
                 case 'Kasi Operasional':
                 case 'Kasi Komersial':
                 case 'Kepala Kantor Kas':
@@ -52,7 +52,7 @@ class PemeliharaanController extends Controller
                         }
                     }
                     break;
-                    # Pimpinan Cabang ...
+                # Pimpinan Cabang ...
                 case 'Pembukuan':
                 case 'Internal Audit':
                     if (!empty($request->kode)) {
@@ -153,7 +153,7 @@ class PemeliharaanController extends Controller
 
                     # code pembagian user Aksi
                     switch (auth()->user()->jabatan) {
-                            # Kaops...
+                        # Kaops...
                         case 'Kasi Operasional':
                         case 'Kasi Komersial':
                         case 'Analis Area':
@@ -168,11 +168,11 @@ class PemeliharaanController extends Controller
                                 $button .= '&nbsp;';
                             }
                             break;
-                            # Pincab...
+                        # Pincab...
                         case 'Pimpinan Cabang':
                             $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
                             break;
-                            # Pembukuan, Dirops & TSi...
+                        # Pembukuan, Dirops & TSi...
                         case 'Pembukuan':
                         case 'Direktur Operasional':
                             $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
@@ -264,7 +264,7 @@ class PemeliharaanController extends Controller
         $LogAksi = '(+) Pengajuan Pemeliharaan Perangkat';
         $this->LogActivity($data, $LogAksi);
         // Send Email
-        $userPenerima = User::where('jabatan', 'TSI')->get();
+        $userPenerima = User::where('jabatan', 'TSI')->where('email', 'NOT LIKE', '%dummy%')->get();
         $url = route('pemeliharaan-perangkat.index');
         $title = 'Terdapat Form Pengajuan Baru!';
         $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
@@ -357,7 +357,7 @@ class PemeliharaanController extends Controller
                 $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
-                $userPenerima = User::where('jabatan', 'TSI')
+                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'NOT LIKE', '%dummy%')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
                 $url = route('pemeliharaan-perangkat.index');
@@ -410,7 +410,7 @@ class PemeliharaanController extends Controller
                 $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
-                $userPenerima = User::where('jabatan', 'TSI')
+                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'NOT LIKE', '%dummy%')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
                 $url = route('pemeliharaan-perangkat.index');
@@ -504,7 +504,7 @@ class PemeliharaanController extends Controller
         $this->SendEmail($data, $userPenerima, $url, $title, $message);
 
         // send email untuk user satunya
-        $userPenerima = User::where('jabatan', 'TSI')
+        $userPenerima = User::where('jabatan', 'TSI')->where('email', 'NOT LIKE', '%dummy%')
             ->where('nama', '!=', $nama)->first();
         // pemberitahuan database
         $url = route('pemeliharaan-perangkat.index');

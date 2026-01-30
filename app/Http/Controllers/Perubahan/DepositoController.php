@@ -359,7 +359,7 @@ class DepositoController extends Controller
                     'status_akhir' => 'Proses'
                 ]);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'Pembukuan')->get();
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')->get();
                 // pemberitahuan database
                 $url = route('perubahan-deposito.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
@@ -399,7 +399,7 @@ class DepositoController extends Controller
                 $this->SendEmail($data, $userPenerima, $url, $title, $message);
                 // send email untuk user satunya
 
-                $userPenerima = User::where('jabatan', 'Pembukuan')
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
                 $url = route('perubahan-deposito.index');
@@ -451,7 +451,7 @@ class DepositoController extends Controller
                 $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
-                $userPenerima = User::where('jabatan', 'TSI')
+                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'NOT LIKE', '%dummy%')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
                 $url = route('perubahan-deposito.index');
@@ -539,7 +539,7 @@ class DepositoController extends Controller
                 $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
-                $userPenerima = User::where('jabatan', 'Pembukuan')
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
                 $url = route('perubahan-deposito.index');

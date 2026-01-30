@@ -370,7 +370,7 @@ class ResetController extends Controller
                     'status_akhir' => 'Proses'
                 ]);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'SDM')->get();
+                $userPenerima = User::where('jabatan', 'SDM')->where('email', 'NOT LIKE', '%dummy%')->get();
                 // pemberitahuan database
                 $url = route('mso-reset.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
@@ -409,7 +409,7 @@ class ResetController extends Controller
                 // send email untuk user satunya
 
                 $userPenerima = User::where('jabatan', 'SDM')
-                    ->where('nama', '!=', $nama)->first();
+                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                 // pemberitahuan database
                 $url = route('mso-reset.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
@@ -430,7 +430,7 @@ class ResetController extends Controller
                     'tgl_status_dirut' => now()->addMinutes(rand(0, 60)),
                 ]);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'TSI')->get();
+                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'NOT LIKE', '%dummy%')->get();
                 // pemberitahuan database
                 $url = route('mso-reset.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
@@ -459,7 +459,7 @@ class ResetController extends Controller
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'TSI')
-                    ->where('nama', '!=', $nama)->first();
+                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                 // pemberitahuan database
                 $url = route('mso-reset.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
@@ -567,7 +567,7 @@ class ResetController extends Controller
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'SDM')
-                    ->where('nama', '!=', $nama)->first();
+                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                 // pemberitahuan database
                 $url = route('mso-reset.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
@@ -617,7 +617,7 @@ class ResetController extends Controller
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'TSI')
-                    ->where('nama', '!=', $nama)->first();
+                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                 // pemberitahuan database
                 $url = route('mso-reset.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';

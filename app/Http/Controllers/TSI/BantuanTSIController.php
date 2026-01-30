@@ -410,7 +410,7 @@ class BantuanTSIController extends Controller
                 }
 
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'SDM')->get();
+                $userPenerima = User::where('jabatan', 'SDM')->where('email', 'NOT LIKE', '%dummy%')->get();
                 // pemberitahuan database
                 $url = route('tsi-permohonan.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
@@ -427,7 +427,7 @@ class BantuanTSIController extends Controller
                     'status_akhir' => 'Proses'
                 ]);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'TSI')->get();
+                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'NOT LIKE', '%dummy%')->get();
                 // pemberitahuan database0
                 $url = route('tsi-permohonan.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
@@ -435,7 +435,7 @@ class BantuanTSIController extends Controller
                 $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
-                $userPenerima = User::where('jabatan', 'SDM')
+                $userPenerima = User::where('jabatan', 'SDM')->where('email', 'NOT LIKE', '%dummy%')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
                 $url = route('tsi-permohonan.index');
@@ -476,7 +476,7 @@ class BantuanTSIController extends Controller
                 $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
-                $userPenerima = User::where('jabatan', 'TSI')
+                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'NOT LIKE', '%dummy%')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
                 $url = route('tsi-permohonan.index');
@@ -562,7 +562,7 @@ class BantuanTSIController extends Controller
                 $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
-                $userPenerima = User::where('jabatan', 'SDM')
+                $userPenerima = User::where('jabatan', 'SDM')->where('email', 'NOT LIKE', '%dummy%')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
                 $url = route('tsi-permohonan.index');
@@ -612,7 +612,7 @@ class BantuanTSIController extends Controller
                 $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
-                $userPenerima = User::where('jabatan', 'TSI')
+                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'NOT LIKE', '%dummy%')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
                 $url = route('tsi-permohonan.index');

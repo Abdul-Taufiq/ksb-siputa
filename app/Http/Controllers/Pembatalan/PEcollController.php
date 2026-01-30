@@ -324,7 +324,7 @@ class PEcollController extends Controller
                     'status_akhir' => 'Proses'
                 ]);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'Pembukuan')->get();
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')->get();
                 // pemberitahuan database
                 $url = route('pembatalan-ecoll.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
@@ -362,7 +362,7 @@ class PEcollController extends Controller
                 $this->SendEmail($data, $userPenerima, $url, $title, $message);
                 // send email untuk user satunya
 
-                $userPenerima = User::where('jabatan', 'Pembukuan')
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
                 $url = route('pembatalan-ecoll.index');
@@ -502,7 +502,7 @@ class PEcollController extends Controller
                 $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
-                $userPenerima = User::where('jabatan', 'Pembukuan')
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
                 $url = route('pembatalan-ecoll.index');

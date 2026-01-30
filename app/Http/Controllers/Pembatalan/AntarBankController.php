@@ -372,7 +372,7 @@ class AntarBankController extends Controller
                     // send email untuk user satunya
 
                     $userPenerima = User::where('jabatan', 'Pembukuan')
-                        ->where('nama', '!=', $nama)->first();
+                        ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                     // pemberitahuan database
                     $url = route('pembatalan-antarbank.index');
                     $title = 'Pengajuan Sudah Dikerjakan!';
@@ -400,7 +400,7 @@ class AntarBankController extends Controller
                     // send email untuk user satunya
 
                     $userPenerima = User::where('jabatan', 'Pembukuan')
-                        ->where('nama', '!=', $nama)->first();
+                        ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                     // pemberitahuan database
                     $url = route('pembatalan-antarbank.index');
                     $title = 'Pengajuan Sudah Dikerjakan!';
@@ -426,7 +426,7 @@ class AntarBankController extends Controller
                 $LogAksi = '(cs) Approve Pengajuan Pembatalan Transaksi (ABA)';
                 $this->LogActivity($data, $LogAksi);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'Pembukuan')->get();
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')->get();
                 // pemberitahuan database
                 $url = route('pembatalan-antarbank.index');
                 $title = 'Perlu Menindaklanjuti Pengajuan!';
@@ -510,7 +510,7 @@ class AntarBankController extends Controller
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'Pembukuan')
-                    ->where('nama', '!=', $nama)->first();
+                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                 // pemberitahuan database
                 $url = route('pembatalan-antarbank.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';

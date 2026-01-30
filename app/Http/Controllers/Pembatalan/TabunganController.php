@@ -328,7 +328,7 @@ class TabunganController extends Controller
                 $LogAksi = '(cs) Approve Pengajuan Pembatalan Transaksi (Tabungan)';
                 $this->LogActivity($data, $LogAksi);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'Pembukuan')->get();
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')->get();
                 // pemberitahuan database
                 $url = route('pembatalan-tabungan.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
@@ -372,7 +372,7 @@ class TabunganController extends Controller
                     $this->SendEmail($data, $userPenerima, $url, $title, $message);
                     // send email untuk user satunya
 
-                    $userPenerima = User::where('jabatan', 'Pembukuan')
+                    $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')
                         ->where('nama', '!=', $nama)->first();
                     // pemberitahuan database
                     $url = route('pembatalan-tabungan.index');
@@ -400,7 +400,7 @@ class TabunganController extends Controller
                     $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                     // send email untuk user satunya
 
-                    $userPenerima = User::where('jabatan', 'Pembukuan')
+                    $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')
                         ->where('nama', '!=', $nama)->first();
                     // pemberitahuan database
                     $url = route('pembatalan-tabungan.index');
@@ -427,7 +427,7 @@ class TabunganController extends Controller
                 $LogAksi = '(cs) Approve Pengajuan Pembatalan Transaksi (Tabungan)';
                 $this->LogActivity($data, $LogAksi);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'Pembukuan')->get();
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')->get();
                 // pemberitahuan database
                 $url = route('pembatalan-tabungan.index');
                 $title = 'Perlu Menindaklanjuti Pengajuan!';
@@ -510,7 +510,7 @@ class TabunganController extends Controller
                 $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
-                $userPenerima = User::where('jabatan', 'Pembukuan')
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
                 $url = route('pembatalan-tabungan.index');

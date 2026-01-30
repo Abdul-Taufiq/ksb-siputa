@@ -396,7 +396,7 @@ class PefindoreController extends Controller
                     'tgl_status_dirut' => now()->addMinutes(rand(0, 60)),
                 ]);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'Pembukuan')->get();
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')->get();
                 // pemberitahuan database
                 $url = route('user-websakep-reset.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
@@ -435,7 +435,7 @@ class PefindoreController extends Controller
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'Pembukuan')
-                    ->where('nama', '!=', $nama)->first();
+                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                 // pemberitahuan database
                 $url = route('user-websakep-reset.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
@@ -528,7 +528,7 @@ class PefindoreController extends Controller
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'Pembukuan')
-                    ->where('nama', '!=', $nama)->first();
+                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                 // pemberitahuan database
                 $url = route('user-websakep-reset.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';

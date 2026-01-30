@@ -332,7 +332,7 @@ class PDepositoController extends Controller
                 $LogAksi = '(cs) Approve Pengajuan Pembatalan Transaksi (Deposito)';
                 $this->LogActivity($data, $LogAksi);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'Pembukuan')->get();
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')->get();
                 // pemberitahuan database
                 $url = route('pembatalan-deposito.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
@@ -377,7 +377,7 @@ class PDepositoController extends Controller
                     // send email untuk user satunya
 
                     $userPenerima = User::where('jabatan', 'Pembukuan')
-                        ->where('nama', '!=', $nama)->first();
+                        ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                     // pemberitahuan database
                     $url = route('pembatalan-deposito.index');
                     $title = 'Pengajuan Sudah Dikerjakan!';
@@ -405,7 +405,7 @@ class PDepositoController extends Controller
                     // send email untuk user satunya
 
                     $userPenerima = User::where('jabatan', 'Pembukuan')
-                        ->where('nama', '!=', $nama)->first();
+                        ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                     // pemberitahuan database
                     $url = route('pembatalan-deposito.index');
                     $title = 'Pengajuan Sudah Dikerjakan!';
@@ -431,7 +431,7 @@ class PDepositoController extends Controller
                 $LogAksi = '(cs) Approve Pengajuan Pembatalan Transaksi (Deposito)';
                 $this->LogActivity($data, $LogAksi);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'Pembukuan')->get();
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')->get();
                 // pemberitahuan database
                 $url = route('pembatalan-deposito.index');
                 $title = 'Perlu Menindaklanjuti Pengajuan!';
@@ -515,7 +515,7 @@ class PDepositoController extends Controller
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'Pembukuan')
-                    ->where('nama', '!=', $nama)->first();
+                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                 // pemberitahuan database
                 $url = route('pembatalan-deposito.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';

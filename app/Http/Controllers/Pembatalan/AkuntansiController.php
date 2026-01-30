@@ -390,7 +390,7 @@ class AkuntansiController extends Controller
                     // send email untuk user satunya
 
                     $userPenerima = User::where('jabatan', 'Pembukuan')
-                        ->where('nama', '!=', $nama)->first();
+                        ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                     // pemberitahuan database
                     $url = route('pembatalan-akuntansi.index');
                     $title = 'Pengajuan Sudah Dikerjakan!';
@@ -418,7 +418,7 @@ class AkuntansiController extends Controller
                     // send email untuk user satunya
 
                     $userPenerima = User::where('jabatan', 'Pembukuan')
-                        ->where('nama', '!=', $nama)->first();
+                        ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                     // pemberitahuan database
                     $url = route('pembatalan-akuntansi.index');
                     $title = 'Pengajuan Sudah Dikerjakan!';
@@ -444,7 +444,7 @@ class AkuntansiController extends Controller
                 $LogAksi = '(cs) Approve Pengajuan Pembatalan Transaksi (Akuntansi)';
                 $this->LogActivity($data, $LogAksi);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'Pembukuan')->get();
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')->get();
                 // pemberitahuan database
                 $url = route('pembatalan-akuntansi.index');
                 $title = 'Perlu Menindaklanjuti Pengajuan!';
@@ -528,7 +528,7 @@ class AkuntansiController extends Controller
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'Pembukuan')
-                    ->where('nama', '!=', $nama)->first();
+                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                 // pemberitahuan database
                 $url = route('pembatalan-akuntansi.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';

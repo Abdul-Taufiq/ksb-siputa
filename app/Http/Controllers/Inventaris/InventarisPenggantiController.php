@@ -683,7 +683,7 @@ class InventarisPenggantiController extends Controller
                         ]);
 
                         // Send Email Double
-                        $userPenerima = User::where('jabatan', 'Pembukuan')->get();
+                        $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')->get();
                         // pemberitahuan database
                         $url = route('inventaris-pengajuan.index');
                         $title = 'Terdapat Form Pengajuan Baru!';
@@ -701,7 +701,7 @@ class InventarisPenggantiController extends Controller
                     ]);
 
                     // Send Email Double
-                    $userPenerima = User::where('jabatan', 'Pembukuan')->get();
+                    $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')->get();
                     // pemberitahuan database
                     $url = route('inventaris-pengajuan.index');
                     $title = 'Terdapat Form Pengajuan Baru!';
@@ -733,7 +733,7 @@ class InventarisPenggantiController extends Controller
                 }
                 // khusus 
                 if ($data->jns_pembelian == 'Pembelian Dengan Speksifikasi KPM' && $data->kategori_barang == 'Elektronik') {
-                    $userPenerima = User::where('jabatan', 'TSI')->get();
+                    $userPenerima = User::where('jabatan', 'TSI')->where('email', 'NOT LIKE', '%dummy%')->get();
 
                     // pemberitahuan database
                     $url = route('inventaris-pengganti.index');
@@ -743,7 +743,7 @@ class InventarisPenggantiController extends Controller
 
                     // send email untuk user satunya
                     $userPenerima = User::where('jabatan', 'Pembukuan')
-                        ->where('nama', '!=', $nama)->first();
+                        ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                     // pemberitahuan database
                     $url = route('inventaris-pengganti.index');
                     $title = 'Pengajuan Sudah Dikerjakan!';
@@ -767,7 +767,7 @@ class InventarisPenggantiController extends Controller
 
                     // send email untuk user satunya
                     $userPenerima = User::where('jabatan', 'Pembukuan')
-                        ->where('nama', '!=', $nama)->first();
+                        ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                     // pemberitahuan database
                     $url = route('inventaris-pengganti.index');
                     $title = 'Pengajuan Sudah Dikerjakan!';
@@ -795,7 +795,7 @@ class InventarisPenggantiController extends Controller
 
                 if ($data->jns_pembelian == 'Pembelian Dengan Speksifikasi KPM' && $data->kategori_barang == 'Elektronik') {
                     // Send Email Double
-                    $userPenerima = User::where('jabatan', 'TSI')->get();
+                    $userPenerima = User::where('jabatan', 'TSI')->where('email', 'NOT LIKE', '%dummy%')->get();
                     // pemberitahuan database
                     $url = route('inventaris-pengganti.index');
                     $title = 'Terdapat Form Pengajuan Baru!';
@@ -847,7 +847,7 @@ class InventarisPenggantiController extends Controller
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'TSI')
-                    ->where('nama', '!=', $nama)->first();
+                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                 // pemberitahuan database
                 $url = route('inventaris-pengganti.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
@@ -933,7 +933,7 @@ class InventarisPenggantiController extends Controller
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'Pembukuan')
-                    ->where('nama', '!=', $nama)->first();
+                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                 // pemberitahuan database
                 $url = route('inventaris-pengganti.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
@@ -989,7 +989,7 @@ class InventarisPenggantiController extends Controller
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'TSI')
-                    ->where('nama', '!=', $nama)->first();
+                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                 // pemberitahuan database
                 $url = route('inventaris-pengganti.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';

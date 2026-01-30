@@ -334,13 +334,13 @@ class PSiaditController extends Controller
                     'status_akhir' => 'Proses'
                 ]);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'Pembukuan')->get();
-                // pemberitahuan database
-                $url = route('siadit-perubahan.index');
-                $title = 'Terdapat Form Pengajuan Baru!';
-                $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                // $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
-                break;
+                // $userPenerima = User::where('jabatan', 'Pembukuan')->get();
+                // // pemberitahuan database
+                // $url = route('siadit-perubahan.index');
+                // $title = 'Terdapat Form Pengajuan Baru!';
+                // $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
+                // // $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+                // break;
 
             case 'Pembukuan':
                 if ($data->status_pincab != null) {
@@ -376,7 +376,7 @@ class PSiaditController extends Controller
                 $this->SendEmail($data, $userPenerima, $url, $title, $message);
                 // send email untuk user satunya
 
-                $userPenerima = User::where('jabatan', 'Pembukuan')
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
                 $url = route('siadit-perubahan.index');
@@ -441,7 +441,7 @@ class PSiaditController extends Controller
                 $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
-                $userPenerima = User::where('jabatan', 'TSI')
+                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'NOT LIKE', '%dummy%')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
                 $url = route('siadit-perubahan.index');
@@ -537,7 +537,7 @@ class PSiaditController extends Controller
                 $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
-                $userPenerima = User::where('jabatan', 'Pembukuan')
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
                 $url = route('siadit-perubahan.index');

@@ -343,7 +343,7 @@ class KreditController extends Controller
                 $LogAksi = '(cs) Approve Pengajuan Pembatalan Transaksi (Kredit)';
                 $this->LogActivity($data, $LogAksi);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'Pembukuan')->get();
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')->get();
                 // pemberitahuan database
                 $url = route('pembatalan-kredit.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
@@ -388,7 +388,7 @@ class KreditController extends Controller
                     // send email untuk user satunya
 
                     $userPenerima = User::where('jabatan', 'Pembukuan')
-                        ->where('nama', '!=', $nama)->first();
+                        ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                     // pemberitahuan database
                     $url = route('pembatalan-kredit.index');
                     $title = 'Pengajuan Sudah Dikerjakan!';
@@ -416,7 +416,7 @@ class KreditController extends Controller
                     // send email untuk user satunya
 
                     $userPenerima = User::where('jabatan', 'Pembukuan')
-                        ->where('nama', '!=', $nama)->first();
+                        ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                     // pemberitahuan database
                     $url = route('pembatalan-kredit.index');
                     $title = 'Pengajuan Sudah Dikerjakan!';
@@ -526,7 +526,7 @@ class KreditController extends Controller
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'Pembukuan')
-                    ->where('nama', '!=', $nama)->first();
+                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
                 // pemberitahuan database
                 $url = route('pembatalan-kredit.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
