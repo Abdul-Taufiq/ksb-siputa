@@ -129,7 +129,7 @@
             </div>
             <div class="info">
                 <a href="/profile" class="d-block">{{ Auth::user()->nama }}</a>
-                <span>{{ Auth::user()->jabatan }}</span>
+                <span>{{ Auth::user()->sub_jabatan }}</span>
             </div>
         </div>
 

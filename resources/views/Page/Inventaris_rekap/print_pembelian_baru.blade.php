@@ -164,7 +164,7 @@
                     <b>Kepala Bidang Operasional</b>
                 </td>
                 <td style="padding: 4px 0; width: 55%; text-align: center;">
-                    <b>Direktur Utama</b>
+                    <b>Direktur</b>
                 </td>
             </tr>
             <tr style="text-align: center;">
@@ -174,7 +174,7 @@
                 </td>
                 <td style="padding: 4px 0; width: 55%; text-align: center;">
                     <br><br><br><br><br>
-                    (<b>Eko Bambang Setiyoso</b>)
+                    (<b>Dody Arif Kiswadi</b>)
                 </td>
             </tr>
         </table>
