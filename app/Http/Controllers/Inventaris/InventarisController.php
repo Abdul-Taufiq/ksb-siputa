@@ -383,14 +383,14 @@ class InventarisController extends Controller
                 'tgl_status_pincab' => null,
             ]);
 
-            $userPenerima = User::where('jabatan', 'Pembukuan')->get();
+            $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->get();
             $url = route('inventaris-pengajuan.index');
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
             $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
         } else {
             $userPenerima = User::where('id_cabang', auth()->user()->id_cabang)
-                ->where('jabatan', 'Pimpinan Cabang')->first();
+                ->where('jabatan', 'Pimpinan Cabang')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
             $url = route('inventaris-pengajuan.index');
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
@@ -524,7 +524,7 @@ class InventarisController extends Controller
                 }
             }
 
-            $userPenerima = User::where('jabatan', 'Direktur Operasional')->first();
+            $userPenerima = User::where('jabatan', 'Direktur Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
 
             // pemberitahuan database
             $url = route('inventaris-pengajuan.index');
@@ -633,7 +633,7 @@ class InventarisController extends Controller
                         ]);
 
                         // Send Email Double
-                        $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')->get();
+                        $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->get();
                         // pemberitahuan database
                         $url = route('inventaris-pengajuan.index');
                         $title = 'Terdapat Form Pengajuan Baru!';
@@ -651,7 +651,7 @@ class InventarisController extends Controller
                     ]);
 
                     // Send Email Double
-                    $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')->get();
+                    $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->get();
                     // pemberitahuan database
                     $url = route('inventaris-pengajuan.index');
                     $title = 'Terdapat Form Pengajuan Baru!';
@@ -684,7 +684,7 @@ class InventarisController extends Controller
                 }
                 // khusus 
                 if ($data->jns_pembelian == 'Pembelian Dengan Speksifikasi KPM' && $data->kategori_barang == 'Elektronik') {
-                    $userPenerima = User::where('jabatan', 'TSI')->where('email', 'NOT LIKE', '%dummy%')->get();
+                    $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->get();
 
                     // pemberitahuan database
                     $url = route('inventaris-pengajuan.index');
@@ -694,7 +694,7 @@ class InventarisController extends Controller
 
                     // send email untuk user satunya
                     $userPenerima = User::where('jabatan', 'Pembukuan')
-                        ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
+                        ->where('nama', '!=', $nama)->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                     // pemberitahuan database
                     $url = route('inventaris-pengajuan.index');
                     $title = 'Pengajuan Sudah Dikerjakan!';
@@ -718,7 +718,7 @@ class InventarisController extends Controller
 
                     // send email untuk user satunya
                     $userPenerima = User::where('jabatan', 'Pembukuan')
-                        ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
+                        ->where('nama', '!=', $nama)->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                     // pemberitahuan database
                     $url = route('inventaris-pengajuan.index');
                     $title = 'Pengajuan Sudah Dikerjakan!';
@@ -746,7 +746,7 @@ class InventarisController extends Controller
 
                 if ($data->jns_pembelian == 'Pembelian Dengan Speksifikasi KPM' && $data->kategori_barang == 'Elektronik') {
                     // Send Email Double
-                    $userPenerima = User::where('jabatan', 'TSI')->where('email', 'NOT LIKE', '%dummy%')->get();
+                    $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->get();
                     // pemberitahuan database
                     $url = route('inventaris-pengajuan.index');
                     $title = 'Terdapat Form Pengajuan Baru!';
@@ -755,10 +755,10 @@ class InventarisController extends Controller
                 } else {
                     if ($data->id_cabang == 0) {
                         # code...
-                        $userPenerima = User::where('jabatan', 'Sekretariat')->first();
+                        $userPenerima = User::where('jabatan', 'Sekretariat')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                     } else {
                         # code...
-                        $userPenerima = User::where('jabatan', 'Kasi Operasional')->first();
+                        $userPenerima = User::where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                     }
 
                     // pemberitahuan database
@@ -787,7 +787,7 @@ class InventarisController extends Controller
                         ? $request->catatan . "<b> Added at: " . now()->format('d-m-Y, H:i') . "</b>"
                         : "&rarr; " . $data->catatan_tsi . "<br> &rarr; " . $request->catatan . "<b> Added at: " . now()->format('d-m-Y, H:i') . "</b>")
                 ]);
-                $userPenerima = User::where('jabatan', 'Kasi Operasional')->first();
+                $userPenerima = User::where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
 
                 // pemberitahuan database
                 $status_akhir = 'Approved';
@@ -798,7 +798,7 @@ class InventarisController extends Controller
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'TSI')
-                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
+                    ->where('nama', '!=', $nama)->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 // pemberitahuan database
                 $url = route('inventaris-pengajuan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
@@ -839,7 +839,7 @@ class InventarisController extends Controller
                 ]);
                 // Send Email Single to Kaops cabang
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
                 $url = route('inventaris-pengajuan.index');
@@ -874,7 +874,7 @@ class InventarisController extends Controller
                 }
                 /// Send Email Single to Kaops cabang
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
                 $url = route('inventaris-pengajuan.index');
@@ -884,7 +884,7 @@ class InventarisController extends Controller
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'Pembukuan')
-                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
+                    ->where('nama', '!=', $nama)->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 // pemberitahuan database
                 $url = route('inventaris-pengajuan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
@@ -910,7 +910,7 @@ class InventarisController extends Controller
                 ]);
                 // Send Email Single to Kaops cabang
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
                 $url = route('inventaris-pengajuan.index');
@@ -931,7 +931,7 @@ class InventarisController extends Controller
                 ]);
                 // Send Email Single to Kaops cabang
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
                 $url = route('inventaris-pengajuan.index');
@@ -941,7 +941,7 @@ class InventarisController extends Controller
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'TSI')
-                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
+                    ->where('nama', '!=', $nama)->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 // pemberitahuan database
                 $url = route('inventaris-pengajuan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';

@@ -254,7 +254,7 @@ class AntarBankController extends Controller
         $this->LogActivity($data, $LogAksi);
         // Send Email
         $userPenerima = User::where('id_cabang', auth()->user()->id_cabang)
-            ->where('jabatan', 'Pimpinan Cabang')->first();
+            ->where('jabatan', 'Pimpinan Cabang')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
         $url = route('pembatalan-antarbank.index');
         $title = 'Terdapat Form Pengajuan Baru!';
         $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
@@ -327,7 +327,7 @@ class AntarBankController extends Controller
                 $LogAksi = '(cs) Approve Pengajuan Pembatalan Transaksi (ABA)';
                 $this->LogActivity($data, $LogAksi);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'Pembukuan')->get();
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->get();
                 // pemberitahuan database
                 $url = route('pembatalan-antarbank.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
@@ -363,7 +363,7 @@ class AntarBankController extends Controller
                     $LogAksi = '(cs) SendedToDirops Pengajuan Pembatalan Transaksi (ABA)';
                     $this->LogActivity($data, $LogAksi);
                     // Send Email Single
-                    $userPenerima = User::where('jabatan', 'Direktur Operasional')->first();
+                    $userPenerima = User::where('jabatan', 'Direktur Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                     // pemberitahuan database
                     $url = route('pembatalan-antarbank.index');
                     $title = 'Terdapat Form Pengajuan Baru!';
@@ -372,7 +372,7 @@ class AntarBankController extends Controller
                     // send email untuk user satunya
 
                     $userPenerima = User::where('jabatan', 'Pembukuan')
-                        ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
+                        ->where('nama', '!=', $nama)->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                     // pemberitahuan database
                     $url = route('pembatalan-antarbank.index');
                     $title = 'Pengajuan Sudah Dikerjakan!';
@@ -391,7 +391,7 @@ class AntarBankController extends Controller
                     $this->LogActivity($data, $LogAksi);
                     // Send Email Single to Kaops cabang
                     $status_akhir = 'Approved';
-                    $userPenerima = User::where('jabatan', 'Kasi Operasional')->first();
+                    $userPenerima = User::where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                     // pemberitahuan database
                     $url = route('pembatalan-antarbank.index');
                     $title = 'Pengajuan Telah Selesai!';
@@ -400,7 +400,7 @@ class AntarBankController extends Controller
                     // send email untuk user satunya
 
                     $userPenerima = User::where('jabatan', 'Pembukuan')
-                        ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
+                        ->where('nama', '!=', $nama)->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                     // pemberitahuan database
                     $url = route('pembatalan-antarbank.index');
                     $title = 'Pengajuan Sudah Dikerjakan!';
@@ -426,7 +426,7 @@ class AntarBankController extends Controller
                 $LogAksi = '(cs) Approve Pengajuan Pembatalan Transaksi (ABA)';
                 $this->LogActivity($data, $LogAksi);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')->get();
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->get();
                 // pemberitahuan database
                 $url = route('pembatalan-antarbank.index');
                 $title = 'Perlu Menindaklanjuti Pengajuan!';
@@ -463,7 +463,7 @@ class AntarBankController extends Controller
                 ]);
                 // Send Email Single to Kaops cabang
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
                 $url = route('pembatalan-antarbank.index');
@@ -500,7 +500,7 @@ class AntarBankController extends Controller
                 }
                 /// Send Email Single to Kaops cabang
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
                 $url = route('pembatalan-antarbank.index');
@@ -510,7 +510,7 @@ class AntarBankController extends Controller
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'Pembukuan')
-                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
+                    ->where('nama', '!=', $nama)->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 // pemberitahuan database
                 $url = route('pembatalan-antarbank.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
@@ -530,7 +530,7 @@ class AntarBankController extends Controller
                 ]);
                 // Send Email Single to Kaops cabang
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
                 $url = route('pembatalan-antarbank.index');

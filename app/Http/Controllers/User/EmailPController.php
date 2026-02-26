@@ -279,7 +279,7 @@ class EmailPController extends Controller
                 'tgl_status_pincab' => null,
             ]);
 
-            $userPenerima = User::where('jabatan', 'SDM')->get();
+            $userPenerima = User::where('jabatan', 'SDM')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->get();
             $url = route('user-email-pengajuan.index');
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
@@ -295,14 +295,14 @@ class EmailPController extends Controller
 
             ]);
 
-            $userPenerima = User::where('jabatan', 'Direktur Operasional')->first();
+            $userPenerima = User::where('jabatan', 'Direktur Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
             $url = route('user-email-pengajuan.index');
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
             $this->SendEmail($data, $userPenerima, $url, $title, $message);
         } else {
             $userPenerima = User::where('id_cabang', auth()->user()->id_cabang)
-                ->where('jabatan', 'Pimpinan Cabang')->first();
+                ->where('jabatan', 'Pimpinan Cabang')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
             $url = route('user-email-pengajuan.index');
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
@@ -375,7 +375,7 @@ class EmailPController extends Controller
                     'status_akhir' => 'Proses'
                 ]);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'SDM')->get();
+                $userPenerima = User::where('jabatan', 'SDM')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->get();
                 $url = route('user-email-pengajuan.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
@@ -404,13 +404,13 @@ class EmailPController extends Controller
                     ]);
                 }
                 // Send Email Single
-                $userPenerima = User::where('jabatan', 'Direktur Operasional')->first();
+                $userPenerima = User::where('jabatan', 'Direktur Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $url = route('user-email-pengajuan.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
                 $this->SendEmail($data, $userPenerima, $url, $title, $message);
                 // send email untuk user satunya
-                $userPenerima = User::where('jabatan', 'SDM')
+                $userPenerima = User::where('jabatan', 'SDM')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
                     ->where('nama', '!=', $nama)->first();
                 $url = route('user-email-pengajuan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
@@ -427,7 +427,7 @@ class EmailPController extends Controller
                     'status_akhir' => 'Proses'
                 ]);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'TSI')->get();
+                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->get();
                 $url = route('user-email-pengajuan.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
@@ -446,7 +446,7 @@ class EmailPController extends Controller
                 // Send Email Single to Kaops cabang
                 $status_akhir = 'Approved';
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $url = route('user-email-pengajuan.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Approved!';
@@ -454,8 +454,8 @@ class EmailPController extends Controller
                     $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 }
                 // send email untuk user satunya
-                $userPenerima = User::where('jabatan', 'TSI')
-                    ->where('nama', '!=', $nama)->first();
+                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
+                    ->where('nama', '!=', $nama)->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $url = route('user-email-pengajuan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
@@ -495,7 +495,7 @@ class EmailPController extends Controller
                 ]);
                 // Send Email Single to Kaops cabang
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $status_akhir = 'Rejected';
                 $url = route('user-email-pengajuan.index');
                 $title = 'Pengajuan Telah Selesai!';
@@ -528,7 +528,7 @@ class EmailPController extends Controller
                 }
                 /// Send Email Single to Kaops cabang
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $status_akhir = 'Rejected';
                 $url = route('user-email-pengajuan.index');
                 $title = 'Pengajuan Telah Selesai!';
@@ -537,7 +537,7 @@ class EmailPController extends Controller
                     $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 }
                 // send email untuk user satunya
-                $userPenerima = User::where('jabatan', 'TSI')
+                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
                     ->where('nama', '!=', $nama)->first();
                 $url = route('user-email-pengajuan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
@@ -556,7 +556,7 @@ class EmailPController extends Controller
                 ]);
                 // Send Email Single to Kaops cabang
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $status_akhir = 'Rejected';
                 $url = route('user-email-pengajuan.index');
                 $title = 'Pengajuan Telah Selesai!';
@@ -578,7 +578,7 @@ class EmailPController extends Controller
                 ]);
                 // Send Email Single to Kaops cabang
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $status_akhir = 'Rejected';
                 $url = route('user-email-pengajuan.index');
                 $title = 'Pengajuan Telah Selesai!';
@@ -587,7 +587,7 @@ class EmailPController extends Controller
                     $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 }
                 // send email untuk user satunya
-                $userPenerima = User::where('jabatan', 'TSI')
+                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
                     ->where('nama', '!=', $nama)->first();
                 $url = route('user-email-pengajuan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';

@@ -406,7 +406,7 @@ class PLainnyaController extends Controller
                 ]);
 
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'Pembukuan')->get();
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->get();
                 // pemberitahuan database
                 $url = route('pengajuan-lainnya.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
@@ -438,7 +438,7 @@ class PLainnyaController extends Controller
                 // khusus 
                 switch ($data->jns_pengajuan) {
                     case 'Upgrade Bandwidth WIFI':
-                        $userPenerima = User::where('jabatan', 'TSI')->get();
+                        $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->get();
 
                         // pemberitahuan database
                         $url = route('pengajuan-lainnya.index');
@@ -447,7 +447,7 @@ class PLainnyaController extends Controller
                         $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
 
                         // send email untuk user satunya
-                        $userPenerima = User::where('jabatan', 'Pembukuan')
+                        $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')
                             ->where('nama', '!=', $nama)->first();
                         // pemberitahuan database
                         $url = route('pengajuan-lainnya.index');
@@ -457,7 +457,7 @@ class PLainnyaController extends Controller
                         break;
 
                     case 'Ganti Provider WIFI':
-                        $userPenerima = User::where('jabatan', 'TSI')->get();
+                        $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->get();
 
                         // pemberitahuan database
                         $url = route('pengajuan-lainnya.index');
@@ -466,7 +466,7 @@ class PLainnyaController extends Controller
                         $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
 
                         // send email untuk user satunya
-                        $userPenerima = User::where('jabatan', 'Pembukuan')
+                        $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')
                             ->where('nama', '!=', $nama)->first();
                         // pemberitahuan database
                         $url = route('pengajuan-lainnya.index');
@@ -483,7 +483,7 @@ class PLainnyaController extends Controller
                             'nama_tsi' => 'Tidak Diperlukan',
                         ]);
 
-                        $userPenerima = User::where('jabatan', 'Direktur Operasional')->first();
+                        $userPenerima = User::where('jabatan', 'Direktur Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->first();
 
                         // pemberitahuan database
                         $url = route('pengajuan-lainnya.index');
@@ -492,7 +492,7 @@ class PLainnyaController extends Controller
                         $this->SendEmail($data, $userPenerima, $url, $title, $message);
 
                         // send email untuk user satunya
-                        $userPenerima = User::where('jabatan', 'Pembukuan')
+                        $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')
                             ->where('nama', '!=', $nama)->first();
                         // pemberitahuan database
                         $url = route('pengajuan-lainnya.index');
@@ -517,10 +517,10 @@ class PLainnyaController extends Controller
 
                 if ($data->id_cabang == 0) {
                     # code...
-                    $userPenerima = User::where('jabatan', 'Sekretariat')->first();
+                    $userPenerima = User::where('jabatan', 'Sekretariat')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->first();
                 } else {
                     # code...
-                    $userPenerima = User::where('jabatan', 'Kasi Operasional')->first();
+                    $userPenerima = User::where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->first();
                 }
 
                 // pemberitahuan database
@@ -538,7 +538,7 @@ class PLainnyaController extends Controller
                     'tgl_status_tsi' => now(),
                     'catatan_tsi' => $request->catatan
                 ]);
-                $userPenerima = User::where('jabatan', 'Direktur Operasional')->first();
+                $userPenerima = User::where('jabatan', 'Direktur Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->first();
 
                 // pemberitahuan database
                 $status_akhir = 'Approved';
@@ -548,7 +548,7 @@ class PLainnyaController extends Controller
                 $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
-                $userPenerima = User::where('jabatan', 'TSI')
+                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
                 $url = route('pengajuan-lainnya.index');
@@ -634,7 +634,7 @@ class PLainnyaController extends Controller
                 $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
-                $userPenerima = User::where('jabatan', 'Pembukuan')
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
                 $url = route('pengajuan-lainnya.index');
@@ -685,7 +685,7 @@ class PLainnyaController extends Controller
                 $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
-                $userPenerima = User::where('jabatan', 'TSI')
+                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
                 $url = route('pengajuan-lainnya.index');

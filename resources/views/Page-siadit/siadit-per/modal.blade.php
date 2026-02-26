@@ -82,6 +82,10 @@
                                                 {{ old('keperluan') == 'Penghapusan Data PK' ? 'selected' : null }}>
                                                 Penghapusan Data PK
                                             </option>
+                                            <option value="Cetak SPPK dan PK dihari yang sama"
+                                                {{ old('keperluan') == 'Cetak SPPK dan PK dihari yang sama' ? 'selected' : null }}>
+                                                Cetak SPPK dan PK dihari yang sama
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -197,6 +201,10 @@
                                         <option value="Penghapusan Data PK"
                                             {{ old('keperluan') == 'Penghapusan Data PK' ? 'selected' : null }}>
                                             Penghapusan Data PK
+                                        </option>
+                                        <option value="Cetak SPPK dan PK dihari yang sama"
+                                            {{ old('keperluan') == 'Cetak SPPK dan PK dihari yang sama' ? 'selected' : null }}>
+                                            Cetak SPPK dan PK dihari yang sama
                                         </option>
                                     </select>
                                 </div>

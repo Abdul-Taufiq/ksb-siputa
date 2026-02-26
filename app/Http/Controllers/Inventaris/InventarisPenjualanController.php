@@ -311,14 +311,14 @@ class InventarisPenjualanController extends Controller
                 'tgl_status_pincab' => null,
             ]);
 
-            $userPenerima = User::where('jabatan', 'Pembukuan')->get();
+            $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->get();
             $url = route('inventaris-penjualan.index');
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
             $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
         } else {
             $userPenerima = User::where('id_cabang', auth()->user()->id_cabang)
-                ->where('jabatan', 'Pimpinan Cabang')->first();
+                ->where('jabatan', 'Pimpinan Cabang')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
             $url = route('inventaris-penjualan.index');
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
@@ -458,7 +458,7 @@ class InventarisPenjualanController extends Controller
                 ]);
 
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')->get();
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->get();
                 // pemberitahuan database
                 $url = route('inventaris-pengajuan.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
@@ -489,7 +489,7 @@ class InventarisPenjualanController extends Controller
                 }
 
                 // Send Email Single
-                $userPenerima = User::where('jabatan', 'Direktur Operasional')->first();
+                $userPenerima = User::where('jabatan', 'Direktur Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
 
                 // pemberitahuan database
                 $url = route('inventaris-penjualan.index');
@@ -499,7 +499,7 @@ class InventarisPenjualanController extends Controller
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'Pembukuan')
-                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
+                    ->where('nama', '!=', $nama)->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 // pemberitahuan database
                 $url = route('inventaris-penjualan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
@@ -525,7 +525,7 @@ class InventarisPenjualanController extends Controller
                     // 'tgl_status_dirut' => now()->addMinutes(rand(0, 60)),
                 ]);
 
-                $userPenerima = User::where('jabatan', 'Kasi Operasional')->first();
+                $userPenerima = User::where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
 
                 // pemberitahuan database
                 $status_akhir = 'Approved';
@@ -565,7 +565,7 @@ class InventarisPenjualanController extends Controller
                 ]);
                 // Send Email Single to Kaops cabang
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
                 $url = route('inventaris-penjualan.index');
@@ -600,7 +600,7 @@ class InventarisPenjualanController extends Controller
                 }
                 /// Send Email Single to Kaops cabang
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
                 $url = route('inventaris-penjualan.index');
@@ -610,7 +610,7 @@ class InventarisPenjualanController extends Controller
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'Pembukuan')
-                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
+                    ->where('nama', '!=', $nama)->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 // pemberitahuan database
                 $url = route('inventaris-penjualan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
@@ -630,7 +630,7 @@ class InventarisPenjualanController extends Controller
                 ]);
                 // Send Email Single to Kaops cabang
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
                 $url = route('inventaris-penjualan.index');

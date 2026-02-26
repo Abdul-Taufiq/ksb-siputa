@@ -264,7 +264,7 @@ class PemeliharaanController extends Controller
         $LogAksi = '(+) Pengajuan Pemeliharaan Perangkat';
         $this->LogActivity($data, $LogAksi);
         // Send Email
-        $userPenerima = User::where('jabatan', 'TSI')->where('email', 'NOT LIKE', '%dummy%')->get();
+        $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->get();
         $url = route('pemeliharaan-perangkat.index');
         $title = 'Terdapat Form Pengajuan Baru!';
         $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
@@ -347,7 +347,7 @@ class PemeliharaanController extends Controller
                     'tgl_dilaksanakan' => now()
                 ]);
 
-                $userPenerima = User::where('jabatan', 'Kasi Operasional')->first();
+                $userPenerima = User::where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
 
                 // pemberitahuan database
                 $status_akhir = 'Approved';
@@ -357,7 +357,7 @@ class PemeliharaanController extends Controller
                 $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
-                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'NOT LIKE', '%dummy%')
+                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
                 $url = route('pemeliharaan-perangkat.index');
@@ -401,7 +401,7 @@ class PemeliharaanController extends Controller
                 ]);
                 // Send Email Single to Kaops cabang
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
                 $url = route('pemeliharaan-perangkat.index');
@@ -410,7 +410,7 @@ class PemeliharaanController extends Controller
                 $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
-                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'NOT LIKE', '%dummy%')
+                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
                 $url = route('pemeliharaan-perangkat.index');
@@ -504,7 +504,7 @@ class PemeliharaanController extends Controller
         $this->SendEmail($data, $userPenerima, $url, $title, $message);
 
         // send email untuk user satunya
-        $userPenerima = User::where('jabatan', 'TSI')->where('email', 'NOT LIKE', '%dummy%')
+        $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
             ->where('nama', '!=', $nama)->first();
         // pemberitahuan database
         $url = route('pemeliharaan-perangkat.index');

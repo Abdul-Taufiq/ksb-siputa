@@ -268,7 +268,7 @@ class EcollRController extends Controller
                 'tgl_status_pincab' => null,
             ]);
 
-            $userPenerima = User::where('jabatan', 'SDM')->where('email', 'NOT LIKE', '%dummy%')->get();
+            $userPenerima = User::where('jabatan', 'SDM')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->get();
             $url = route('user-email-pengajuan.index');
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
@@ -284,14 +284,14 @@ class EcollRController extends Controller
 
             ]);
 
-            $userPenerima = User::where('jabatan', 'Direktur Operasional')->first();
+            $userPenerima = User::where('jabatan', 'Direktur Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
             $url = route('user-email-pengajuan.index');
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
             $this->SendEmail($data, $userPenerima, $url, $title, $message);
         } else {
             $userPenerima = User::where('id_cabang', auth()->user()->id_cabang)
-                ->where('jabatan', 'Pimpinan Cabang')->first();
+                ->where('jabatan', 'Pimpinan Cabang')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
             $url = route('user-email-pengajuan.index');
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
@@ -367,7 +367,7 @@ class EcollRController extends Controller
                     // 'tgl_status_dirut' => now()->addMinutes(rand(0, 60)),
                 ]);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'SDM')->where('email', 'NOT LIKE', '%dummy%')->get();
+                $userPenerima = User::where('jabatan', 'SDM')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->get();
                 // pemberitahuan database
                 $url = route('reset-ecoll.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
@@ -397,7 +397,7 @@ class EcollRController extends Controller
                     ]);
                 }
                 // Send Email Single
-                $userPenerima = User::where('jabatan', 'Direktur Operasional')->first();
+                $userPenerima = User::where('jabatan', 'Direktur Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 // pemberitahuan database
                 $url = route('reset-ecoll.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
@@ -406,7 +406,7 @@ class EcollRController extends Controller
                 // send email untuk user satunya
 
                 $userPenerima = User::where('jabatan', 'SDM')
-                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
+                    ->where('nama', '!=', $nama)->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 // pemberitahuan database
                 $url = route('reset-ecoll.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
@@ -424,7 +424,7 @@ class EcollRController extends Controller
                     'status_akhir' => 'Proses'
                 ]);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'NOT LIKE', '%dummy%')->get();
+                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->get();
                 // pemberitahuan database
                 $url = route('reset-ecoll.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
@@ -444,7 +444,7 @@ class EcollRController extends Controller
                 // Send Email Single to Kaops cabang
                 $status_akhir = 'Approved';
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 // pemberitahuan database
                 $url = route('reset-ecoll.index');
                 $title = 'Pengajuan Telah Selesai!';
@@ -455,7 +455,7 @@ class EcollRController extends Controller
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'TSI')
-                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
+                    ->where('nama', '!=', $nama)->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 // pemberitahuan database
                 $url = route('reset-ecoll.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
@@ -496,7 +496,7 @@ class EcollRController extends Controller
                 ]);
                 // Send Email Single to Kaops cabang
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
                 $url = route('reset-ecoll.index');
@@ -531,7 +531,7 @@ class EcollRController extends Controller
                 }
                 /// Send Email Single to Kaops cabang
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
                 $url = route('reset-ecoll.index');
@@ -543,7 +543,7 @@ class EcollRController extends Controller
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'SDM')
-                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
+                    ->where('nama', '!=', $nama)->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 // pemberitahuan database
                 $url = route('reset-ecoll.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
@@ -562,7 +562,7 @@ class EcollRController extends Controller
                 ]);
                 // Send Email Single to Kaops cabang
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
                 $url = route('reset-ecoll.index');
@@ -585,7 +585,7 @@ class EcollRController extends Controller
                 ]);
                 // Send Email Single to Kaops cabang
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
                 $url = route('reset-ecoll.index');
@@ -597,7 +597,7 @@ class EcollRController extends Controller
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'TSI')
-                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
+                    ->where('nama', '!=', $nama)->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 // pemberitahuan database
                 $url = route('reset-ecoll.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';

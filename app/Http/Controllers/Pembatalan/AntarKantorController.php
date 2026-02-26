@@ -253,7 +253,7 @@ class AntarKantorController extends Controller
         $this->LogActivity($data, $LogAksi);
         // Send Email
         $userPenerima = User::where('id_cabang', auth()->user()->id_cabang)
-            ->where('jabatan', 'Pimpinan Cabang')->first();
+            ->where('jabatan', 'Pimpinan Cabang')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
         $url = route('pembatalan-akuntansi.index');
         $title = 'Terdapat Form Pengajuan Baru!';
         $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
@@ -324,7 +324,7 @@ class AntarKantorController extends Controller
                 $LogAksi = '(cs) Approve Pengajuan Pembatalan Transaksi (AKA)';
                 $this->LogActivity($data, $LogAksi);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'Pembukuan')->get();
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->get();
                 // pemberitahuan database
                 $url = route('pembatalan-antarkantor.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
@@ -360,7 +360,7 @@ class AntarKantorController extends Controller
                     $LogAksi = '(cs) SendedToDirops Pengajuan Pembatalan Transaksi (AKA)';
                     $this->LogActivity($data, $LogAksi);
                     // Send Email Single
-                    $userPenerima = User::where('jabatan', 'Direktur Operasional')->first();
+                    $userPenerima = User::where('jabatan', 'Direktur Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                     // pemberitahuan database
                     $url = route('pembatalan-antarkantor.index');
                     $title = 'Terdapat Form Pengajuan Baru!';
@@ -369,7 +369,7 @@ class AntarKantorController extends Controller
                     // send email untuk user satunya
 
                     $userPenerima = User::where('jabatan', 'Pembukuan')
-                        ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
+                        ->where('nama', '!=', $nama)->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                     // pemberitahuan database
                     $url = route('pembatalan-antarkantor.index');
                     $title = 'Pengajuan Sudah Dikerjakan!';
@@ -397,7 +397,7 @@ class AntarKantorController extends Controller
                     // send email untuk user satunya
 
                     $userPenerima = User::where('jabatan', 'Pembukuan')
-                        ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
+                        ->where('nama', '!=', $nama)->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                     // pemberitahuan database
                     $url = route('pembatalan-antarkantor.index');
                     $title = 'Pengajuan Sudah Dikerjakan!';
@@ -423,7 +423,7 @@ class AntarKantorController extends Controller
                 $LogAksi = '(cs) Approve Pengajuan Pembatalan Transaksi (AKA)';
                 $this->LogActivity($data, $LogAksi);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')->get();
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->get();
                 // pemberitahuan database
                 $url = route('pembatalan-antarkantor.index');
                 $title = 'Perlu Menindaklanjuti Pengajuan!';
@@ -460,7 +460,7 @@ class AntarKantorController extends Controller
                 ]);
                 // Send Email Single to Kaops cabang
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
                 $url = route('pembatalan-antarkantor.index');
@@ -497,7 +497,7 @@ class AntarKantorController extends Controller
                 }
                 /// Send Email Single to Kaops cabang
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
                 $url = route('pembatalan-antarkantor.index');
@@ -507,7 +507,7 @@ class AntarKantorController extends Controller
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'Pembukuan')
-                    ->where('nama', '!=', $nama)->where('email', 'NOT LIKE', '%dummy%')->first();
+                    ->where('nama', '!=', $nama)->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 // pemberitahuan database
                 $url = route('pembatalan-antarkantor.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
@@ -527,7 +527,7 @@ class AntarKantorController extends Controller
                 ]);
                 // Send Email Single to Kaops cabang
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
                 $url = route('pembatalan-antarkantor.index');

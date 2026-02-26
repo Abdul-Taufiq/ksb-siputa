@@ -273,7 +273,7 @@ class DepositoController extends Controller
         $this->LogActivity($data, $LogAksi);
         // Send Email
         $userPenerima = User::where('id_cabang', auth()->user()->id_cabang)
-            ->where('jabatan', 'Pimpinan Cabang')->first();
+            ->where('jabatan', 'Pimpinan Cabang')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
         $url = route('perubahan-deposito.index');
         $title = 'Terdapat Form Pengajuan Baru!';
         $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
@@ -359,7 +359,7 @@ class DepositoController extends Controller
                     'status_akhir' => 'Proses'
                 ]);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')->get();
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->get();
                 // pemberitahuan database
                 $url = route('perubahan-deposito.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
@@ -391,7 +391,7 @@ class DepositoController extends Controller
                     ]);
                 }
                 // Send Email Single
-                $userPenerima = User::where('jabatan', 'Direktur Operasional')->first();
+                $userPenerima = User::where('jabatan', 'Direktur Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 // pemberitahuan database
                 $url = route('perubahan-deposito.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
@@ -399,7 +399,7 @@ class DepositoController extends Controller
                 $this->SendEmail($data, $userPenerima, $url, $title, $message);
                 // send email untuk user satunya
 
-                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
                 $url = route('perubahan-deposito.index');
@@ -422,7 +422,7 @@ class DepositoController extends Controller
                     'tgl_status_dirut' => now()->addMinutes(rand(0, 60)),
                 ]);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'TSI')->get();
+                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->get();
                 // pemberitahuan database
                 $url = route('perubahan-deposito.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
@@ -443,7 +443,7 @@ class DepositoController extends Controller
                 // Send Email Single to Kaops cabang
                 $status_akhir = 'Approved';
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 // pemberitahuan database
                 $url = route('perubahan-deposito.index');
                 $title = 'Pengajuan Telah Selesai!';
@@ -451,7 +451,7 @@ class DepositoController extends Controller
                 $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
-                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'NOT LIKE', '%dummy%')
+                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
                 $url = route('perubahan-deposito.index');
@@ -493,7 +493,7 @@ class DepositoController extends Controller
                 ]);
                 // Send Email Single to Kaops cabang
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
                 $url = route('perubahan-deposito.index');
@@ -530,7 +530,7 @@ class DepositoController extends Controller
                 }
                 /// Send Email Single to Kaops cabang
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
                 $url = route('perubahan-deposito.index');
@@ -539,7 +539,7 @@ class DepositoController extends Controller
                 $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
-                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'NOT LIKE', '%dummy%')
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
                 $url = route('perubahan-deposito.index');
@@ -560,7 +560,7 @@ class DepositoController extends Controller
                 ]);
                 // Send Email Single to Kaops cabang
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
                 $url = route('perubahan-deposito.index');
@@ -582,7 +582,7 @@ class DepositoController extends Controller
                 ]);
                 // Send Email Single to Kaops cabang
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->first();
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
                 $url = route('perubahan-deposito.index');
@@ -591,7 +591,7 @@ class DepositoController extends Controller
                 $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
-                $userPenerima = User::where('jabatan', 'TSI')
+                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
                     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
                 $url = route('perubahan-deposito.index');
