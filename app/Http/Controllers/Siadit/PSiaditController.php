@@ -382,7 +382,7 @@ class PSiaditController extends Controller
                 $url = route('siadit-perubahan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 break;
 
                 // Send Email Single to Kaops cabang
@@ -447,7 +447,7 @@ class PSiaditController extends Controller
                 $url = route('siadit-perubahan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
 
                 // Send Email Single
                 $userPenerima = User::where('jabatan', 'Direktur Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
@@ -543,7 +543,7 @@ class PSiaditController extends Controller
                 $url = route('siadit-perubahan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 break;
 
             case 'Direktur Operasional':
@@ -607,7 +607,7 @@ class PSiaditController extends Controller
                 $url = route('siadit-perubahan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 break;
 
             default:

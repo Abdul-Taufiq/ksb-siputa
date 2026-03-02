@@ -422,7 +422,7 @@ class UserPController extends Controller
                 $url = route('mso-pengajuan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 break;
 
             case 'Direktur Operasional':
@@ -474,7 +474,7 @@ class UserPController extends Controller
                 $url = route('mso-pengajuan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 break;
 
             default:
@@ -564,7 +564,7 @@ class UserPController extends Controller
                 $url = route('mso-pengajuan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 break;
 
             case 'Direktur Operasional':
@@ -618,7 +618,7 @@ class UserPController extends Controller
                 $url = route('mso-pengajuan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 break;
 
             default:

@@ -748,7 +748,7 @@ class InventarisPenggantiController extends Controller
                     $url = route('inventaris-pengganti.index');
                     $title = 'Pengajuan Sudah Dikerjakan!';
                     $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                    $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                    // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 } else {
                     $data->update([
                         'nama_tsi' => 'Tidak Diperlukan',
@@ -772,7 +772,7 @@ class InventarisPenggantiController extends Controller
                     $url = route('inventaris-pengganti.index');
                     $title = 'Pengajuan Sudah Dikerjakan!';
                     $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                    $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                    // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 }
                 break;
 
@@ -852,7 +852,7 @@ class InventarisPenggantiController extends Controller
                 $url = route('inventaris-pengganti.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 break;
 
             default:
@@ -938,7 +938,7 @@ class InventarisPenggantiController extends Controller
                 $url = route('inventaris-pengganti.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 break;
 
             case 'Direktur Utama':
@@ -994,7 +994,7 @@ class InventarisPenggantiController extends Controller
                 $url = route('inventaris-pengganti.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 break;
 
             default:

@@ -374,7 +374,7 @@ class AntarKantorController extends Controller
                     $url = route('pembatalan-antarkantor.index');
                     $title = 'Pengajuan Sudah Dikerjakan!';
                     $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                    $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                    // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 } else {
                     $data->update([
                         'nama_pembukuan' => $nama,
@@ -402,7 +402,7 @@ class AntarKantorController extends Controller
                     $url = route('pembatalan-antarkantor.index');
                     $title = 'Pengajuan Sudah Dikerjakan!';
                     $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                    $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                    // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 }
                 break;
 
@@ -512,7 +512,7 @@ class AntarKantorController extends Controller
                 $url = route('pembatalan-antarkantor.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 break;
 
             case 'Direktur Operasional':

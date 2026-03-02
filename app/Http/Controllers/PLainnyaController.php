@@ -453,7 +453,7 @@ class PLainnyaController extends Controller
                         $url = route('pengajuan-lainnya.index');
                         $title = 'Pengajuan Sudah Dikerjakan!';
                         $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                        $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                        // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                         break;
 
                     case 'Ganti Provider WIFI':
@@ -472,7 +472,7 @@ class PLainnyaController extends Controller
                         $url = route('pengajuan-lainnya.index');
                         $title = 'Pengajuan Sudah Dikerjakan!';
                         $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                        $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                        // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                         break;
 
                     default:
@@ -498,7 +498,7 @@ class PLainnyaController extends Controller
                         $url = route('pengajuan-lainnya.index');
                         $title = 'Pengajuan Sudah Dikerjakan!';
                         $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                        $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                        // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                         break;
                 }
 
@@ -554,7 +554,7 @@ class PLainnyaController extends Controller
                 $url = route('pengajuan-lainnya.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 break;
 
             default:
@@ -640,7 +640,7 @@ class PLainnyaController extends Controller
                 $url = route('pengajuan-lainnya.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 break;
 
             case 'Direktur Operasional':
@@ -691,7 +691,7 @@ class PLainnyaController extends Controller
                 $url = route('pengajuan-lainnya.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 break;
 
             default:

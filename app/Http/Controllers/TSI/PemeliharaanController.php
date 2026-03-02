@@ -363,7 +363,7 @@ class PemeliharaanController extends Controller
                 $url = route('pemeliharaan-perangkat.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 break;
 
             default:
@@ -416,7 +416,7 @@ class PemeliharaanController extends Controller
                 $url = route('pemeliharaan-perangkat.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 break;
 
             default:
@@ -510,7 +510,7 @@ class PemeliharaanController extends Controller
         $url = route('pemeliharaan-perangkat.index');
         $title = 'Pengajuan Sudah Dikerjakan!';
         $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-        $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+        // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
 
         // Log Activity
         $LogAksi = '(cs) SendedSDM';
