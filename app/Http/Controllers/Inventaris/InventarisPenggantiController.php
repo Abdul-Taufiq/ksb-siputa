@@ -606,9 +606,11 @@ class InventarisPenggantiController extends Controller
         if ($barangForPincab->isNotEmpty()) {
             # code...
             $terkecil = min($hargaArray);
+            $totalHarga = $terkecil * $inventaris->qty;
         } else {
             # code...
             $terkecil = 0;
+            $totalHarga = 0;
         }
 
 
@@ -616,6 +618,7 @@ class InventarisPenggantiController extends Controller
             'status' => 200,
             'data' => $barang,
             'harga_terkecil' => $terkecil,
+            'total_harga' => $totalHarga,
             'inventaris' => $inventaris
         ]);
     }
@@ -656,7 +659,9 @@ class InventarisPenggantiController extends Controller
                     }
                     $terkecil = min($hargaArray);
 
-                    if ($terkecil < 1000000) {
+                    $totalHarga = $terkecil * $data->qty;
+
+                    if ($totalHarga < 1000000) {
                         # code...
                         $pembanding = BarangBaruPengganti::where('id_barang_pembanding_pengganti', $request->pembanding_dipilih)->update([
                             'dipilih' => 'True'

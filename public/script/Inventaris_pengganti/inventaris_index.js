@@ -229,13 +229,13 @@ $(document).ready(function () {
                 var jabatan = $("#jabatan").val();
                 var jns_pembelian = data.inventaris.jns_pembelian;
 
-                console.log(data.harga_terkecil);
+                console.log(data.total_harga);
 
                 if (jabatan == "Pimpinan Cabang") {
                     if (
                         jns_pembelian ==
                             "Pembelian Dengan Speksifikasi Cabang" &&
-                        data.harga_terkecil <= 1000000
+                        data.total_harga <= 1000000
                     ) {
                         selectPincab.classList.remove("d-none");
                     } else {

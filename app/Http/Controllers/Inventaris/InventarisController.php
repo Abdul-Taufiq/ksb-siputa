@@ -557,9 +557,11 @@ class InventarisController extends Controller
         if ($barangForPincab->isNotEmpty()) {
             # code...
             $terkecil = min($hargaArray);
+            $totalHarga = $terkecil * $inventaris->qty;
         } else {
             # code...
             $terkecil = 0;
+            $totalHarga = 0;
         }
 
 
@@ -567,6 +569,7 @@ class InventarisController extends Controller
             'status' => 200,
             'data' => $barang,
             'harga_terkecil' => $terkecil,
+            'total_harga' => $totalHarga,
             'inventaris' => $inventaris
         ]);
     }
@@ -607,7 +610,9 @@ class InventarisController extends Controller
                     }
                     $terkecil = min($hargaArray);
 
-                    if ($terkecil < 1000000) {
+                    $totalHarga = $terkecil * $data->qty;
+
+                    if ($totalHarga < 1000000) {
                         $pembanding = BarangBaru::where('id_barang_pembanding_baru', $request->pembanding_dipilih)->update([
                             'dipilih' => 'True'
                         ]);
@@ -760,6 +765,8 @@ class InventarisController extends Controller
                         # code...
                         $userPenerima = User::where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                     }
+
+                    dd($userPenerima);
 
                     // pemberitahuan database
                     $status_akhir = 'Approved';
