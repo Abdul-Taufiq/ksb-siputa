@@ -412,7 +412,7 @@ class KreditController extends Controller
                     $url = route('pembatalan-kredit.index');
                     $title = 'Pengajuan Telah Selesai!';
                     $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Approved!';
-                    $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                    // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                     // send email untuk user satunya
 
                     $userPenerima = User::where('jabatan', 'Pembukuan')
@@ -485,7 +485,7 @@ class KreditController extends Controller
                 $url = route('pembatalan-kredit.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 break;
 
@@ -522,7 +522,7 @@ class KreditController extends Controller
                 $url = route('pembatalan-kredit.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'Pembukuan')
@@ -552,7 +552,7 @@ class KreditController extends Controller
                 $url = route('pembatalan-kredit.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 break;
 
             default:

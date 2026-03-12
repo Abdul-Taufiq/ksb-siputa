@@ -451,7 +451,7 @@ class EmailPController extends Controller
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Approved!';
                 if ($userPenerima) {
-                    $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                    // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 }
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
@@ -500,7 +500,7 @@ class EmailPController extends Controller
                 $url = route('user-email-pengajuan.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 break;
 
             case 'SDM':
@@ -534,7 +534,7 @@ class EmailPController extends Controller
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
                 if ($userPenerima) {
-                    $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                    // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 }
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
@@ -562,7 +562,7 @@ class EmailPController extends Controller
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
                 if ($userPenerima) {
-                    $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                    // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 }
                 break;
 
@@ -584,7 +584,7 @@ class EmailPController extends Controller
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
                 if ($userPenerima) {
-                    $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                    // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 }
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')

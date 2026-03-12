@@ -472,7 +472,7 @@ class USiaditController extends Controller
                 $title = 'Terdapat Form Pengajuan Baru!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
                 if ($userPenerima) {
-                    $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                    // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 }
 
                 // send email untuk user satunya
@@ -524,7 +524,7 @@ class USiaditController extends Controller
                 $url = route('user-siadit.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 break;
 
@@ -560,7 +560,7 @@ class USiaditController extends Controller
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
                 if ($userPenerima) {
-                    $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                    // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 }
 
                 // send email untuk user satunya
@@ -591,7 +591,7 @@ class USiaditController extends Controller
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
                 if ($userPenerima) {
-                    $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                    // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 }
                 break;
 
@@ -614,7 +614,7 @@ class USiaditController extends Controller
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
                 if ($userPenerima) {
-                    $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                    // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 }
 
                 // send email untuk user satunya

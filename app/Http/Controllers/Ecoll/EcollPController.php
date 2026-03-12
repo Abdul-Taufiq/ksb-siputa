@@ -448,7 +448,7 @@ class EcollPController extends Controller
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Approved!';
                 if ($userPenerima) {
-                    $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                    // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 }
 
                 // send email untuk user satunya
@@ -500,7 +500,7 @@ class EcollPController extends Controller
                 $url = route('user-ecoll.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 break;
 
@@ -536,7 +536,7 @@ class EcollPController extends Controller
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
                 if ($userPenerima) {
-                    $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                    // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 }
 
                 // send email untuk user satunya
@@ -568,7 +568,7 @@ class EcollPController extends Controller
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
                 if ($userPenerima) {
-                    $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                    // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 }
                 break;
 
@@ -591,7 +591,7 @@ class EcollPController extends Controller
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
                 if ($userPenerima) {
-                    $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                    // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 }
 
                 // send email untuk user satunya

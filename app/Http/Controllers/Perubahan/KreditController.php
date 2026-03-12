@@ -450,7 +450,7 @@ class KreditController extends Controller
                 $url = route('perubahan-kredit.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Approved!';
-                $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
@@ -501,7 +501,7 @@ class KreditController extends Controller
                 $url = route('perubahan-kredit.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 break;
 
@@ -538,7 +538,7 @@ class KreditController extends Controller
                 $url = route('perubahan-kredit.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
@@ -568,7 +568,7 @@ class KreditController extends Controller
                 $url = route('perubahan-kredit.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 break;
 
             case 'TSI':
@@ -589,7 +589,7 @@ class KreditController extends Controller
                 $url = route('perubahan-kredit.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')

@@ -429,7 +429,7 @@ class PefindoController extends Controller
                 $url = route('user-websakep-pengajuan.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Approved!';
-                $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'Pembukuan')
@@ -480,7 +480,7 @@ class PefindoController extends Controller
                 $url = route('user-websakep-pengajuan.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 break;
 
@@ -501,7 +501,7 @@ class PefindoController extends Controller
                 $url = route('user-websakep-pengajuan.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 break;
 
             case 'Pembukuan':
@@ -522,7 +522,7 @@ class PefindoController extends Controller
                 $url = route('user-websakep-pengajuan.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'Pembukuan')

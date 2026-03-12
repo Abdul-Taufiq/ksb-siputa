@@ -464,7 +464,7 @@ class EmailRController extends Controller
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Approved!';
                 if ($userPenerima) {
-                    $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                    // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 }
 
                 // send email untuk user satunya
@@ -516,7 +516,7 @@ class EmailRController extends Controller
                 $url = route('user-email-reset.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 break;
 
@@ -552,7 +552,7 @@ class EmailRController extends Controller
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
                 if ($userPenerima) {
-                    $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                    // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 }
 
                 // send email untuk user satunya
@@ -583,7 +583,7 @@ class EmailRController extends Controller
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
                 if ($userPenerima) {
-                    $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                    // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 }
                 break;
 
@@ -606,7 +606,7 @@ class EmailRController extends Controller
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
                 if ($userPenerima) {
-                    $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                    // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 }
 
                 // send email untuk user satunya
