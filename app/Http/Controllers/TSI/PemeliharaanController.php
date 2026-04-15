@@ -54,6 +54,7 @@ class PemeliharaanController extends Controller
                     break;
                 # Pimpinan Cabang ...
                 case 'Pembukuan':
+                case 'SDM':
                 case 'Internal Audit':
                     if (!empty($request->kode)) {
                         $data = Pemeliharaan::where('kode_form', $kode)
@@ -130,6 +131,7 @@ class PemeliharaanController extends Controller
                             break;
 
                         case 'Direktur Operasional':
+                        case 'SDM':
                             $status .= '<a class="btn btn-secondary btn-sm disabled">NotNeed</a>';
                             break;
 
@@ -174,6 +176,7 @@ class PemeliharaanController extends Controller
                             break;
                         # Pembukuan, Dirops & TSi...
                         case 'Pembukuan':
+                        case 'SDM':
                         case 'Direktur Operasional':
                             $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
                             break;

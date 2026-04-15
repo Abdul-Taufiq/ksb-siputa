@@ -84,7 +84,7 @@ class BantuanTSIController extends Controller
                             ->OrderBy('created_at', 'desc')->get();
                     } else {
                         if (!empty($request->min)) {
-                            $data = BantuanTSI::whereIn('status_pembukuan', ['Approve', '--', 'Ditarik'])
+                            $data = BantuanTSI::whereIn('status_pincab', ['Approve', '--', 'Ditarik'])
                                 ->whereBetween('created_at', [$awal, $akhir])
                                 ->when($reqCabang != 99, fn($query) => $query->where('id_cabang', $reqCabang))
                                 ->get();
@@ -92,7 +92,7 @@ class BantuanTSIController extends Controller
                             $data = BantuanTSI::where('kode_form', $request->cari)
                                 ->orderBy('created_at', 'desc')->get();
                         } else {
-                            $data = BantuanTSI::whereIn('status_pembukuan', ['Approve', '--', 'Ditarik'])
+                            $data = BantuanTSI::whereIn('status_pincab', ['Approve', '--', 'Ditarik'])
                                 ->OrderBy('created_at', 'desc')->get();
                         }
                     }
@@ -162,13 +162,14 @@ class BantuanTSIController extends Controller
                             return $statusAfter;
                             break;
 
-                        case 'SDM':
-                            $jabatan = $data->status_sdm;
-                            $statusAfter = $this->statusAfter($data, $jabatan, $statusDropdown);
-                            return $statusAfter;
-                            break;
+                        // case 'SDM':
+                        //     $jabatan = $data->status_sdm;
+                        //     $statusAfter = $this->statusAfter($data, $jabatan, $statusDropdown);
+                        //     return $statusAfter;
+                        //     break;
 
                         case 'Direktur Operasional':
+                        case 'SDM':
                             $status .= '<a class="btn btn-success btn-sm disabled">NotAct</a>';
                             break;
 
