@@ -699,7 +699,7 @@ class BantuanTSIController extends Controller
             'kode_form' => $data->kode_form,
             'keperluan' => $data->keperluan
         ], function ($message) use ($userPenerima) {
-            $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
+            $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
             $message->to($userPenerima->email);
             $message->subject('Pengajuan User Baru (Email)');
         });
@@ -720,7 +720,7 @@ class BantuanTSIController extends Controller
             'status_akhir' => $status_akhir,
             'pelanggaran' => '-'
         ], function ($message) use ($userPenerima) {
-            $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
+            $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
             $message->to($userPenerima->email);
             $message->subject('Status Pengajuan');
         });
@@ -739,7 +739,7 @@ class BantuanTSIController extends Controller
             'kode_form' => $data->kode_form,
             'keperluan' => $data->keperluan
         ], function ($message) use ($userPenerima) {
-            $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
+            $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
             $message->to($userPenerima->email);
             $message->subject('Status Pengajuan');
         });
@@ -759,7 +759,7 @@ class BantuanTSIController extends Controller
                 'kode_form' => $data->kode_form,
                 'keperluan' => $data->keperluan
             ], function ($message) use ($user) {
-                $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
+                $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
                 $message->to($user->email);
                 $message->subject('Pengajuan User Baru (Email)');
             });

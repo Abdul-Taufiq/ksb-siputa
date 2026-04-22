@@ -116,10 +116,25 @@ class SharebiayaController extends Controller
 
         // Send email
         if ($kc_save == 'All Cabang') {
-            $penerima = CabangEmail::whereNot('id_cabang', 0)->whereNot('id_cabang', 20)->get();
-            foreach ($penerima as $cabang) {
-                $this->SendMail($share, $cabang);
-            }
+            // $penerima = CabangEmail::whereNot('id_cabang', 0)->whereNot('id_cabang', 20)->get();
+            // foreach ($penerima as $cabang) {
+            //     $this->SendMail($share, $cabang);
+            // }
+            $emails = CabangEmail::whereNotIn('id_cabang', [0, 20])->pluck('email_kaops')->toArray();
+
+            Mail::send('email.notif.notif-share', [
+                'kc' => $share->kc,
+                'tgl_transaksi' => $share->tgl_transaksi->translatedFormat('d F Y'),
+                'nominal' => $share->nominal,
+                'keterangan' => $share->keterangan,
+                'file' =>  $share->file_lampiran,
+            ], function ($message) use ($emails) {
+                // Pastikan config('mail.from.address') di .env sama dengan email login Gmail
+                $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
+                $message->to(config('mail.from.address'))
+                    ->bcc($emails)
+                    ->subject('Reminder Share Biaya');
+            });
         } else {
             foreach ($request->kc as $cabang) {
                 $penerima = CabangEmail::where('cabang', $cabang)->first();
@@ -220,21 +235,9 @@ class SharebiayaController extends Controller
             'keterangan' => $share->keterangan,
             'file' =>  $share->file_lampiran,
         ], function ($message) use ($userPenerima) {
-            $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
+            $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
             $message->to($userPenerima->email_kaops);
-            $message->subject('REMINDER SHARE BIAYA');
+            $message->subject('Reminder Share Biaya');
         });
-
-        // $data, function ($message) {
-        //     $message->from('john@johndoe.com', 'John Doe');
-        //     $message->sender('john@johndoe.com', 'John Doe');
-        //     $message->to('john@johndoe.com', 'John Doe');
-        //     $message->cc('john@johndoe.com', 'John Doe');
-        //     $message->bcc('john@johndoe.com', 'John Doe');
-        //     $message->replyTo('john@johndoe.com', 'John Doe');
-        //     $message->subject('Subject');
-        //     $message->priority(3);
-        //     $message->attach('pathToFile');
-        // });
     }
 }

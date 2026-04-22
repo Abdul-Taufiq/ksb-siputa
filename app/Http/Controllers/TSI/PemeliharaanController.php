@@ -336,6 +336,13 @@ class PemeliharaanController extends Controller
                 $data->update([
                     'nama_tsi' => $nama,
                     'status_tsi' => 'Approve',
+
+                    'nama_pembukuan' => 'Ditarik TSI',
+                    'status_pembukuan' => 'Ditarik',
+                    'nama_sdm' => 'Ditarik TSI',
+                    'tgl_status_pembukuan' => now(),
+                    'tgl_status_sdm' => now(),
+
                     'tgl_status_tsi' => now(),
                     'tgl_status_akhir' => now(),
                     'status_akhir' => 'Selesai',
@@ -350,7 +357,7 @@ class PemeliharaanController extends Controller
                     'tgl_dilaksanakan' => now()
                 ]);
 
-                $userPenerima = User::where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
+                // $userPenerima = User::where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
 
                 // pemberitahuan database
                 $status_akhir = 'Approved';
@@ -360,8 +367,8 @@ class PemeliharaanController extends Controller
                 // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
-                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
-                    ->where('nama', '!=', $nama)->first();
+                // $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
+                //     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
                 $url = route('pemeliharaan-perangkat.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
@@ -403,8 +410,8 @@ class PemeliharaanController extends Controller
                     'status_akhir' => 'Ditolak',
                 ]);
                 // Send Email Single to Kaops cabang
-                $userPenerima = User::where('id_cabang', $data->id_cabang)
-                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
+                // $userPenerima = User::where('id_cabang', $data->id_cabang)
+                //     ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 $status_akhir = 'Rejected';
                 // pemberitahuan database
                 $url = route('pemeliharaan-perangkat.index');
@@ -413,8 +420,8 @@ class PemeliharaanController extends Controller
                 // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
-                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
-                    ->where('nama', '!=', $nama)->first();
+                // $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
+                //     ->where('nama', '!=', $nama)->first();
                 // pemberitahuan database
                 $url = route('pemeliharaan-perangkat.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
@@ -493,7 +500,7 @@ class PemeliharaanController extends Controller
         $bantuanTSI->id_cabang = $data->id_cabang;
         $bantuanTSI->detail_permasalahan = $data->detail_kendala;
         $bantuanTSI->nama_kaops = $data->nama_kaops;
-        $bantuanTSI->nama_pincab = 'Ditarik';
+        $bantuanTSI->nama_pincab = 'Maker SDM dari menu Pemeliharaan';
         $bantuanTSI->status_pincab = 'Ditarik';
         $bantuanTSI->tgl_status_pincab = now();
         $bantuanTSI->save();
@@ -507,8 +514,8 @@ class PemeliharaanController extends Controller
         $this->SendEmail($data, $userPenerima, $url, $title, $message);
 
         // send email untuk user satunya
-        $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
-            ->where('nama', '!=', $nama)->first();
+        // $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
+        //     ->where('nama', '!=', $nama)->first();
         // pemberitahuan database
         $url = route('pemeliharaan-perangkat.index');
         $title = 'Pengajuan Sudah Dikerjakan!';
@@ -587,7 +594,7 @@ class PemeliharaanController extends Controller
             'kode_form' => $data->kode_form,
             'keperluan' => $data->keperluan
         ], function ($message) use ($userPenerima) {
-            $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
+            $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
             $message->to($userPenerima->email);
             $message->subject('Pengajuan Inventaris');
         });
@@ -607,7 +614,7 @@ class PemeliharaanController extends Controller
             'keperluan' => $data->keperluan,
             'status_akhir' => $status_akhir,
         ], function ($message) use ($userPenerima) {
-            $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
+            $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
             $message->to($userPenerima->email);
             $message->subject('Status Pengajuan');
         });
@@ -626,7 +633,7 @@ class PemeliharaanController extends Controller
             'kode_form' => $data->kode_form,
             'keperluan' => $data->keperluan
         ], function ($message) use ($userPenerima) {
-            $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
+            $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
             $message->to($userPenerima->email);
             $message->subject('Status Pengajuan');
         });
@@ -646,7 +653,7 @@ class PemeliharaanController extends Controller
                 'kode_form' => $data->kode_form,
                 'keperluan' => $data->keperluan
             ], function ($message) use ($user) {
-                $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
+                $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
                 $message->to($user->email);
                 $message->subject('Pengajuan Inventaris');
             });

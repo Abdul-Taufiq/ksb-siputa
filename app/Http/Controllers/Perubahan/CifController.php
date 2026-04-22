@@ -686,7 +686,7 @@ class CifController extends Controller
             'kode_form' => $data->kode_form,
             'keperluan' => "Perubahan Transaksi (CIF)"
         ], function ($message) use ($userPenerima) {
-            $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
+            $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
             $message->to($userPenerima->email);
             $message->subject('Pengajuan Perubahan Transaksi (CIF)');
         });
@@ -707,7 +707,7 @@ class CifController extends Controller
             'status_akhir' => $status_akhir,
             'pelanggaran' => ($status_akhir == 'Approved') ? $data->pelanggaran_dirops : null,
         ], function ($message) use ($userPenerima) {
-            $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
+            $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
             $message->to($userPenerima->email);
             $message->subject('Status Pengajuan');
         });
@@ -726,7 +726,7 @@ class CifController extends Controller
             'kode_form' => $data->kode_form,
             'keperluan' => "Perubahan Transaksi (CIF)"
         ], function ($message) use ($userPenerima) {
-            $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
+            $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
             $message->to($userPenerima->email);
             $message->subject('Status Pengajuan');
         });
@@ -746,7 +746,7 @@ class CifController extends Controller
                 'kode_form' => $data->kode_form,
                 'keperluan' => "Perubahan Transaksi (CIF)"
             ], function ($message) use ($user) {
-                $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
+                $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
                 $message->to($user->email);
                 $message->subject('Pengajuan Perubahan Transaksi (CIF)');
             });

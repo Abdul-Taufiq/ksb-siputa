@@ -447,8 +447,8 @@ class PLainnyaController extends Controller
                         $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
 
                         // send email untuk user satunya
-                        $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')
-                            ->where('nama', '!=', $nama)->first();
+                        // $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')
+                        //     ->where('nama', '!=', $nama)->first();
                         // pemberitahuan database
                         $url = route('pengajuan-lainnya.index');
                         $title = 'Pengajuan Sudah Dikerjakan!';
@@ -466,8 +466,8 @@ class PLainnyaController extends Controller
                         $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
 
                         // send email untuk user satunya
-                        $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')
-                            ->where('nama', '!=', $nama)->first();
+                        // $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')
+                        //     ->where('nama', '!=', $nama)->first();
                         // pemberitahuan database
                         $url = route('pengajuan-lainnya.index');
                         $title = 'Pengajuan Sudah Dikerjakan!';
@@ -768,7 +768,7 @@ class PLainnyaController extends Controller
             'kode_form' => $data->kode_form,
             'keperluan' => $data->jns_pengajuan
         ], function ($message) use ($userPenerima) {
-            $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
+            $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
             $message->to($userPenerima->email);
             $message->subject('Pengajuan Lainnya');
         });
@@ -786,7 +786,7 @@ class PLainnyaController extends Controller
             'keperluan' => $data->jns_pengajuan,
             'status_akhir' => $status_akhir,
         ], function ($message) use ($userPenerima) {
-            $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
+            $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
             $message->to($userPenerima->email);
             $message->subject('Status Pengajuan');
         });
@@ -803,7 +803,7 @@ class PLainnyaController extends Controller
             'kode_form' => $data->kode_form,
             'keperluan' => $data->jns_pengajuan
         ], function ($message) use ($userPenerima) {
-            $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
+            $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
             $message->to($userPenerima->email);
             $message->subject('Status Pengajuan');
         });
@@ -821,7 +821,7 @@ class PLainnyaController extends Controller
                 'kode_form' => $data->kode_form,
                 'keperluan' => $data->jns_pengajuan
             ], function ($message) use ($user) {
-                $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
+                $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
                 $message->to($user->email);
                 $message->subject('Pengajuan Lainnya');
             });

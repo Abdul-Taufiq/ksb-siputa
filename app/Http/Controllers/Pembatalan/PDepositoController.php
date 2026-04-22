@@ -655,7 +655,7 @@ class PDepositoController extends Controller
                 'kode_form' => $data->kode_form,
                 'keperluan' => "Pembatalan Transaksi (Deposito)"
             ], function ($message) use ($userPenerima) {
-                $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
+                $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
                 $message->to($userPenerima->email);
                 $message->subject('Perlu Tindak Lanjut Transaksi (Deposito)');
             });
@@ -667,7 +667,7 @@ class PDepositoController extends Controller
                 'kode_form' => $data->kode_form,
                 'keperluan' => "Pembatalan Transaksi (Deposito)"
             ], function ($message) use ($userPenerima) {
-                $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
+                $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
                 $message->to($userPenerima->email);
                 $message->subject('Pengajuan Pembatalan Transaksi (Deposito)');
             });
@@ -690,7 +690,7 @@ class PDepositoController extends Controller
             'status_akhir' => $status_akhir,
             'pelanggaran' => ($status_akhir == 'Approved') ? $data->pelanggaran_dirops : null,
         ], function ($message) use ($userPenerima) {
-            $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
+            $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
             $message->to($userPenerima->email);
             $message->subject('Status Pengajuan');
         });
@@ -709,7 +709,7 @@ class PDepositoController extends Controller
             'kode_form' => $data->kode_form,
             'keperluan' => "Pembatalan Transaksi (Deposito)"
         ], function ($message) use ($userPenerima) {
-            $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
+            $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
             $message->to($userPenerima->email);
             $message->subject('Status Pengajuan');
         });
@@ -729,7 +729,7 @@ class PDepositoController extends Controller
                 'kode_form' => $data->kode_form,
                 'keperluan' => "Pembatalan Transaksi (Deposito)"
             ], function ($message) use ($user) {
-                $message->from('tsiksb@bprkusumasumbing.com', 'KSB | Si-PUTa');
+                $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
                 $message->to($user->email);
                 $message->subject('Pengajuan Pembatalan Transaksi (Deposito)');
             });
