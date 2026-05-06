@@ -7,6 +7,7 @@ use App\Models\Ecoll\EcollR;
 use App\Models\LogActivity;
 use App\Models\User;
 use App\Notifications\NotifikasiPengajuan;
+use App\Services\EmailServices;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +18,13 @@ use Illuminate\Support\Facades\Notification;
 
 class EcollRController extends Controller
 {
+    // load services
+    protected $emailServices;
+    public function __construct(EmailServices $emailServices)
+    {
+        $this->emailServices = $emailServices;
+    }
+
     public function index(Request $request)
     {
         $jabatan = Auth::user()->jabatan;
@@ -272,7 +280,7 @@ class EcollRController extends Controller
             $url = route('user-email-pengajuan.index');
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-            $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+            $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message);
         } elseif (auth()->user()->jabatan == 'SDM') {
             $data->update([
                 'nama_pincab' => 'Maker User SDM',
@@ -288,14 +296,14 @@ class EcollRController extends Controller
             $url = route('user-email-pengajuan.index');
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-            $this->SendEmail($data, $userPenerima, $url, $title, $message);
+            $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message);
         } else {
             $userPenerima = User::where('id_cabang', auth()->user()->id_cabang)
                 ->where('jabatan', 'Pimpinan Cabang')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
             $url = route('user-email-pengajuan.index');
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-            $this->SendEmail($data, $userPenerima, $url, $title, $message);
+            $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message);
         }
 
         return redirect('reset-ecoll')->with('AlertSuccess', "Pengajuan Berhasil Dikirim!");
@@ -372,7 +380,7 @@ class EcollRController extends Controller
                 $url = route('reset-ecoll.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message);
                 break;
 
             case 'SDM':
@@ -402,7 +410,7 @@ class EcollRController extends Controller
                 $url = route('reset-ecoll.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                $this->SendEmail($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message);
                 // send email untuk user satunya
 
                 $userPenerima = User::where('jabatan', 'SDM')
@@ -411,7 +419,7 @@ class EcollRController extends Controller
                 $url = route('reset-ecoll.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 break;
 
             case 'Direktur Operasional':
@@ -429,7 +437,7 @@ class EcollRController extends Controller
                 $url = route('reset-ecoll.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message);
                 break;
 
             case 'TSI':
@@ -450,7 +458,7 @@ class EcollRController extends Controller
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Approved!';
                 if ($userPenerima) {
-                    // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                    // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 }
 
                 // send email untuk user satunya
@@ -460,7 +468,7 @@ class EcollRController extends Controller
                 $url = route('reset-ecoll.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 break;
 
             default:
@@ -502,7 +510,7 @@ class EcollRController extends Controller
                 $url = route('reset-ecoll.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 break;
 
@@ -538,7 +546,7 @@ class EcollRController extends Controller
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
                 if ($userPenerima) {
-                    // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                    // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 }
 
                 // send email untuk user satunya
@@ -548,7 +556,7 @@ class EcollRController extends Controller
                 $url = route('reset-ecoll.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 break;
 
             case 'Direktur Operasional':
@@ -569,7 +577,7 @@ class EcollRController extends Controller
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
                 if ($userPenerima) {
-                    // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                    // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 }
                 break;
 
@@ -592,7 +600,7 @@ class EcollRController extends Controller
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
                 if ($userPenerima) {
-                    // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                    // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 }
 
                 // send email untuk user satunya
@@ -602,7 +610,7 @@ class EcollRController extends Controller
                 $url = route('reset-ecoll.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 break;
 
             default:
@@ -664,86 +672,5 @@ class EcollRController extends Controller
         $log->kode_form = $data->kode_form;
         $log->created_at = now();
         $log->save();
-    }
-
-
-
-
-    // Email single
-    private function SendEmail($data, $userPenerima, $url, $title, $message)
-    {
-        Mail::send('email.notif.notif-pengajuan',  [
-            'nama' => $data->nama,
-            'kc' => $data->cabang->cabang,
-            'nik' => $data->nik,
-            'kode_form' => $data->kode_form,
-            'keperluan' => $data->keperluan
-        ], function ($message) use ($userPenerima) {
-            $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
-            $message->to($userPenerima->email);
-            $message->subject('Pengajuan Reset Password User (Ecoll)');
-        });
-
-        // pemberitahuan database
-        Notification::send($userPenerima, new NotifikasiPengajuan($data, $url, $title, $message));
-    }
-
-    // Email single to kaops
-    private function SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message)
-    {
-        Mail::send('email.notif.notif-status-akhir',  [
-            'nama' => $data->nama,
-            'kc' => $data->cabang->cabang,
-            'nik' => $data->nik,
-            'kode_form' => $data->kode_form,
-            'keperluan' => $data->keperluan,
-            'status_akhir' => $status_akhir,
-        ], function ($message) use ($userPenerima) {
-            $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
-            $message->to($userPenerima->email);
-            $message->subject('Status Pengajuan');
-        });
-
-        // pemberitahuan database
-        Notification::send($userPenerima, new NotifikasiPengajuan($data, $url, $title, $message));
-    }
-
-    // Email single to user lainnya
-    private function SendEmailToUserLain($data, $userPenerima, $url, $title, $message)
-    {
-        Mail::send('email.notif.notif-dikerjakan',  [
-            'nama' => $data->nama,
-            'kc' => $data->cabang->cabang,
-            'nik' => $data->nik,
-            'kode_form' => $data->kode_form,
-            'keperluan' => $data->keperluan
-        ], function ($message) use ($userPenerima) {
-            $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
-            $message->to($userPenerima->email);
-            $message->subject('Status Pengajuan');
-        });
-
-        // pemberitahuan database
-        Notification::send($userPenerima, new NotifikasiPengajuan($data, $url, $title, $message));
-    }
-
-    // Email Doubel
-    private function SendEmailDobel($data, $userPenerima, $url, $title, $message)
-    {
-        foreach ($userPenerima as $user) {
-            Mail::send('email.notif.notif-pengajuan',  [
-                'nama' => $data->nama,
-                'kc' => $data->cabang->cabang,
-                'nik' => $data->nik,
-                'kode_form' => $data->kode_form,
-                'keperluan' => $data->keperluan
-            ], function ($message) use ($user) {
-                $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
-                $message->to($user->email);
-                $message->subject('Pengajuan Reset Password User (Ecoll)');
-            });
-        }
-        // pemberitahuan database
-        Notification::send($userPenerima, new NotifikasiPengajuan($data, $url, $title, $message));
     }
 }

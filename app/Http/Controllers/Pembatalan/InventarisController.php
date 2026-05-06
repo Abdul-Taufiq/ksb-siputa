@@ -7,6 +7,8 @@ use App\Models\LogActivity;
 use App\Models\Pembatalan\Inventaris;
 use App\Models\User;
 use App\Notifications\NotifikasiPengajuan;
+use App\Services\EmailServices;
+use App\Services\EmailTransaksiService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +19,14 @@ use Illuminate\Support\Facades\Notification;
 
 class InventarisController extends Controller
 {
+
+    // load services
+    protected $emailServices;
+    public function __construct(EmailTransaksiService $emailServices)
+    {
+        $this->emailServices = $emailServices;
+    }
+
     public function index(Request $request)
     {
         $jabatan = Auth::user()->jabatan;
@@ -259,7 +269,7 @@ class InventarisController extends Controller
         $url = route('pembatalan-inventaris.index');
         $title = 'Terdapat Form Pengajuan Baru!';
         $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-        $this->SendEmail($data, $userPenerima, $url, $title, $message);
+        $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message);
 
         return redirect('pembatalan-inventaris')->with('AlertSuccess', "Pengajuan Pembatalan Transaksi Berhasil Dikirim!");
     }
@@ -333,7 +343,7 @@ class InventarisController extends Controller
                 $url = route('pembatalan-inventaris.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message);
                 break;
 
             case 'Pembukuan':
@@ -369,7 +379,7 @@ class InventarisController extends Controller
                     $url = route('pembatalan-inventaris.index');
                     $title = 'Terdapat Form Pengajuan Baru!';
                     $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                    $this->SendEmail($data, $userPenerima, $url, $title, $message);
+                    $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message);
                     // send email untuk user satunya
 
                     $userPenerima = User::where('jabatan', 'Pembukuan')
@@ -378,7 +388,7 @@ class InventarisController extends Controller
                     $url = route('pembatalan-inventaris.index');
                     $title = 'Pengajuan Sudah Dikerjakan!';
                     $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                    // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                    // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 } else {
                     $data->update([
                         'nama_pembukuan' => $nama,
@@ -397,7 +407,7 @@ class InventarisController extends Controller
                     $url = route('pembatalan-inventaris.index');
                     $title = 'Pengajuan Telah Selesai!';
                     $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Approved!';
-                    // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                    // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                     // send email untuk user satunya
 
                     $userPenerima = User::where('jabatan', 'Pembukuan')
@@ -406,7 +416,7 @@ class InventarisController extends Controller
                     $url = route('pembatalan-inventaris.index');
                     $title = 'Pengajuan Sudah Dikerjakan!';
                     $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                    // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                    // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 }
                 break;
 
@@ -432,7 +442,7 @@ class InventarisController extends Controller
                 $url = route('pembatalan-inventaris.index');
                 $title = 'Perlu Menindaklanjuti Pengajuan!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                $this->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message);
                 break;
 
             default:
@@ -470,7 +480,7 @@ class InventarisController extends Controller
                 $url = route('pembatalan-inventaris.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 break;
 
@@ -507,7 +517,7 @@ class InventarisController extends Controller
                 $url = route('pembatalan-inventaris.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'Pembukuan')
@@ -516,7 +526,7 @@ class InventarisController extends Controller
                 $url = route('pembatalan-inventaris.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                // $this->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
                 break;
 
             case 'Direktur Operasional':
@@ -537,7 +547,7 @@ class InventarisController extends Controller
                 $url = route('pembatalan-inventaris.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
                 break;
 
             default:
@@ -632,102 +642,5 @@ class InventarisController extends Controller
         $log->kode_form = $data->kode_form;
         $log->created_at = now();
         $log->save();
-    }
-
-
-
-
-    // Email single
-    private function SendEmail($data, $userPenerima, $url, $title, $message)
-    {
-        if (auth()->user()->jabatan == 'Direktur Operasional') {
-            Mail::send('email.notif.notif-to-pembukuan',  [
-                'nama' => $data->nama,
-                'kc' => $data->cabang->cabang,
-                'nik' => $data->nik,
-                'kode_form' => $data->kode_form,
-                'keperluan' => "Pembatalan Transaksi (Inventaris)"
-            ], function ($message) use ($userPenerima) {
-                $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
-                $message->to($userPenerima->email);
-                $message->subject('Perlu Tindak Lanjut Transaksi (Inventaris)');
-            });
-        } else {
-            Mail::send('email.notif.notif-pengajuan',  [
-                'nama' => $data->nama,
-                'kc' => $data->cabang->cabang,
-                'nik' => $data->nik,
-                'kode_form' => $data->kode_form,
-                'keperluan' => "Pembatalan Transaksi (Inventaris)"
-            ], function ($message) use ($userPenerima) {
-                $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
-                $message->to($userPenerima->email);
-                $message->subject('Pengajuan Pembatalan Transaksi (Inventaris)');
-            });
-        }
-
-
-        // pemberitahuan database
-        Notification::send($userPenerima, new NotifikasiPengajuan($data, $url, $title, $message));
-    }
-
-    // Email single to kaops
-    private function SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message)
-    {
-        Mail::send('email.notif.notif-status-akhir',  [
-            'nama' => $data->nama,
-            'kc' => $data->cabang->cabang,
-            'nik' => $data->nik,
-            'kode_form' => $data->kode_form,
-            'keperluan' => "Pembatalan Transaksi (Inventaris)",
-            'status_akhir' => $status_akhir,
-            'pelanggaran' => ($status_akhir == 'Approved') ? $data->pelanggaran_dirops : null,
-        ], function ($message) use ($userPenerima) {
-            $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
-            $message->to($userPenerima->email);
-            $message->subject('Status Pengajuan');
-        });
-
-        // pemberitahuan database
-        Notification::send($userPenerima, new NotifikasiPengajuan($data, $url, $title, $message));
-    }
-
-    // Email single to user lainnya
-    private function SendEmailToUserLain($data, $userPenerima, $url, $title, $message)
-    {
-        Mail::send('email.notif.notif-dikerjakan',  [
-            'nama' => $data->nama,
-            'kc' => $data->cabang->cabang,
-            'nik' => $data->nik,
-            'kode_form' => $data->kode_form,
-            'keperluan' => "Pembatalan Transaksi (Inventaris)"
-        ], function ($message) use ($userPenerima) {
-            $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
-            $message->to($userPenerima->email);
-            $message->subject('Status Pengajuan');
-        });
-
-        // pemberitahuan database
-        Notification::send($userPenerima, new NotifikasiPengajuan($data, $url, $title, $message));
-    }
-
-    // Email Doubel
-    private function SendEmailDobel($data, $userPenerima, $url, $title, $message)
-    {
-        foreach ($userPenerima as $user) {
-            Mail::send('email.notif.notif-pengajuan',  [
-                'nama' => $data->nama,
-                'kc' => $data->cabang->cabang,
-                'nik' => $data->nik,
-                'kode_form' => $data->kode_form,
-                'keperluan' => "Pembatalan Transaksi (Inventaris)"
-            ], function ($message) use ($user) {
-                $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
-                $message->to($user->email);
-                $message->subject('Pengajuan Pembatalan Transaksi (Inventaris)');
-            });
-        }
-        // pemberitahuan database
-        Notification::send($userPenerima, new NotifikasiPengajuan($data, $url, $title, $message));
     }
 }

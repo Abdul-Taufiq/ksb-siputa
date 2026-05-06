@@ -136,10 +136,23 @@ class SharebiayaController extends Controller
                     ->subject('Reminder Share Biaya');
             });
         } else {
-            foreach ($request->kc as $cabang) {
-                $penerima = CabangEmail::where('cabang', $cabang)->first();
-                $this->SendMail($share, $penerima);
-            }
+            // kalau lebih dari satu cabang → gabung jadi BCC
+            $emails = CabangEmail::whereIn('cabang', $kcList)
+                ->pluck('email_kaops')
+                ->toArray();
+
+            Mail::send('email.notif.notif-share', [
+                'kc' => $share->kc,
+                'tgl_transaksi' => $share->tgl_transaksi->translatedFormat('d F Y'),
+                'nominal' => $share->nominal,
+                'keterangan' => $share->keterangan,
+                'file' =>  $share->file_lampiran,
+            ], function ($message) use ($emails) {
+                $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
+                $message->to(config('mail.from.address'))
+                    ->bcc($emails)
+                    ->subject('Reminder Share Biaya');
+            });
         }
 
 

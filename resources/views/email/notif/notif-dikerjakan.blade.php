@@ -9,14 +9,6 @@
                 <td>: {{ $kode_form }}</td>
             </tr>
             <tr>
-                <th>Nama</th>
-                <td>: {{ $nama }}</td>
-            </tr>
-            <tr>
-                <th>NIK</th>
-                <td>: {{ $nik }}</td>
-            </tr>
-            <tr>
                 <th>Cabang</th>
                 <td>: {{ $kc }}</td>
             </tr>

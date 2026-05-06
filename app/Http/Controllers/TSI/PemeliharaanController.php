@@ -645,19 +645,20 @@ class PemeliharaanController extends Controller
     // Email Doubel
     private function SendEmailDobel($data, $userPenerima, $url, $title, $message)
     {
-        foreach ($userPenerima as $user) {
-            Mail::send('email.notif.notif-pengajuan',  [
-                'nama' => $data->nama,
-                'kc' => $data->cabang->cabang,
-                'nik' => $data->nik,
-                'kode_form' => $data->kode_form,
-                'keperluan' => $data->keperluan
-            ], function ($message) use ($user) {
-                $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
-                $message->to($user->email);
-                $message->subject('Pengajuan Inventaris');
-            });
-        }
+        $emails = $userPenerima->pluck('email')->toArray();
+
+        Mail::send('email.notif.notif-pengajuan',  [
+            'nama' => $data->nama,
+            'kc' => $data->cabang->cabang,
+            'nik' => $data->nik,
+            'kode_form' => $data->kode_form,
+            'keperluan' => $data->keperluan
+        ], function ($message) use ($emails) {
+            $message->from(config('mail.from.address'), 'KSB | Si-PUTa');
+            $message->to($emails[0]); // penerima utama
+            $message->bcc(array_slice($emails, 1)); // sisanya jadi CC
+            $message->subject('Pengajuan Inventaris');
+        });
         // pemberitahuan database
         Notification::send($userPenerima, new NotifikasiPengajuan($data, $url, $title, $message));
     }
