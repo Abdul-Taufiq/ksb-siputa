@@ -220,6 +220,90 @@
 
 @yield('script')
 
+<script>
+    if ('serviceWorker' in navigator) {
+
+        window.addEventListener('load', async () => {
+            try {
+                // Register Service Worker
+                const reg = await navigator.serviceWorker.register('/service-worker.js');
+                console.log('Service Worker terdaftar!', reg);
+                // Tunggu aktif
+                await navigator.serviceWorker.ready;
+
+                // Support notification
+                if ('Notification' in window) {
+                    // Request permission jika belum pernah
+                    if (Notification.permission === 'default') {
+                        const permission = await Notification.requestPermission();
+
+                        if (permission === 'granted') {
+                            console.log('Izin notifikasi diberikan');
+
+                            // =========================
+                            // AMBIL SUBSCRIPTION
+                            // =========================
+
+                            let subscription = await reg.pushManager.getSubscription();
+
+                            // Jika belum subscribe
+                            if (!subscription) {
+
+                                subscription = await reg.pushManager.subscribe({
+                                    userVisibleOnly: true,
+                                    userVisibleOnly: true,
+                                    applicationServerKey: vapidPublicKey
+                                });
+                            }
+
+                            console.log('Push Subscription:', subscription);
+
+                            console.log(
+                                'Subscription ID ditemukan:',
+                                subscription.endpoint
+                            );
+
+                            // Test notification
+                            reg.showNotification('Halo dari Ki-Kusumo!', {
+                                body: 'Notifikasi berhasil diaktifkan.',
+                                icon: '/img/icon-192.png'
+                            });
+
+                        } else {
+
+                            console.log('Izin notifikasi ditolak');
+
+                        }
+                    }
+                }
+
+            } catch (err) {
+
+                console.log('Gagal daftar Service Worker', err);
+
+            }
+        });
+    }
+
+    // =========================
+    // CONVERT VAPID KEY
+    // =========================
+
+    function urlBase64ToUint8Array(base64String) {
+
+        const padding = '='.repeat((4 - base64String.length % 4) % 4);
+
+        const base64 = (base64String + padding)
+            .replace(/\-/g, '+')
+            .replace(/_/g, '/');
+
+        const rawData = window.atob(base64);
+
+        return Uint8Array.from([...rawData].map(char =>
+            char.charCodeAt(0)
+        ));
+    }
+</script>
 
 </body>
 
