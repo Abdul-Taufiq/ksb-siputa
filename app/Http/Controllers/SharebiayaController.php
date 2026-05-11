@@ -122,7 +122,7 @@ class SharebiayaController extends Controller
             // }
             $emails = CabangEmail::whereNotIn('id_cabang', [0, 20])->pluck('email_kaops')->toArray();
 
-            Mail::send('email.notif.notif-share', [
+            Mail::send('email.notif.email-share', [
                 'kc' => $share->kc,
                 'tgl_transaksi' => $share->tgl_transaksi->translatedFormat('d F Y'),
                 'nominal' => $share->nominal,
@@ -141,7 +141,7 @@ class SharebiayaController extends Controller
                 ->pluck('email_kaops')
                 ->toArray();
 
-            Mail::send('email.notif.notif-share', [
+            Mail::send('email.notif.email-share', [
                 'kc' => $share->kc,
                 'tgl_transaksi' => $share->tgl_transaksi->translatedFormat('d F Y'),
                 'nominal' => $share->nominal,
@@ -241,7 +241,7 @@ class SharebiayaController extends Controller
 
     private function SendMail($share, $userPenerima)
     {
-        Mail::send('email.notif.notif-share', [
+        Mail::send('email.notif.email-share', [
             'kc' => $share->kc,
             'tgl_transaksi' => $share->tgl_transaksi->translatedFormat('d F Y'),
             'nominal' => $share->nominal,

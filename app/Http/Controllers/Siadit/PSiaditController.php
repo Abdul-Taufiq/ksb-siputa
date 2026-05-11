@@ -26,6 +26,9 @@ class PSiaditController extends Controller
         $this->emailServices = $emailServices;
     }
 
+    private $subjek = 'Pengajuan Perubahan (SiAdit)';
+    private $subjek_status = 'Status | Pengajuan Perubahan (SiAdit)';
+
     public function index(Request $request)
     {
         $jabatan = Auth::user()->jabatan;
@@ -273,7 +276,7 @@ class PSiaditController extends Controller
         $url = route('siadit-perubahan.index');
         $title = 'Terdapat Form Pengajuan Baru!';
         $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-        $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message);
+        $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message, $this->subjek);
 
         return redirect('siadit-perubahan')->with('AlertSuccess', "Pengajuan Perubahan Data Berhasil Dikirim!");
     }
@@ -343,13 +346,13 @@ class PSiaditController extends Controller
                     'status_akhir' => 'Proses'
                 ]);
                 // Send Email Double
-                // $userPenerima = User::where('jabatan', 'Pembukuan')->get();
-                // // pemberitahuan database
-                // $url = route('siadit-perubahan.index');
-                // $title = 'Terdapat Form Pengajuan Baru!';
-                // $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                // // $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message);
-                // break;
+                $userPenerima = User::where('jabatan', 'Pembukuan')->get();
+                // pemberitahuan database
+                $url = route('siadit-perubahan.index');
+                $title = 'Terdapat Form Pengajuan Baru!';
+                $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
+                $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message, $this->subjek);
+                break;
 
             case 'Pembukuan':
                 if ($data->status_pincab != null) {
@@ -382,7 +385,7 @@ class PSiaditController extends Controller
                 $url = route('siadit-perubahan.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message, $this->subjek);
                 // send email untuk user satunya
 
                 $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
@@ -391,7 +394,7 @@ class PSiaditController extends Controller
                 $url = route('siadit-perubahan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek_status);
                 break;
 
                 // Send Email Single to Kaops cabang
@@ -402,7 +405,7 @@ class PSiaditController extends Controller
                 $url = route('siadit-perubahan.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Approved!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
 
             case 'Direktur Operasional':
                 $data->update([
@@ -447,7 +450,7 @@ class PSiaditController extends Controller
                 $url = route('siadit-perubahan.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Approved!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
@@ -456,7 +459,7 @@ class PSiaditController extends Controller
                 $url = route('siadit-perubahan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek_status);
 
                 // Send Email Single
                 $userPenerima = User::where('jabatan', 'Direktur Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
@@ -464,7 +467,7 @@ class PSiaditController extends Controller
                 $url = route('siadit-perubahan.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message, $this->subjek);
                 break;
 
             default:
@@ -506,7 +509,7 @@ class PSiaditController extends Controller
                 $url = route('siadit-perubahan.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
 
                 break;
 
@@ -543,7 +546,7 @@ class PSiaditController extends Controller
                 $url = route('siadit-perubahan.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
@@ -552,7 +555,7 @@ class PSiaditController extends Controller
                 $url = route('siadit-perubahan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek_status);
                 break;
 
             case 'Direktur Operasional':
@@ -573,7 +576,7 @@ class PSiaditController extends Controller
                 $url = route('siadit-perubahan.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
                 break;
 
             case 'TSI':
@@ -607,7 +610,7 @@ class PSiaditController extends Controller
                 $url = route('siadit-perubahan.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
@@ -616,7 +619,7 @@ class PSiaditController extends Controller
                 $url = route('siadit-perubahan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek_status);
                 break;
 
             default:

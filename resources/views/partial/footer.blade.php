@@ -164,13 +164,13 @@
         // Periksa apakah izin pemberitahuan sudah diberikan
         if (Notification.permission === 'granted') {
             // Jika sudah diberikan, buat pemberitahuan
-            createNotification();
+            // createNotification();
         } else if (Notification.permission !== 'denied') {
             // Jika belum diberikan atau ditolak, minta izin
             Notification.requestPermission().then(function(permission) {
                 if (permission === 'granted') {
                     // Jika izin diberikan, buat pemberitahuan
-                    createNotification();
+                    // createNotification();
                 } else {
                     alert('Nyalakan Pemberitahuan untuk fitur terbaru! :)');
                 }
@@ -185,7 +185,7 @@
         Push.create("Hello Shailesh!", { //header
                 body: "Welcome to the Dashboard.", //pesan kesalahan
                 icon: iconPath, //ikon
-                // timeout: 4000, //digunakan untuk auto close notifikasi
+                timeout: 4000, //digunakan untuk auto close notifikasi
                 requireInteraction: true, // berfungsi untuk menjadi notif permanen kecuali diklose & tdk perlu timeout:
                 onClick: function() {
                     window.focus();
@@ -197,6 +197,25 @@
             }); //penanganan jika akses pemberitahuan mati
     }
 </script> --}}
+
+
+{{-- @if (session('notif'))
+    <script>
+        Push.create("Hello Shailesh!", { //header
+                body: "Welcome to the Dashboard.", //pesan kesalahan
+                icon: iconPath, //ikon
+                timeout: 4000, //digunakan untuk auto close notifikasi
+                requireInteraction: true, // berfungsi untuk menjadi notif permanen kecuali diklose & tdk perlu timeout:
+                onClick: function() {
+                    window.focus();
+                    window.location = "http://www.google.com";
+                }
+            })
+            .catch(e => {
+                alert('Nyalakan Pemberitahuan untuk fitur terbaru! :)');
+            }); //penanganan jika akses pemberitahuan mati
+    </script>
+@endif --}}
 
 
 {{-- Push Notifikasi with session --}}

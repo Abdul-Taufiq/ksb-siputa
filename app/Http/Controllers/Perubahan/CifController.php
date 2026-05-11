@@ -8,7 +8,6 @@ use App\Models\Perubahan\Cif;
 use App\Models\User;
 use App\Notifications\NotifikasiPengajuan;
 use App\Services\EmailServices;
-use App\Services\EmailTransaksiService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,11 +19,15 @@ use Illuminate\Support\Facades\Notification;
 class CifController extends Controller
 {
     // load services
+    // load services
     protected $emailServices;
-    public function __construct(EmailTransaksiService $emailServices)
+    public function __construct(EmailServices $emailServices)
     {
         $this->emailServices = $emailServices;
     }
+
+    private $subjek = 'Pengajuan Perubahan Data (CIF)';
+    private $subjek_status = 'Status | Pengajuan Perubahan Data (CIF)';
 
     public function index(Request $request)
     {
@@ -297,7 +300,7 @@ class CifController extends Controller
         $url = route('perubahan-cif.index');
         $title = 'Terdapat Form Pengajuan Baru!';
         $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-        $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message);
+        $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message, $this->subjek);
 
         return redirect('perubahan-cif')->with('AlertSuccess', "Pengajuan Perubahan Transaksi Berhasil Dikirim!");
     }
@@ -387,7 +390,7 @@ class CifController extends Controller
                 $url = route('perubahan-cif.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message, $this->subjek);
                 break;
 
             case 'Pembukuan':
@@ -419,7 +422,7 @@ class CifController extends Controller
                 $url = route('perubahan-cif.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message, $this->subjek);
                 // send email untuk user satunya
 
                 $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
@@ -428,7 +431,7 @@ class CifController extends Controller
                 $url = route('perubahan-cif.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek_status);
                 break;
 
             case 'Direktur Operasional':
@@ -450,7 +453,7 @@ class CifController extends Controller
                 $url = route('perubahan-cif.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message, $this->subjek);
                 break;
 
             case 'TSI':
@@ -470,7 +473,7 @@ class CifController extends Controller
                 $url = route('perubahan-cif.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Approved!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
@@ -479,7 +482,7 @@ class CifController extends Controller
                 $url = route('perubahan-cif.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek_status);
                 break;
 
             default:
@@ -521,7 +524,7 @@ class CifController extends Controller
                 $url = route('perubahan-cif.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
 
                 break;
 
@@ -558,7 +561,7 @@ class CifController extends Controller
                 $url = route('perubahan-cif.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
@@ -567,7 +570,7 @@ class CifController extends Controller
                 $url = route('perubahan-cif.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek_status);
                 break;
 
             case 'Direktur Operasional':
@@ -588,7 +591,7 @@ class CifController extends Controller
                 $url = route('perubahan-cif.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
                 break;
 
             case 'TSI':
@@ -609,7 +612,7 @@ class CifController extends Controller
                 $url = route('perubahan-cif.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
@@ -618,7 +621,7 @@ class CifController extends Controller
                 $url = route('perubahan-cif.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek_status);
                 break;
 
             default:

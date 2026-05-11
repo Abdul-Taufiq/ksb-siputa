@@ -166,7 +166,7 @@
                             class="nav nav-treeview  {{ request()->is('user-email-reset*', 'user-email-pengajuan*', 'user-siadit', 'user-ecoll*', 'reset-ecoll*', 'slik-pengajuan*', 'slik-reset*', 'pefindo-pengajuan*', 'pefindo-reset*', 'mso-pengajuan*', 'mso-reset*') ? 'style="display: block;"' : '' }}">
 
                             {{-- email --}}
-                            <hr style="margin-left: 12px; margin-right: 15px;">
+                            {{-- <hr style="margin-left: 12px; margin-right: 15px;">
                             <p
                                 style="font-weight: bold; font-family: JetBrains Mono; font-size: 15px; margin-left: 20px;">
                                 Email &rarr;
@@ -184,7 +184,7 @@
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Reset Password</p>
                                 </a>
-                            </li>
+                            </li> --}}
 
                             {{-- siadit --}}
                             <hr style="margin-left: 12px; margin-right: 5px;">

@@ -254,4 +254,6 @@ Route::group(['middleware' => ['permission', 'CekMaintenance']], function () {
         Route::get('/pengajuan-cetak/{idEncrypt}', [PLainnyaController::class, 'Print']);
         Route::get('get-barang/{Id}', [InventarisPengajuanController::class, 'getBarang']);
     });
+
+    Route::get('notif', [HomeController::class, 'Notif'])->name('notif');
 });

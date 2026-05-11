@@ -18,7 +18,7 @@
                 <td>: {{ $keperluan }}</td>
             </tr>
         </table> <br>
-        Cek aplikasi berbasis web sekarang untuk meninjau form pengajuan tersebut.
+        Info lebih lengkap dapat dilihat di aplikasi berbasis web sekarang untuk meninjau form pengajuan tersebut.
         <a href="https://ksb-siputa.bprkusumasumbing.com">Akses Aplikasi Disini!</a>
         <br><br>
         <br><br>

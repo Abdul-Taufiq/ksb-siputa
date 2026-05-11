@@ -29,6 +29,9 @@ class PLainnyaController extends Controller
         $this->emailServices = $emailServices;
     }
 
+    private $subjek = 'Pengajuan Lainnya';
+    private $subjek_status = 'Status | Pengajuan Lainnya';
+
 
     public function index(Request $request)
     {
@@ -336,7 +339,7 @@ class PLainnyaController extends Controller
         $url = route('pengajuan-lainnya.index');
         $title = 'Terdapat Form Pengajuan Baru!';
         $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-        $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message);
+        $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message, $this->subjek);
 
         return redirect('pengajuan-lainnya')->with('AlertSuccess', "Pengajuan berhasil Dikirim!");
     }
@@ -421,7 +424,7 @@ class PLainnyaController extends Controller
                 $url = route('pengajuan-lainnya.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message, $this->subjek);
                 break;
 
             case 'Pembukuan':
@@ -454,16 +457,16 @@ class PLainnyaController extends Controller
                         $url = route('pengajuan-lainnya.index');
                         $title = 'Terdapat Form Pengajuan Baru!';
                         $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                        $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+                        $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message, $this->subjek);
 
                         // send email untuk user satunya
-                        // $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')
-                        //     ->where('nama', '!=', $nama)->first();
+                        $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')
+                            ->where('nama', '!=', $nama)->first();
                         // pemberitahuan database
                         $url = route('pengajuan-lainnya.index');
                         $title = 'Pengajuan Sudah Dikerjakan!';
                         $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                        // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                        $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek);
                         break;
 
                     case 'Ganti Provider WIFI':
@@ -473,16 +476,16 @@ class PLainnyaController extends Controller
                         $url = route('pengajuan-lainnya.index');
                         $title = 'Terdapat Form Pengajuan Baru!';
                         $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                        $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+                        $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message, $this->subjek);
 
                         // send email untuk user satunya
-                        // $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')
-                        //     ->where('nama', '!=', $nama)->first();
+                        $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')
+                            ->where('nama', '!=', $nama)->first();
                         // pemberitahuan database
                         $url = route('pengajuan-lainnya.index');
                         $title = 'Pengajuan Sudah Dikerjakan!';
                         $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                        // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                        $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek);
                         break;
 
                     default:
@@ -499,7 +502,7 @@ class PLainnyaController extends Controller
                         $url = route('pengajuan-lainnya.index');
                         $title = 'Terdapat Form Pengajuan Baru!';
                         $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                        $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message);
+                        $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message, $this->subjek);
 
                         // send email untuk user satunya
                         $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')
@@ -508,7 +511,7 @@ class PLainnyaController extends Controller
                         $url = route('pengajuan-lainnya.index');
                         $title = 'Pengajuan Sudah Dikerjakan!';
                         $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                        // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                        $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek);
                         break;
                 }
 
@@ -538,7 +541,7 @@ class PLainnyaController extends Controller
                 $url = route('pengajuan-lainnya.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Approved!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
                 break;
 
             case 'TSI':
@@ -555,7 +558,7 @@ class PLainnyaController extends Controller
                 $url = route('pengajuan-lainnya.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')
@@ -564,7 +567,7 @@ class PLainnyaController extends Controller
                 $url = route('pengajuan-lainnya.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek);
                 break;
 
             default:
@@ -606,7 +609,7 @@ class PLainnyaController extends Controller
                 $url = route('pengajuan-lainnya.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
 
                 break;
 
@@ -641,7 +644,7 @@ class PLainnyaController extends Controller
                 $url = route('pengajuan-lainnya.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')
@@ -650,7 +653,7 @@ class PLainnyaController extends Controller
                 $url = route('pengajuan-lainnya.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek);
                 break;
 
             case 'Direktur Operasional':
@@ -671,7 +674,7 @@ class PLainnyaController extends Controller
                 $url = route('pengajuan-lainnya.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
                 break;
 
             case 'TSI':
@@ -692,7 +695,7 @@ class PLainnyaController extends Controller
                 $url = route('pengajuan-lainnya.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')
@@ -701,7 +704,7 @@ class PLainnyaController extends Controller
                 $url = route('pengajuan-lainnya.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek);
                 break;
 
             default:

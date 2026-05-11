@@ -137,7 +137,7 @@ class HomeController extends Controller
             ),
             ['title' => 'Dashboard']
         );
-        return view('welcome');
+        // return view('welcome');
     }
 
     public function create()
@@ -173,5 +173,11 @@ class HomeController extends Controller
         $versi = LastVersion::where('id_version', $Id)->first();
         $versi->delete();
         return redirect()->back()->with('AlertSuccess', 'Berhasil di Hapus!');
+    }
+
+
+    public function Notif()
+    {
+        return redirect()->back()->with('notif', 'Berhasil di NOTIF!');
     }
 }

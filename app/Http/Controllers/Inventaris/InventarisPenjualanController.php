@@ -26,6 +26,10 @@ class InventarisPenjualanController extends Controller
         $this->emailServices = $emailServices;
     }
 
+    private $subjek = 'Pengajuan Inventaris Penjualan';
+    private $subjek_status = 'Status | Pengajuan Inventaris Penjualan';
+
+
     public function index(Request $request)
     {
         $jabatan = Auth::user()->jabatan;
@@ -323,14 +327,14 @@ class InventarisPenjualanController extends Controller
             $url = route('inventaris-penjualan.index');
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-            $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+            $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message, $this->subjek);
         } else {
             $userPenerima = User::where('id_cabang', auth()->user()->id_cabang)
                 ->where('jabatan', 'Pimpinan Cabang')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
             $url = route('inventaris-penjualan.index');
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-            $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message);
+            $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message, $this->subjek);
         }
 
         return redirect('inventaris-penjualan')->with('AlertSuccess', "Pengajuan Penjualan Inventaris Berhasil Dikirim!");
@@ -471,7 +475,7 @@ class InventarisPenjualanController extends Controller
                 $url = route('inventaris-pengajuan.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message, $this->subjek);
                 break;
 
             case 'Pembukuan':
@@ -503,7 +507,7 @@ class InventarisPenjualanController extends Controller
                 $url = route('inventaris-penjualan.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message, $this->subjek);
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'Pembukuan')
@@ -512,7 +516,7 @@ class InventarisPenjualanController extends Controller
                 $url = route('inventaris-penjualan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek_status);
                 break;
 
             case 'Direktur Operasional':
@@ -540,7 +544,7 @@ class InventarisPenjualanController extends Controller
                 $url = route('inventaris-penjualan.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Approved!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
 
                 break;
         }
@@ -579,7 +583,7 @@ class InventarisPenjualanController extends Controller
                 $url = route('inventaris-penjualan.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
 
                 break;
 
@@ -614,7 +618,7 @@ class InventarisPenjualanController extends Controller
                 $url = route('inventaris-penjualan.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'Pembukuan')
@@ -623,7 +627,7 @@ class InventarisPenjualanController extends Controller
                 $url = route('inventaris-penjualan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek_status);
                 break;
 
             case 'Direktur Operasional':
@@ -644,7 +648,7 @@ class InventarisPenjualanController extends Controller
                 $url = route('inventaris-penjualan.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
                 break;
 
             default:

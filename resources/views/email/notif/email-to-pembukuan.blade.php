@@ -2,7 +2,8 @@
     <div style="background-color: white; padding: 20px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
         <h3 style="font-family: Arial, sans-serif;">Hallo,</h3>
         <p style="font-family: Arial, sans-serif;">
-            Form Pengajuan dengan data sebagai berikut : <br>
+            Terdapat Pengajuan yang memerlukan penindak lanjutan dari Anda, Pengajuan Tersebut Sudah mendapatkan <br>
+            <strong>APPROVED Dari DIREKTUR OPERASIONAL</strong>: <br>
         <table style="text-align: left;">
             <tr>
                 <th>Kode</th>
@@ -17,13 +18,13 @@
                 <td>: {{ $keperluan }}</td>
             </tr>
         </table> <br>
-        <b>Telah Selesai</b> dengan Status <b>{{ $status_akhir }}</b>,
-        <br> Cek aplikasi form berbasis web sekarang untuk meninjau form pengajuan tersebut untuk update.
-        <a href="https://ksb-siputa.bprkusumasumbing.com">Akses Aplikasi Disini!</a>
+        Cek aplikasi berbasis web sekarang untuk meninjau form pengajuan tersebut.
+        <a href="https://ksb-siputa.bprkusumasumbing.com/">Akses Aplikasi Disini!</a>
         <br><br>
-        <b>Regard,</b> <br>
-        <b>PT BPR Kusuma Sumbing</b>
-        </p>
+
+
+        Terima kasih, <br><br>
+        PT BPR Kusuma Sumbing
         </p>
     </div>
 </div>

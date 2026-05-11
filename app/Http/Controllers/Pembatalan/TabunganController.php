@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\LogActivity;
 use App\Models\Pembatalan\Tabungan;
 use App\Models\User;
-use App\Notifications\NotifikasiPengajuan;
 use App\Services\EmailServices;
 use App\Services\EmailTransaksiService;
 use Carbon\Carbon;
@@ -21,10 +20,13 @@ class TabunganController extends Controller
 {
     // load services
     protected $emailServices;
-    public function __construct(EmailTransaksiService $emailServices)
+    public function __construct(EmailServices $emailServices)
     {
         $this->emailServices = $emailServices;
     }
+
+    private $subjek = 'Pengajuan Pembatalan Transaksi Tabungan';
+    private $subjek_status = 'Status | Pengajuan Pembatalan Transaksi Tabungan';
 
 
     public function index(Request $request)
@@ -269,7 +271,7 @@ class TabunganController extends Controller
         $url = route('pembatalan-tabungan.index');
         $title = 'Terdapat Form Pengajuan Baru!';
         $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-        $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message);
+        $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message, $this->subjek);
 
         return redirect('pembatalan-tabungan')->with('AlertSuccess', "Pengajuan Pembatalan Transaksi Berhasil Dikirim!");
     }
@@ -343,7 +345,7 @@ class TabunganController extends Controller
                 $url = route('pembatalan-tabungan.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message, $this->subjek);
                 break;
 
             case 'Pembukuan':
@@ -379,7 +381,7 @@ class TabunganController extends Controller
                     $url = route('pembatalan-tabungan.index');
                     $title = 'Terdapat Form Pengajuan Baru!';
                     $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                    $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message);
+                    $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message, $this->subjek);
                     // send email untuk user satunya
 
                     $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
@@ -388,7 +390,7 @@ class TabunganController extends Controller
                     $url = route('pembatalan-tabungan.index');
                     $title = 'Pengajuan Sudah Dikerjakan!';
                     $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                    // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                    $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek_status);
                 } else {
                     $data->update([
                         'nama_pembukuan' => $nama,
@@ -407,7 +409,7 @@ class TabunganController extends Controller
                     $url = route('pembatalan-tabungan.index');
                     $title = 'Pengajuan Telah Selesai!';
                     $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Approved!';
-                    // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                    $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
                     // send email untuk user satunya
 
                     $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
@@ -416,7 +418,7 @@ class TabunganController extends Controller
                     $url = route('pembatalan-tabungan.index');
                     $title = 'Pengajuan Sudah Dikerjakan!';
                     $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                    // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                    $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek_status);
                 }
                 break;
 
@@ -442,7 +444,7 @@ class TabunganController extends Controller
                 $url = route('pembatalan-tabungan.index');
                 $title = 'Perlu Menindaklanjuti Pengajuan!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message, $this->subjek);
                 break;
 
             default:
@@ -480,7 +482,7 @@ class TabunganController extends Controller
                 $url = route('pembatalan-tabungan.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
 
                 break;
 
@@ -517,7 +519,7 @@ class TabunganController extends Controller
                 $url = route('pembatalan-tabungan.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
@@ -526,7 +528,7 @@ class TabunganController extends Controller
                 $url = route('pembatalan-tabungan.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek_status);
                 break;
 
             case 'Direktur Operasional':
@@ -547,7 +549,7 @@ class TabunganController extends Controller
                 $url = route('pembatalan-tabungan.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
                 break;
 
             default:

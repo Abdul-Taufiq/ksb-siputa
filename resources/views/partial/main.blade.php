@@ -6,6 +6,8 @@
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
 
+        {{-- <a style="margin-left: 500px;" href="{{ route('notif') }}">NOTIFFFFFFFFFFFFF</a> --}}
+
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
             <img class="animation__shake" src="{{ asset('img/icon_logo.png') }}" alt="ksb" height="60"

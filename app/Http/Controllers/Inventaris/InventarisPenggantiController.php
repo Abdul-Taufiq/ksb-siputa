@@ -23,6 +23,10 @@ class InventarisPenggantiController extends Controller
         $this->emailServices = $emailServices;
     }
 
+    private $subjek = 'Pengajuan Inventaris Pengganti';
+    private $subjek_status = 'Status | Pengajuan Inventaris Pengganti';
+
+
     public function index(Request $request)
     {
         $jabatan = Auth::user()->jabatan;
@@ -399,14 +403,14 @@ class InventarisPenggantiController extends Controller
             $url = route('inventaris-pengganti.index');
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-            $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+            $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message, $this->subjek);
         } else {
             $userPenerima = User::where('id_cabang', auth()->user()->id_cabang)
                 ->where('jabatan', 'Pimpinan Cabang')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
             $url = route('inventaris-pengganti.index');
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-            $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message);
+            $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message, $this->subjek);
         }
 
         return redirect('inventaris-pengganti')->with('AlertSuccess', "Pengajuan Inventaris Pengganti Baru Berhasil Dikirim!");
@@ -587,7 +591,7 @@ class InventarisPenggantiController extends Controller
             $url = route('inventaris-pengganti.index');
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-            $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message);
+            $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message, $this->subjek);
         }
 
         // Log Activity
@@ -701,7 +705,7 @@ class InventarisPenggantiController extends Controller
                         $url = route('inventaris-pengajuan.index');
                         $title = 'Terdapat Form Pengajuan Baru!';
                         $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                        $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+                        $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message, $this->subjek);
                     }
                 } else {
                     # code...
@@ -719,7 +723,7 @@ class InventarisPenggantiController extends Controller
                     $url = route('inventaris-pengajuan.index');
                     $title = 'Terdapat Form Pengajuan Baru!';
                     $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                    $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+                    $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message, $this->subjek);
                 }
                 break;
 
@@ -752,7 +756,7 @@ class InventarisPenggantiController extends Controller
                     $url = route('inventaris-pengganti.index');
                     $title = 'Terdapat Form Pengajuan Baru!';
                     $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                    $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+                    $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message, $this->subjek);
 
                     // send email untuk user satunya
                     $userPenerima = User::where('jabatan', 'Pembukuan')
@@ -761,7 +765,7 @@ class InventarisPenggantiController extends Controller
                     $url = route('inventaris-pengganti.index');
                     $title = 'Pengajuan Sudah Dikerjakan!';
                     $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                    // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                    $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek_status);
                 } else {
                     $data->update([
                         'nama_tsi' => 'Tidak Diperlukan',
@@ -776,7 +780,7 @@ class InventarisPenggantiController extends Controller
                     $url = route('inventaris-pengganti.index');
                     $title = 'Terdapat Form Pengajuan Baru!';
                     $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                    $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message);
+                    $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message, $this->subjek);
 
                     // send email untuk user satunya
                     $userPenerima = User::where('jabatan', 'Pembukuan')
@@ -785,7 +789,7 @@ class InventarisPenggantiController extends Controller
                     $url = route('inventaris-pengganti.index');
                     $title = 'Pengajuan Sudah Dikerjakan!';
                     $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                    // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                    $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek_status);
                 }
                 break;
 
@@ -813,7 +817,7 @@ class InventarisPenggantiController extends Controller
                     $url = route('inventaris-pengganti.index');
                     $title = 'Terdapat Form Pengajuan Baru!';
                     $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                    $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+                    $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message, $this->subjek);
                 } else {
                     if ($data->id_cabang == 0) {
                         # code...
@@ -828,7 +832,7 @@ class InventarisPenggantiController extends Controller
                     $url = route('inventaris-pengganti.index');
                     $title = 'Pengajuan Telah Selesai!';
                     $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Approved!';
-                    // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                    $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
                 }
                 break;
 
@@ -856,7 +860,7 @@ class InventarisPenggantiController extends Controller
                 $url = route('inventaris-pengganti.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Approved!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'TSI')
@@ -865,7 +869,7 @@ class InventarisPenggantiController extends Controller
                 $url = route('inventaris-pengganti.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek_status);
                 break;
 
             default:
@@ -907,7 +911,7 @@ class InventarisPenggantiController extends Controller
                 $url = route('inventaris-pengganti.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
 
                 break;
 
@@ -942,7 +946,7 @@ class InventarisPenggantiController extends Controller
                 $url = route('inventaris-pengganti.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'Pembukuan')
@@ -951,7 +955,7 @@ class InventarisPenggantiController extends Controller
                 $url = route('inventaris-pengganti.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek_status);
                 break;
 
             case 'Direktur Utama':
@@ -977,7 +981,7 @@ class InventarisPenggantiController extends Controller
                 $url = route('inventaris-pengganti.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
                 break;
 
             case 'TSI':
@@ -998,7 +1002,7 @@ class InventarisPenggantiController extends Controller
                 $url = route('inventaris-pengganti.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'TSI')
@@ -1007,7 +1011,7 @@ class InventarisPenggantiController extends Controller
                 $url = route('inventaris-pengganti.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek_status);
                 break;
 
             default:

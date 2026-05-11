@@ -8,7 +8,6 @@ use App\Models\Pembatalan\Kredit;
 use App\Models\User;
 use App\Notifications\NotifikasiPengajuan;
 use App\Services\EmailServices;
-use App\Services\EmailTransaksiService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,10 +21,13 @@ class KreditController extends Controller
 
     // load services
     protected $emailServices;
-    public function __construct(EmailTransaksiService $emailServices)
+    public function __construct(EmailServices $emailServices)
     {
         $this->emailServices = $emailServices;
     }
+
+    private $subjek = 'Pengajuan Pembatalan Transaksi Kredit';
+    private $subjek_status = 'Status | Pengajuan Pembatalan Transaksi Kredit';
 
     public function index(Request $request)
     {
@@ -275,7 +277,7 @@ class KreditController extends Controller
         $url = route('pembatalan-kredit.index');
         $title = 'Terdapat Form Pengajuan Baru!';
         $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-        $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message);
+        $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message, $this->subjek);
 
         return redirect('pembatalan-kredit')->with('AlertSuccess', "Pengajuan Pembatalan Transaksi Berhasil Dikirim!");
     }
@@ -358,7 +360,7 @@ class KreditController extends Controller
                 $url = route('pembatalan-kredit.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message, $this->subjek);
                 break;
 
             case 'Pembukuan':
@@ -394,7 +396,7 @@ class KreditController extends Controller
                     $url = route('pembatalan-kredit.index');
                     $title = 'Terdapat Form Pengajuan Baru!';
                     $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                    $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message);
+                    $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message, $this->subjek);
                     // send email untuk user satunya
 
                     $userPenerima = User::where('jabatan', 'Pembukuan')
@@ -403,7 +405,7 @@ class KreditController extends Controller
                     $url = route('pembatalan-kredit.index');
                     $title = 'Pengajuan Sudah Dikerjakan!';
                     $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                    // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                    $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek_status);
                 } else {
                     $data->update([
                         'nama_pembukuan' => $nama,
@@ -422,7 +424,7 @@ class KreditController extends Controller
                     $url = route('pembatalan-kredit.index');
                     $title = 'Pengajuan Telah Selesai!';
                     $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Approved!';
-                    // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                    $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
                     // send email untuk user satunya
 
                     $userPenerima = User::where('jabatan', 'Pembukuan')
@@ -431,7 +433,7 @@ class KreditController extends Controller
                     $url = route('pembatalan-kredit.index');
                     $title = 'Pengajuan Sudah Dikerjakan!';
                     $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                    // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                    $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek_status);
                 }
                 break;
 
@@ -457,7 +459,7 @@ class KreditController extends Controller
                 $url = route('pembatalan-kredit.index');
                 $title = 'Perlu Menindaklanjuti Pengajuan!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message, $this->subjek);
                 break;
 
             default:
@@ -495,7 +497,7 @@ class KreditController extends Controller
                 $url = route('pembatalan-kredit.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
 
                 break;
 
@@ -532,7 +534,7 @@ class KreditController extends Controller
                 $url = route('pembatalan-kredit.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'Pembukuan')
@@ -541,7 +543,7 @@ class KreditController extends Controller
                 $url = route('pembatalan-kredit.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek_status);
                 break;
 
             case 'Direktur Operasional':
@@ -562,7 +564,7 @@ class KreditController extends Controller
                 $url = route('pembatalan-kredit.index');
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
-                // $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message);
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
                 break;
 
             default:
