@@ -782,6 +782,7 @@ class ComposerStaticInit769ec09c7d3dcd2363cf9f964b17d3ab
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
         'App\\Services\\EmailServices' => __DIR__ . '/../..' . '/app/Services/EmailServices.php',
+        'App\\Services\\PushNotificationService' => __DIR__ . '/../..' . '/app/Services/PushNotificationService.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Barryvdh\\DomPDF\\Facade\\Pdf' => __DIR__ . '/..' . '/barryvdh/laravel-dompdf/src/Facade/Pdf.php',
         'Barryvdh\\DomPDF\\PDF' => __DIR__ . '/..' . '/barryvdh/laravel-dompdf/src/PDF.php',
