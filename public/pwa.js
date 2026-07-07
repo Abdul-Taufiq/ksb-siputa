@@ -106,7 +106,9 @@ window.addEventListener("appinstalled", () => {
 // =================================
 // =================================
 // {{-- PUSH NOTIF --}}
-const VAPID_PUBLIC_KEY = "{{ config('webpush.vapid.public_key') }}";
+// const VAPID_PUBLIC_KEY = "{{ config('webpush.vapid.public_key') }}"; //ini untuk langsung di footer.blade.php
+
+    const VAPID_PUBLIC_KEY = window.AppConfig.vapidPublicKey;
 
 // otomatis saat load
 // document.addEventListener("DOMContentLoaded", async () => {

@@ -260,6 +260,12 @@
     console.log("Copyright by Abdul Taufiq");
 </script>
 
+<script>
+    window.AppConfig = {
+        vapidPublicKey: @json(config('webpush.vapid.public_key')),
+    };
+</script>
+
 <script src="{{ asset('pwa.js') }}"></script>
 
 @yield('script')
