@@ -22,16 +22,18 @@
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
-        <!-- Messages Dropdown Menu -->
-        <li class="nav-item dropdown">
-            <a class="nav-link" data-toggle="dropdown" href="#">
-                <i class="far fa-comments"></i>
-                {{-- <span class="badge badge-danger navbar-badge">3</span> --}}
+        {{-- istall aplikasi --}}
+        <li class="nav-item" id="installAppContainer" style="display:none;">
+            <a class="nav-link" href="#" id="btnInstallApp" title="Install Aplikasi">
+                <i class="fas fa-mobile-screen-button"></i>
             </a>
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                <h2>Stay Tunned</h2>
-                <p>Sedang Kami kembangkan</p>
-            </div>
+        </li>
+
+        {{-- refresh button --}}
+        <li class="nav-item">
+            <a class="nav-link btn" href="#" id="btnRefresh" title="Refresh">
+                <i class="fa-solid fa-arrows-rotate"></i>
+            </a>
         </li>
 
         <!-- Notifications Dropdown Menu -->
@@ -52,20 +54,23 @@
                 <div class="dropdown-divider"></div>
 
                 @foreach (auth()->user()->unreadNotifications->take(5) as $notifikasi)
-                    <a href="{{ url($notifikasi->data['url'] . '?id=' . $notifikasi->id . '&kode=' . $notifikasi->data['kode_form']) }}"
-                        class="dropdown-item">
-                        <i class="fas fa-envelope mr-2"></i>
-                        {{ $notifikasi->data['title'] }} <br>
-                        <p style="color: rgb(0, 82, 177)">
-                            Kode: {{ $notifikasi->data['kode_form'] }}
-                        </p>
-                        <span class="float-right text-muted text-sm">
-                            {{ $notifikasi->created_at->diffForHumans() }}
-                        </span>
-                    </a>
+                    @if ($notifikasi && isset($notifikasi->data['url']))
+                        <a href="{{ url($notifikasi->data['url'] . '?id=' . $notifikasi->id . '&kode=' . ($notifikasi->data['kode_form'] ?? '')) }}"
+                            class="dropdown-item">
+                            <i class="fas fa-envelope mr-2"></i>
+                            {{ $notifikasi->data['title'] ?? 'No Title' }} <br>
+                            <p style="color: rgb(0, 82, 177)">
+                                Kode: {{ $notifikasi->data['kode_form'] ?? '-' }}
+                            </p>
+                            <span class="float-right text-muted text-sm">
+                                {{ $notifikasi->created_at->diffForHumans() }}
+                            </span>
+                        </a>
+                    @endif
                 @endforeach
 
                 <a href="/pemberitahuan" class="dropdown-item dropdown-footer">See All Notifications</a>
+                <a id="enableNotification" class="dropdown-item dropdown-footer">Turn On Notifications</a>
             </div>
         </li>
 
@@ -291,16 +296,18 @@
 
                 {{-- new websakep --}}
                 @if (auth()->user()->jabatan != 'Sekretariat' && auth()->user()->jabatan != 'Direktur Utama')
-                    <li class="nav-item {{ request()->is('user*') ? 'active menu-is-opening menu-open' : '' }}">
+                    <li
+                        class="nav-item {{ request()->is('user-websakep-*') ? 'active menu-is-opening menu-open' : '' }}">
                         <a href="#"
-                            class="nav-link  {{ request()->is('user*') ? 'active aria-expanded= "true"' : 'collapsed' }}">
+                            class="nav-link  {{ request()->is('user-websakep-*') ? 'active aria-expanded= "true"' : 'collapsed' }}">
                             <i class="fa fa-address-book nav-icon" aria-hidden="true"></i>
                             <p>
                                 WebSakep
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
-                        <ul class="nav nav-treeview  {{ request()->is('user*') ? 'style="display: block;"' : '' }}">
+                        <ul
+                            class="nav nav-treeview  {{ request()->is('user-websakep-*') ? 'style="display: block;"' : '' }}">
 
                             {{-- Websakep --}}
                             <hr style="margin-left: 12px; margin-right: 15px;">

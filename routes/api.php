@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\Perubahan\CifController;
+use App\Models\PushSubscibe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +27,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('perubahan-cif', [CifController::class, 'BelajarApi']);
 
 
- // belajar API basic
+// belajar API basic
 //  public function BelajarApi()
 //  {
 //      $data = Cif::OrderBy('created_at', 'desc')->get();
@@ -35,9 +38,9 @@ Route::get('perubahan-cif', [CifController::class, 'BelajarApi']);
 //      ], 200);
 //  }
 
- // untuk client
- // composer require guzzlehttp/guzzle
- // install guzzle terlebih dahulu
+// untuk client
+// composer require guzzlehttp/guzzle
+// install guzzle terlebih dahulu
 //  public function APIGET()
 //  {
 //      $client = new Client();
@@ -51,3 +54,25 @@ Route::get('perubahan-cif', [CifController::class, 'BelajarApi']);
 //          'data' => $data['data']
 //      ]);
 //  }
+
+Route::post('push-subscribevb', function (Request $request) {
+    $data = $request->json()->all();
+
+    PushSubscibe::updateOrCreate(
+
+        [
+            'user_id' => Auth::user()->id,
+            'endpoint' => $data['endpoint']
+        ],
+
+        [
+            'public_key' => $data['keys']['p256dh'],
+            'auth_token' => $data['keys']['auth']
+        ]
+
+    );
+
+    return response()->json([
+        'success' => true
+    ]);
+});

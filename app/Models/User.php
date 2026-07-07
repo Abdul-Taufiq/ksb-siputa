@@ -18,6 +18,7 @@ class User extends Authenticatable
      */
 
 
+
     protected $fillable = [
         'nama',
         'email',
@@ -50,5 +51,10 @@ class User extends Authenticatable
     public function Cabang()
     {
         return $this->belongsTo(Cabang::class, 'id_cabang', 'id_cabang');
+    }
+
+    public function pushSubscriptions()
+    {
+        return $this->hasMany(PushSubscibe::class);
     }
 }

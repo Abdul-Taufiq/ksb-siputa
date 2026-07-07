@@ -14,19 +14,24 @@ namespace Mews\Captcha;
  * @license http://www.opensource.org/licenses/mit-license.php The MIT License
  */
 
+use Composer\InstalledVersions;
 use Exception;
 use Illuminate\Contracts\Config\Repository;
-use Illuminate\Hashing\BcryptHasher as Hasher;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Hashing\BcryptHasher as Hasher;
 use Illuminate\Http\File;
-use Illuminate\Support\Str;
-use Intervention\Image\Gd\Font;
-use Intervention\Image\Image;
-use Intervention\Image\ImageManager;
+use Illuminate\Http\Response;
 use Illuminate\Session\Store as Session;
-use Illuminate\Support\HtmlString;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\HtmlString;
+use Illuminate\Support\Str;
+use Intervention\Image\Format;
+use Intervention\Image\Gd\Font;
+use Intervention\Image\Geometry\Factories\LineFactory;
+use Intervention\Image\Image;
+use Intervention\Image\ImageManager;
+
 
 /**
  * Class Captcha
@@ -115,6 +120,16 @@ class Captcha
     protected $lines = 3;
 
     /**
+     * @var int
+     */
+    protected $lineWidth = 2;
+
+    /**
+     * @var string
+     */
+    protected $lineColor = 'ff00ff';
+
+    /**
      * @var string
      */
     protected $characters;
@@ -143,6 +158,11 @@ class Captcha
      * @var int
      */
     protected $blur = 0;
+
+    /**
+     * @var string
+     */
+    protected $bgsDirectory;
 
     /**
      * @var bool
@@ -188,7 +208,17 @@ class Captcha
      * @var bool
      */
     protected $encrypt = true;
-    
+
+    /**
+     * @var int
+     */
+    protected $marginTop = 0;
+
+    /**
+     * @var int
+     */
+    private $interventionVersion = null;
+
     /**
      * Constructor
      *
@@ -217,6 +247,8 @@ class Captcha
         $this->str = $str;
         $this->characters = config('captcha.characters', ['1', '2', '3', '4', '6', '7', '8', '9']);
         $this->fontsDirectory = config('captcha.fontsDirectory',  dirname(__DIR__) . '/assets/fonts');
+        $this->bgsDirectory = config('captcha.bgsDirectory',  dirname(__DIR__) . '/assets/backgrounds');
+        $this->interventionVersion = (int)substr(InstalledVersions::getPrettyVersion('intervention/image'), 0, 1);
     }
 
     /**
@@ -242,7 +274,7 @@ class Captcha
      */
     public function create(string $config = 'default', bool $api = false)
     {
-        $this->backgrounds = $this->files->files(__DIR__ . '/../assets/backgrounds');
+        $this->backgrounds = $this->files->files($this->bgsDirectory);
         $this->fonts = $this->files->files($this->fontsDirectory);
 
         if (version_compare(app()->version(), '5.5.0', '>=')) {
@@ -259,18 +291,24 @@ class Captcha
         $generator = $this->generate();
         $this->text = $generator['value'];
 
-        $this->canvas = $this->imageManager->canvas(
-            $this->width,
-            $this->height,
-            $this->bgColor
-        );
+        $this->canvas =
+            $this->interventionVersion === 3
+                ? $this->imageManager->create($this->width, $this->height)->fill($this->bgColor)
+                : $this->imageManager->createImage($this->width, $this->height)->fill($this->bgColor);
 
         if ($this->bgImage) {
-            $this->image = $this->imageManager->make($this->background())->resize(
+            $image = $this->interventionVersion === 3
+                ? $this->imageManager->read($this->background())
+                : $this->imageManager->decodePath($this->background());
+
+            $this->image = $image->resize(
                 $this->width,
                 $this->height
             );
-            $this->canvas->insert($this->image);
+
+            $this->interventionVersion === 3
+                ? $this->canvas->place($this->image)
+                : $this->canvas->insert($this->image);;
         } else {
             $this->image = $this->canvas;
         }
@@ -293,15 +331,20 @@ class Captcha
             $this->image->blur($this->blur);
         }
 
-        if ($api) {
-            Cache::put($this->get_cache_key($generator['key']), $generator['value'], $this->expire);
-        }
+        Cache::put($this->get_cache_key($generator['key']), $generator['value'], $this->expire);
+
+        $responseImg = $this->interventionVersion === 3
+            ? $this->image->toJpg()
+            : $this->image->encodeUsingFormat(Format::JPEG);
 
         return $api ? [
             'sensitive' => $generator['sensitive'],
             'key' => $generator['key'],
-            'img' => $this->image->encode('data-url')->encoded
-        ] : $this->image->response('png', $this->quality);
+            'img' => $responseImg->toDataUri(),
+        ] : new Response($responseImg, 200, [
+            'Content-Type' => 'image/jpeg',
+            'Content-Disposition' => 'inline; filename="image.jpg"',
+        ]);
     }
 
     /**
@@ -342,7 +385,7 @@ class Captcha
 
         $hash = $this->hasher->make($key);
         if($this->encrypt) $hash = Crypt::encrypt($hash);
-        
+
         $this->session->put('captcha', [
             'sensitive' => $this->sensitive,
             'key' => $hash,
@@ -364,6 +407,9 @@ class Captcha
     protected function text(): void
     {
         $marginTop = $this->image->height() / $this->length;
+        if ($this->marginTop !== 0) {
+            $marginTop = $this->marginTop;
+        }
 
         $text = $this->text;
         if (is_string($text)) {
@@ -373,14 +419,18 @@ class Captcha
         foreach ($text as $key => $char) {
             $marginLeft = $this->textLeftPadding + ($key * ($this->image->width() - $this->textLeftPadding) / $this->length);
 
-            $this->image->text($char, $marginLeft, $marginTop, function ($font) {
-                /* @var Font $font */
+            $this->image->text($char, (int) $marginLeft, (int) $marginTop, function ($font) {
+                /* @var \Intervention\Image\Typography\FontFactory $font */
                 $font->file($this->font());
                 $font->size($this->fontSize());
                 $font->color($this->fontColor());
-                $font->align('left');
-                $font->valign('top');
                 $font->angle($this->angle());
+                if ($this->interventionVersion === 3) {
+                    $font->align('left');
+                    $font->valign('top');
+                } else {
+                    $font->align('left', 'top');
+                }
             });
         }
     }
@@ -439,16 +489,12 @@ class Captcha
     protected function lines()
     {
         for ($i = 0; $i <= $this->lines; $i++) {
-            $this->image->line(
-                rand(0, $this->image->width()) + $i * rand(0, $this->image->height()),
-                rand(0, $this->image->height()),
-                rand(0, $this->image->width()),
-                rand(0, $this->image->height()),
-                function ($draw) {
-                    /* @var Font $draw */
-                    $draw->color($this->fontColor());
-                }
-            );
+            $this->image->drawLine(function (LineFactory $line) use ($i) {
+                $line->from(rand(0, $this->image->width()) + $i * rand(0, $this->image->height()) , rand(0, $this->image->height()));
+                $line->to( rand(0, $this->image->width()), rand(0, $this->image->height()));
+                $line->color($this->lineColor); // color of line
+                $line->width($this->lineWidth); // line width in pixels
+            });
         }
 
         return $this->image;
@@ -470,6 +516,11 @@ class Captcha
         $sensitive = $this->session->get('captcha.sensitive');
         $encrypt = $this->session->get('captcha.encrypt');
 
+        if (!Cache::pull($this->get_cache_key($key))) {
+            $this->session->remove('captcha');
+            return false;
+        }
+
         if (!$sensitive) {
             $value = $this->str->lower($value);
         }
@@ -483,7 +534,7 @@ class Captcha
 
         return $check;
     }
-    
+
     /**
      * Returns the md5 short version of the key for cache
      *
@@ -492,7 +543,7 @@ class Captcha
      */
     protected function get_cache_key($key) {
         return 'captcha_' . md5($key);
-    }    
+    }
 
     /**
      * Captcha check

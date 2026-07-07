@@ -12,9 +12,6 @@ class DatabaseNotification extends Model
      *
      * @var string
      */
-
-    protected $connection = 'ksb_sdm';
-
     protected $keyType = 'string';
 
     /**
@@ -36,7 +33,7 @@ class DatabaseNotification extends Model
      *
      * @var array
      */
-    protected $guarded = ['id'];
+    protected $guarded = [];
 
     /**
      * The attributes that should be cast to native types.
@@ -77,7 +74,7 @@ class DatabaseNotification extends Model
      */
     public function markAsUnread()
     {
-        if (!is_null($this->read_at)) {
+        if (! is_null($this->read_at)) {
             $this->forceFill(['read_at' => null])->save();
         }
     }

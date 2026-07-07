@@ -105,16 +105,27 @@
                         url: '{{ route('logout') }}',
                         type: "POST",
                         data: {
-                            '_token': '{{ csrf_token() }}'
+                            '_token': '{{ csrf_token() }}',
+                            'device_id': getDeviceId()
                         },
                         success: function() {
-                            window.location.href = "/login";
+                            window.location.href = "/";
                         }
                     });
                 }
             });
         });
     });
+
+    function getDeviceId() {
+        let deviceId = localStorage.getItem("device_id");
+        if (!deviceId) {
+            deviceId = crypto.randomUUID();
+            localStorage.setItem("device_id", deviceId);
+        }
+
+        return deviceId;
+    }
 </script>
 
 {{-- Sweet Alert Pesan Berhasil --}}
@@ -155,69 +166,6 @@
 @endif
 
 
-{{-- Push Notifikasi --}}
-{{-- <script>
-    let iconPath = '{{ asset('img/icon_logo.png') }}'; //lokasi ikon
-
-    // Periksa apakah browser mendukung pemberitahuan
-    if ('Notification' in window && navigator.serviceWorker) {
-        // Periksa apakah izin pemberitahuan sudah diberikan
-        if (Notification.permission === 'granted') {
-            // Jika sudah diberikan, buat pemberitahuan
-            // createNotification();
-        } else if (Notification.permission !== 'denied') {
-            // Jika belum diberikan atau ditolak, minta izin
-            Notification.requestPermission().then(function(permission) {
-                if (permission === 'granted') {
-                    // Jika izin diberikan, buat pemberitahuan
-                    // createNotification();
-                } else {
-                    alert('Nyalakan Pemberitahuan untuk fitur terbaru! :)');
-                }
-            });
-        }
-    } else {
-        alert('Pemberitahuan tidak didukung di browser Anda!');
-    }
-
-    // Fungsi untuk membuat pemberitahuan
-    function createNotification() {
-        Push.create("Hello Shailesh!", { //header
-                body: "Welcome to the Dashboard.", //pesan kesalahan
-                icon: iconPath, //ikon
-                timeout: 4000, //digunakan untuk auto close notifikasi
-                requireInteraction: true, // berfungsi untuk menjadi notif permanen kecuali diklose & tdk perlu timeout:
-                onClick: function() {
-                    window.focus();
-                    window.location = "http://www.google.com";
-                }
-            })
-            .catch(e => {
-                alert('Nyalakan Pemberitahuan untuk fitur terbaru! :)');
-            }); //penanganan jika akses pemberitahuan mati
-    }
-</script> --}}
-
-
-{{-- @if (session('notif'))
-    <script>
-        Push.create("Hello Shailesh!", { //header
-                body: "Welcome to the Dashboard.", //pesan kesalahan
-                icon: iconPath, //ikon
-                timeout: 4000, //digunakan untuk auto close notifikasi
-                requireInteraction: true, // berfungsi untuk menjadi notif permanen kecuali diklose & tdk perlu timeout:
-                onClick: function() {
-                    window.focus();
-                    window.location = "http://www.google.com";
-                }
-            })
-            .catch(e => {
-                alert('Nyalakan Pemberitahuan untuk fitur terbaru! :)');
-            }); //penanganan jika akses pemberitahuan mati
-    </script>
-@endif --}}
-
-
 {{-- Push Notifikasi with session --}}
 @if (session('chat'))
     <script>
@@ -231,98 +179,90 @@
     </script>
 @endif
 
+{{-- loading screen --}}
+<script>
+    // {{-- loading screen --}}
+
+    document.addEventListener("DOMContentLoaded", function() {
+        let loadingScreen = document.getElementById("loading-screen");
+
+        // btn refresh
+        document.getElementById("btnRefresh").addEventListener("click", function(e) {
+            e.preventDefault();
+            loadingScreen.style.display = "flex";
+            setTimeout(() => {
+                location.reload();
+            }, 100);
+        });
+
+        // ✅ Munculkan loading saat halaman berpindah atau direfresh
+        window.addEventListener("beforeunload", function() {
+            loadingScreen.style.display = "block";
+        });
+
+        document.addEventListener("click", function(e) {
+            const link = e.target.closest("a");
+            if (!link) return;
+            const href = link.getAttribute("href");
+            if (!href || href === "#" || href.startsWith("javascript:")) return;
+            // Bootstrap
+            if (link.dataset.bsToggle) return;
+            // AdminLTE
+            if (link.dataset.widget) return;
+            // Modal
+            if (link.dataset.bsToggle === "modal") return;
+            if (link.target === "_blank") return;
+            if (link.hasAttribute("download")) return;
+            loadingScreen.style.display = "flex";
+        });
+
+        // ✅ Cegah loading muncul jika klik tombol modal atau event lain di halaman
+        document.addEventListener("click", function(event) {
+            let target = event.target.closest(
+                "[data-toggle='modal'], [data-bs-toggle='modal']"
+            );
+            if (target) {
+                event.stopPropagation();
+            }
+        });
+
+        // ✅ Munculkan loading saat submit form (POST request)
+        document.addEventListener("submit", function() {
+            loadingScreen.style.display = "block";
+        });
+
+        // ✅ Livewire Hook untuk proses request
+        document.addEventListener("livewire:load", function() {
+            Livewire.hook("message.sent", () => {
+                loadingScreen.style.display = "block";
+            });
+            Livewire.hook("message.received", () => {
+                loadingScreen.style.display = "none";
+            });
+        });
+
+        // ✅ Hilangkan loading jika halaman selesai dimuat
+        window.onload = function() {
+            loadingScreen.style.display = "none";
+        };
+
+        // ✅ Cegah loading screen pada navigasi back/forward cache
+        window.addEventListener("pageshow", function(event) {
+            if (event.persisted) {
+                // Halaman dimuat dari cache
+                loadingScreen.style.display = "none";
+            }
+        });
+    });
+</script>
 
 <script>
     console.log("Copyright by Abdul Taufiq");
 </script>
 
+<script src="{{ asset('pwa.js') }}"></script>
 
 @yield('script')
-
-<script>
-    if ('serviceWorker' in navigator) {
-
-        window.addEventListener('load', async () => {
-            try {
-                // Register Service Worker
-                const reg = await navigator.serviceWorker.register('/service-worker.js');
-                console.log('Service Worker terdaftar!', reg);
-                // Tunggu aktif
-                await navigator.serviceWorker.ready;
-
-                // Support notification
-                if ('Notification' in window) {
-                    // Request permission jika belum pernah
-                    if (Notification.permission === 'default') {
-                        const permission = await Notification.requestPermission();
-
-                        if (permission === 'granted') {
-                            console.log('Izin notifikasi diberikan');
-
-                            // =========================
-                            // AMBIL SUBSCRIPTION
-                            // =========================
-
-                            let subscription = await reg.pushManager.getSubscription();
-
-                            // Jika belum subscribe
-                            if (!subscription) {
-
-                                subscription = await reg.pushManager.subscribe({
-                                    userVisibleOnly: true,
-                                    userVisibleOnly: true,
-                                    applicationServerKey: vapidPublicKey
-                                });
-                            }
-
-                            console.log('Push Subscription:', subscription);
-
-                            console.log(
-                                'Subscription ID ditemukan:',
-                                subscription.endpoint
-                            );
-
-                            // Test notification
-                            reg.showNotification('Halo dari Ki-Kusumo!', {
-                                body: 'Notifikasi berhasil diaktifkan.',
-                                icon: '/img/icon-192.png'
-                            });
-
-                        } else {
-
-                            console.log('Izin notifikasi ditolak');
-
-                        }
-                    }
-                }
-
-            } catch (err) {
-
-                console.log('Gagal daftar Service Worker', err);
-
-            }
-        });
-    }
-
-    // =========================
-    // CONVERT VAPID KEY
-    // =========================
-
-    function urlBase64ToUint8Array(base64String) {
-
-        const padding = '='.repeat((4 - base64String.length % 4) % 4);
-
-        const base64 = (base64String + padding)
-            .replace(/\-/g, '+')
-            .replace(/_/g, '/');
-
-        const rawData = window.atob(base64);
-
-        return Uint8Array.from([...rawData].map(char =>
-            char.charCodeAt(0)
-        ));
-    }
-</script>
 
 </body>
 

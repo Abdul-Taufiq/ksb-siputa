@@ -41,7 +41,13 @@ class KreditController extends Controller
 
         // pemberitahuan sudah dibaca
         if ($kode != null) {
-            auth()->user()->unreadNotifications->where('id', request('id'))->first()?->markAsRead();
+            $notifikasi = auth()->user()->unreadNotifications
+                ->filter(function ($item) use ($kode) {
+                    return $item->id === request('id') || $item->data['kode_form'] === $kode;
+                })
+                ->first();
+
+            $notifikasi?->markAsRead();
         }
 
 
@@ -420,7 +426,7 @@ class KreditController extends Controller
                 $url = route('perubahan-kredit.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek_status);
+                // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek_status);
                 break;
 
             case 'Direktur Operasional':

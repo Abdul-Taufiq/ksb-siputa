@@ -40,7 +40,13 @@ class UserPController extends Controller
 
         // pemberitahuan sudah dibaca
         if ($kode != null) {
-            auth()->user()->unreadNotifications->where('id', request('id'))->first()?->markAsRead();
+            $notifikasi = auth()->user()->unreadNotifications
+                ->filter(function ($item) use ($kode) {
+                    return $item->id === request('id') || $item->data['kode_form'] === $kode;
+                })
+                ->first();
+
+            $notifikasi?->markAsRead();
         }
 
         if (request()->ajax()) {
@@ -197,7 +203,7 @@ class UserPController extends Controller
                             if ($data->status_sdm != null) {
                                 $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
                             } else {
-                                $button .= '<a href="/user-email-pengajuan/' . $data->id_msop . '/edit" data-toggle="tooltip" 
+                                $button .= '<a href="/mso-pengajuan/' . $data->id_msop . '/edit" data-toggle="tooltip" 
                                             data-original-title="Edit" class="edit btn btn-warning btn-sm edit-post">
                                             <i class="fa fa-edit"></i></a>';
                                 $button .= '&nbsp;';
@@ -297,7 +303,7 @@ class UserPController extends Controller
             ]);
 
             $userPenerima = User::where('jabatan', 'SDM')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->get();
-            $url = route('user-email-pengajuan.index');
+            $url = route('mso-pengajuan.index');
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
             $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message, $this->subjek);
@@ -313,14 +319,14 @@ class UserPController extends Controller
             ]);
 
             $userPenerima = User::where('jabatan', 'Direktur Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
-            $url = route('user-email-pengajuan.index');
+            $url = route('mso-pengajuan.index');
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
             $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message, $this->subjek);
         } else {
             $userPenerima = User::where('id_cabang', auth()->user()->id_cabang)
                 ->where('jabatan', 'Pimpinan Cabang')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
-            $url = route('user-email-pengajuan.index');
+            $url = route('mso-pengajuan.index');
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
             $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message, $this->subjek);
@@ -495,7 +501,7 @@ class UserPController extends Controller
         }
 
         // Log Activity
-        $LogAksi = '(cs) Approve Pengajuan Email';
+        $LogAksi = '(cs) Approve Pengajuan User MSO';
         $this->LogActivity($data, $LogAksi);
 
         return redirect('mso-pengajuan')->with('AlertSuccess', "Pengajuan Berhasil Dilakukan Perubahan Status!");

@@ -63,6 +63,23 @@
     <link rel="shortcut icon" href="{{ asset('img/icon_logo.png') }}">
     <link rel="icon" href="{{ asset('img/icon_logo.png') }}">
 
+    {{-- PWA --}}
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0052B1">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Si-Puta">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="apple-touch-icon" sizes="180x180" href="/pwa/icon-192.png">
+
+    {{-- style btn pwa --}}
+    <style>
+        #installAppContainer {
+            transition: .3s;
+        }
+    </style>
+
+
 </head>
 
 <style>

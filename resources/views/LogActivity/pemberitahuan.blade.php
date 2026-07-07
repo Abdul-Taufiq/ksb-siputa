@@ -41,28 +41,30 @@
                             </div>
                             <div class="card-body">
                                 @foreach (auth()->user()->notifications()->paginate(10) as $notifikasi)
-                                    <a href="{{ url($notifikasi->data['url'] . '?id=' . $notifikasi->id . '&kode=' . $notifikasi->data['kode_form']) }}"
-                                        class="dropdown-item">
-                                        @if ($notifikasi->read_at != null)
-                                            <i class="fa-solid fa-envelope-open mr-2"></i>
-                                            {{ $notifikasi->data['title'] }} <br>
-                                            <p style="color: rgb(81, 82, 83)">
-                                                Kode: {{ $notifikasi->data['kode_form'] }} <br>
-                                                Pesan: {{ $notifikasi->data['message'] }}
-                                            </p>
-                                        @else
-                                            <i class="fas fa-envelope mr-2"></i>
-                                            {{ $notifikasi->data['title'] }} <br>
-                                            <p style="color: rgb(0, 82, 177)">
-                                                Kode: {{ $notifikasi->data['kode_form'] }} <br>
-                                                Pesan: {{ $notifikasi->data['message'] }}
-                                            </p>
-                                        @endif
-                                        <span class="float-right text-muted text-sm">
-                                            {{ $notifikasi->created_at->diffForHumans() }}
-                                        </span>
-                                    </a>
-                                    <hr>
+                                    @if ($notifikasi && isset($notifikasi->data['url']))
+                                        <a href="{{ url($notifikasi->data['url'] . '?id=' . $notifikasi->id . '&kode=' . $notifikasi->data['kode_form']) }}"
+                                            class="dropdown-item">
+                                            @if ($notifikasi->read_at != null)
+                                                <i class="fa-solid fa-envelope-open mr-2"></i>
+                                                {{ $notifikasi->data['title'] }} <br>
+                                                <p style="color: rgb(81, 82, 83)">
+                                                    Kode: {{ $notifikasi->data['kode_form'] }} <br>
+                                                    Pesan: {{ $notifikasi->data['message'] }}
+                                                </p>
+                                            @else
+                                                <i class="fas fa-envelope mr-2"></i>
+                                                {{ $notifikasi->data['title'] }} <br>
+                                                <p style="color: rgb(0, 82, 177)">
+                                                    Kode: {{ $notifikasi->data['kode_form'] }} <br>
+                                                    Pesan: {{ $notifikasi->data['message'] }}
+                                                </p>
+                                            @endif
+                                            <span class="float-right text-muted text-sm">
+                                                {{ $notifikasi->created_at->diffForHumans() }}
+                                            </span>
+                                        </a>
+                                        <hr>
+                                    @endif
                                 @endforeach
                             </div>
                             <div class="card-footer">

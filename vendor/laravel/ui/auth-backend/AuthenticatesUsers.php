@@ -2,11 +2,10 @@
 
 namespace Illuminate\Foundation\Auth;
 
-use App\Models\User;
+use App\Models\PushSubscibe;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Lang;
 use Illuminate\Validation\ValidationException;
 
 trait AuthenticatesUsers
@@ -35,6 +34,9 @@ trait AuthenticatesUsers
     {
         $this->validateLogin($request);
 
+        // If the class is using the ThrottlesLogins trait, we can automatically throttle
+        // the login attempts for this application. We'll key this by the username and
+        // the IP address of the client making these requests into this application.
         if (
             method_exists($this, 'hasTooManyLoginAttempts') &&
             $this->hasTooManyLoginAttempts($request)
@@ -44,25 +46,20 @@ trait AuthenticatesUsers
             return $this->sendLockoutResponse($request);
         }
 
-        //Wajib
-        $cekUser = User::where('email', $request->email)->first();
-        if ($cekUser != null) {
-            if ($cekUser->ksb_ccs == 'Ya' && $cekUser->status == 'Aktif') {
-                if ($this->attemptLogin($request)) {
-                    if ($request->hasSession()) {
-                        $request->session()->put('auth.password_confirmed_at', time());
-                    }
-
-                    return $this->sendLoginResponse($request);
-                }
-                $this->incrementLoginAttempts($request);
-            } else {
-                return back()->with('loginError', 'User yang anda masukan tidak terdaftar untuk membuka aplikasi ini!');
+        if ($this->attemptLogin($request)) {
+            if ($request->hasSession()) {
+                $request->session()->put('auth.password_confirmed_at', time());
             }
-        } else {
-            return back()->with('loginError', 'User yang anda masukan salah!');
+
+            return $this->sendLoginResponse($request);
         }
-        return back()->with('loginError', 'User yang anda masukan salah!');
+
+        // If the login attempt was unsuccessful we will increment the number of attempts
+        // to login and redirect the user back to the login form. Of course, when this
+        // user surpasses their maximum number of attempts they will get locked out.
+        $this->incrementLoginAttempts($request);
+
+        return $this->sendFailedLoginResponse($request);
     }
 
     /**
@@ -78,10 +75,6 @@ trait AuthenticatesUsers
         $request->validate([
             $this->username() => 'required|string',
             'password' => 'required|string',
-            'captcha' => 'required|captcha',
-        ], [
-            // PESAN ERROR
-            'captcha.captcha' => 'Captcha Yang Anda Masukan Salah!',
         ]);
     }
 
@@ -153,11 +146,9 @@ trait AuthenticatesUsers
      */
     protected function sendFailedLoginResponse(Request $request)
     {
-        return redirect()->back()
-            ->withInput($request->only($this->username(), 'remember'))
-            ->withErrors([
-                $this->username() => Lang::get('auth.failed'),
-            ]);
+        throw ValidationException::withMessages([
+            $this->username() => [trans('auth.failed')],
+        ]);
     }
 
     /**
@@ -178,6 +169,15 @@ trait AuthenticatesUsers
      */
     public function logout(Request $request)
     {
+        $userId = auth()->id();
+
+        PushSubscibe::where('user_id', $userId)
+            ->where('device_id', $request->device_id)
+            ->update([
+                'is_active' => false,
+                'unsubscribed_at' => now(),
+            ]);
+
         $this->guard()->logout();
 
         $request->session()->invalidate();
@@ -190,7 +190,7 @@ trait AuthenticatesUsers
 
         return $request->wantsJson()
             ? new JsonResponse([], 204)
-            : redirect('/login');
+            : redirect('/');
     }
 
     /**

@@ -22,6 +22,15 @@
 </head>
 
 <body class="hold-transition login-page">
+
+    <div id="loading-screen"
+        style="display: none; justify-content: center; align-items: center; position: fixed; width: 100%; height: 100%; background: #000000bd;z-index: 9999; top: 0; left: 0;">
+        <div
+            style="display: flex; margin: auto; width: 100%; height: 100%; justify-content: center; align-items: center;">
+            <img style="width: 150px;" src="{{ asset('img/Loading Screen 2.gif') }}" alt="Loading...">
+        </div>
+    </div>
+
     <div class="login-box">
         <!-- /.login-logo -->
         <div class="card card-outline card-primary">
@@ -108,6 +117,8 @@
                 <p class="mb-1">
                     <a href="{{ route('forget.password.get') }}">Lupa Password?</a>
                 </p>
+
+                {{-- <button class="btn btn-primary" onclick="requestPermission()">Request Notification Permission</button> --}}
             </div>
             <div class="card card-outline card-danger"></div>
             <!-- /.card-body -->
@@ -115,6 +126,9 @@
         <!-- /.card -->
     </div>
     <!-- /.login-box -->
+
+    <img class="gif" src="{{ asset('img/missing-page.gif') }}"
+        style="visibility: hidden; position: relative; width: 0px; height: 0px; top: 0px; left: 0px;">
 
     <!-- jQuery -->
     <script src="{{ asset('template/plugins/jquery/jquery.min.js') }}"></script>
@@ -178,6 +192,56 @@
         </script>
     @endif
 
+    {{-- loading --}}
+    <script>
+        // {{-- loading screen --}}
+        document.addEventListener("DOMContentLoaded", function() {
+            let loadingScreen = document.getElementById("loading-screen");
+
+            // ✅ Munculkan loading saat halaman berpindah atau direfresh
+            window.addEventListener("beforeunload", function() {
+                loadingScreen.style.display = "block";
+            });
+
+            // ✅ Cegah loading muncul jika klik tombol modal atau event lain di halaman
+            document.addEventListener("click", function(event) {
+                let target = event.target.closest(
+                    "[data-toggle='modal'], [data-bs-toggle='modal']"
+                );
+                if (target) {
+                    event.stopPropagation();
+                }
+            });
+
+            // ✅ Munculkan loading saat submit form (POST request)
+            document.addEventListener("submit", function() {
+                loadingScreen.style.display = "block";
+            });
+
+            // ✅ Livewire Hook untuk proses request
+            document.addEventListener("livewire:load", function() {
+                Livewire.hook("message.sent", () => {
+                    loadingScreen.style.display = "block";
+                });
+                Livewire.hook("message.received", () => {
+                    loadingScreen.style.display = "none";
+                });
+            });
+
+            // ✅ Hilangkan loading jika halaman selesai dimuat
+            window.onload = function() {
+                loadingScreen.style.display = "none";
+            };
+
+            // ✅ Cegah loading screen pada navigasi back/forward cache
+            window.addEventListener("pageshow", function(event) {
+                if (event.persisted) {
+                    // Halaman dimuat dari cache
+                    loadingScreen.style.display = "none";
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -214,7 +214,13 @@ class USiaditController extends Controller
 
         // pemberitahuan sudah dibaca
         if ($kode != null) {
-            auth()->user()->unreadNotifications->where('id', request('id'))->first()?->markAsRead();
+            $notifikasi = auth()->user()->unreadNotifications
+                ->filter(function ($item) use ($kode) {
+                    return $item->id === request('id') || $item->data['kode_form'] === $kode;
+                })
+                ->first();
+
+            $notifikasi?->markAsRead();
         }
 
 
@@ -315,8 +321,8 @@ class USiaditController extends Controller
             $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message, $this->subjek);
         } else {
             $userPenerima = User::where('id_cabang', auth()->user()->id_cabang)
-                ->where('jabatan', 'Pimpinan Cabang')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
-            $url = route('user-email-pengajuan.index');
+                ->where('jabatan', 'Pimpinan Cabang')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
+            $url = route('user-siadit.index');
             $title = 'Terdapat Form Pengajuan Baru!';
             $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
             $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message, $this->subjek);
@@ -480,12 +486,10 @@ class USiaditController extends Controller
                 $userPenerima = User::where('id_cabang', $data->id_cabang)
                     ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
                 // pemberitahuan database
-                $url = route('user-siadit.index');
-                $title = 'Terdapat Form Pengajuan Baru!';
-                $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
-                if ($userPenerima) {
-                    $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
-                }
+                $url = route('siadit-perubahan.index');
+                $title = 'Pengajuan Telah Selesai!';
+                $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Approved!';
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
 
                 // send email untuk user satunya
                 $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')

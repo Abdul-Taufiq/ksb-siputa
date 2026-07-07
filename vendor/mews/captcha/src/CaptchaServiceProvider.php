@@ -3,8 +3,11 @@
 namespace Mews\Captcha;
 
 use Illuminate\Routing\Router;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Factory;
+use Intervention\Image\ImageManager;
+use Illuminate\Support\ServiceProvider;
+use Intervention\Image\Drivers\Gd\Driver as GdDriver;
+use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
 
 /**
  * Class CaptchaServiceProvider
@@ -25,20 +28,22 @@ class CaptchaServiceProvider extends ServiceProvider
         ], 'config');
 
         // HTTP routing
-        if (strpos($this->app->version(), 'Lumen') !== false) {
-            /* @var Router $router */
-            $router = $this->app;
-            $router->get('captcha[/api/{config}]', 'Mews\Captcha\LumenCaptchaController@getCaptchaApi');
-            $router->get('captcha[/{config}]', 'Mews\Captcha\LumenCaptchaController@getCaptcha');
-        } else {
-            /* @var Router $router */
-            $router = $this->app['router'];
-            if ((double)$this->app->version() >= 5.2) {
-                $router->get('captcha/api/{config?}', '\Mews\Captcha\CaptchaController@getCaptchaApi')->middleware('web');
-                $router->get('captcha/{config?}', '\Mews\Captcha\CaptchaController@getCaptcha')->middleware('web');
+        if(!config('captcha.disable')){
+            if (strpos($this->app->version(), 'Lumen') !== false) {
+                /* @var Router $router */
+                $router = $this->app;
+                $router->get('captcha[/api/{config}]', 'Mews\Captcha\LumenCaptchaController@getCaptchaApi');
+                $router->get('captcha[/{config}]', 'Mews\Captcha\LumenCaptchaController@getCaptcha');
             } else {
-                $router->get('captcha/api/{config?}', '\Mews\Captcha\CaptchaController@getCaptchaApi');
-                $router->get('captcha/{config?}', '\Mews\Captcha\CaptchaController@getCaptcha');
+                /* @var Router $router */
+                $router = $this->app['router'];
+                if ((double)$this->app->version() >= 5.2) {
+                    $router->get('captcha/api/{config?}', '\Mews\Captcha\CaptchaController@getCaptchaApi')->middleware('web');
+                    $router->get('captcha/{config?}', '\Mews\Captcha\CaptchaController@getCaptcha')->middleware('web');
+                } else {
+                    $router->get('captcha/api/{config?}', '\Mews\Captcha\CaptchaController@getCaptchaApi');
+                    $router->get('captcha/{config?}', '\Mews\Captcha\CaptchaController@getCaptcha');
+                }
             }
         }
 
@@ -47,12 +52,12 @@ class CaptchaServiceProvider extends ServiceProvider
 
         // Validator extensions
         $validator->extend('captcha', function ($attribute, $value, $parameters) {
-            return captcha_check($value);
+            return config('captcha.disable') || ($value && captcha_check($value));
         });
 
         // Validator extensions
         $validator->extend('captcha_api', function ($attribute, $value, $parameters) {
-            return captcha_api_check($value, $parameters[0], $parameters[1] ?? 'default');
+            return config('captcha.disable') || ($value && captcha_api_check($value, $parameters[0], $parameters[1] ?? 'default'));
         });
     }
 
@@ -68,6 +73,16 @@ class CaptchaServiceProvider extends ServiceProvider
             __DIR__ . '/../config/captcha.php',
             'captcha'
         );
+
+         // Bind the ImageManager with an explicit driver
+         if (!$this->app->bound('Intervention\Image\ImageManager')) {
+            $this->app->singleton('Intervention\Image\ImageManager', function ($app) {
+                // Determine which driver to use, defaulting to 'gd'
+                $driver = config('captcha.driver', 'gd') === 'imagick' ? new ImagickDriver() : new GdDriver();
+
+                return new ImageManager($driver);
+            });
+        }
 
         // Bind captcha
         $this->app->bind('captcha', function ($app) {

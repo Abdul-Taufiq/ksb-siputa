@@ -42,7 +42,13 @@ class BantuanTSIController extends Controller
 
         // pemberitahuan sudah dibaca
         if ($kode != null) {
-            auth()->user()->unreadNotifications->where('id', request('id'))->first()?->markAsRead();
+            $notifikasi = auth()->user()->unreadNotifications
+                ->filter(function ($item) use ($kode) {
+                    return $item->id === request('id') || $item->data['kode_form'] === $kode;
+                })
+                ->first();
+
+            $notifikasi?->markAsRead();
         }
 
         if (request()->ajax()) {
@@ -336,7 +342,14 @@ class BantuanTSIController extends Controller
 
     public function show(BantuanTSI $bantuanTSI)
     {
-        auth()->user()->unreadNotifications->where('id', request('id'))->first()?->markAsRead();
+        $notifikasi = auth()->user()->unreadNotifications
+            ->filter(function ($item) use ($kode) {
+                return $item->id === request('id') || $item->data['kode_form'] === $kode;
+            })
+            ->first();
+
+        $notifikasi?->markAsRead();
+
         return view('Page.BantuanTSI.show', compact('bantuanTSI'));
     }
 

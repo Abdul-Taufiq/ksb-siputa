@@ -14,6 +14,9 @@
         }
     </style>
 
+    <img class="gif" src="{{ asset('img/missing-page.gif') }}"
+        style="visibility: hidden; position: relative; width: 0px; height: 0px; top: 0px; left: 0px;">
+
     <div class="content-wrapper">
         <div class="content-header">
             <div class="container-fluid">

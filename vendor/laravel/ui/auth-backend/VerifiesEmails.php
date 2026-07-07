@@ -11,11 +11,6 @@ trait VerifiesEmails
 {
     use RedirectsUsers;
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
      * Show the email verification notice.
      *
@@ -26,9 +21,7 @@ trait VerifiesEmails
     {
         return $request->user()->hasVerifiedEmail()
                         ? redirect($this->redirectPath())
-                        : view('register.verify', [
-                            "tittle" => "Verifikasi Registrasi"
-                        ]);
+                        : view('auth.verify');
     }
 
     /**

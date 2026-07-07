@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\{Artisan, Route, Auth};
 use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\{LoginController, UserController, HelperController, RegisterController, HomeController, LogActivityController, LogTrackingController, PLainnyaController, SharebiayaController};
+use App\Http\Controllers\{LoginController, UserController, HelperController, RegisterController, HomeController, LogActivityController, LogTrackingController, PLainnyaController, PushSubscriptionController, SharebiayaController};
 use App\Http\Controllers\Ecoll\{EcollPController, EcollRController};
 use App\Http\Controllers\Inventaris\InventarisController as InventarisPengajuanController;
 use App\Http\Controllers\Inventaris\InventarisPenggantiController;
@@ -19,9 +19,14 @@ use App\Http\Controllers\TSI\BarangController;
 use App\Http\Controllers\TSI\PemeliharaanController;
 use App\Http\Controllers\TSI\PemeliharaanHistoryController;
 use App\Http\Controllers\User\{EmailRController, EmailPController};
+use App\Services\PushNotificationService;
 
 Route::get('/', function () {
-    return view('login.login');
+    if (auth()->check()) {
+        return redirect()->route('home');
+    } else {
+        return view('login.login');
+    }
 });
 
 Route::get('/clear-cache', function () {
@@ -253,7 +258,82 @@ Route::group(['middleware' => ['permission', 'CekMaintenance']], function () {
         Route::patch('/pengajuan-lainnya-reject/{idEncrypt}', [PLainnyaController::class, 'ResponReject']);
         Route::get('/pengajuan-cetak/{idEncrypt}', [PLainnyaController::class, 'Print']);
         Route::get('get-barang/{Id}', [InventarisPengajuanController::class, 'getBarang']);
+
+        Route::post('/push-subscribe', [PushSubscriptionController::class, 'store'])->name('push.subscribe');
+
+        Route::get('/test-push', function (PushNotificationService $push) {
+            $push->send(
+                auth()->user(),
+                [
+                    'title' => 'Testing Push 🔥',
+                    'body' => 'Halo Abdul, Push Notification berhasil!',
+                    'url' => route('home'),
+                ]
+            );
+
+            return 'Push berhasil dikirim.';
+        });
     });
 
     Route::get('notif', [HomeController::class, 'Notif'])->name('notif');
+
+    // PWA
+    Route::get('/manifest.json', function () {
+        return response()->json([
+            "name" => "Si-Puta",
+            "short_name" => "Si-Puta",
+            "start_url" => "/",
+            "scope" => "/",
+            "display" => "standalone",
+            "orientation" => "portrait",
+            "background_color" => "#ffffff",
+            "theme_color" => "#0052B1",
+            "description" => "Sistem Informasi Pengajuan User dan Transaksi",
+            "icons" => [
+                [
+                    "src" => "/pwa/icon-72.png",
+                    "sizes" => "72x72",
+                    "type" => "image/png"
+                ],
+                [
+                    "src" => "/pwa/icon-96.png",
+                    "sizes" => "96x96",
+                    "type" => "image/png"
+                ],
+                [
+                    "src" => "/pwa/icon-128.png",
+                    "sizes" => "128x128",
+                    "type" => "image/png"
+                ],
+                [
+                    "src" => "/pwa/icon-144.png",
+                    "sizes" => "144x144",
+                    "type" => "image/png"
+                ],
+                [
+                    "src" => "/pwa/icon-152.png",
+                    "sizes" => "152x152",
+                    "type" => "image/png"
+                ],
+                [
+                    "src" => "/pwa/icon-192.png",
+                    "sizes" => "192x192",
+                    "type" => "image/png"
+                ],
+                [
+                    "src" => "/pwa/icon-384.png",
+                    "sizes" => "384x384",
+                    "type" => "image/png"
+                ],
+                [
+                    "src" => "/pwa/icon-512.png",
+                    "sizes" => "512x512",
+                    "type" => "image/png"
+                ]
+
+            ]
+
+        ]);
+    });
+    Route::view('/offline', 'offline');
 });
