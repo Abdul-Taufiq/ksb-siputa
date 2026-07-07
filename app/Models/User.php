@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use App\Models\Notifikasi\DatabaseNotification;
 
 class User extends Authenticatable
 {
@@ -47,6 +49,12 @@ class User extends Authenticatable
     ];
 
     protected $dates = ['created_at', 'updated_at'];
+
+    public function notifications(): MorphMany
+    {
+        return $this->morphMany(DatabaseNotification::class, 'notifiable')
+            ->latest();
+    }
 
     public function Cabang()
     {

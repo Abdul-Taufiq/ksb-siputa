@@ -9,11 +9,14 @@ use Illuminate\Notifications\Notifiable;
 
 class Notifikasi extends Model
 {
+    // TIDAK DIBUTUHKAN
     use HasFactory, Notifiable;
     protected $connection = 'ksb_sdm';
     protected $table = 'notifications';
     protected $dates = [
-        'created_at', 'updated_at', 'read_at'
+        'created_at',
+        'updated_at',
+        'read_at'
     ];
     protected $primaryKey = 'id';
 
