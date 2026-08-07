@@ -532,15 +532,15 @@ class InventarisPenjualanController extends Controller
                 ]);
 
                 $data->update([
-                    'nama_dirut' => $nama,
-                    'status_dirut' => 'Approve',
-                    'tgl_status_dirut' => now(),
+                    'nama_dirops' => $nama,
+                    'status_dirops' => 'Approve',
+                    'tgl_status_dirops' => now(),
                     'catatan_dirops' => $request->catatan,
                     'status_akhir' => 'Proses',
 
-                    // 'nama_dirut' => 'Eko Bambang Setiyoso',
-                    // 'status_dirut' => 'Approve',
-                    // 'tgl_status_dirut' => now()->addMinutes(rand(0, 60)),
+                    'nama_dirut' => 'Budi Darmawan',
+                    'status_dirut' => 'Approve',
+                    'tgl_status_dirut' => now()->addMinutes(rand(0, 60)),
                 ]);
 
                 $userPenerima = User::where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();

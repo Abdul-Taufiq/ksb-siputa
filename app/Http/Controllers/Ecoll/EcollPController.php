@@ -435,9 +435,9 @@ class EcollPController extends Controller
                     'catatan_dirops' => $request->catatan,
                     'status_akhir' => 'Proses',
 
-                    // 'nama_dirut' => 'Eko Bambang Setiyoso',
-                    // 'status_dirut' => 'Approve',
-                    // 'tgl_status_dirut' => now()->addMinutes(rand(0, 60)),
+                    'nama_dirut' => 'Budi Darmawan',
+                    'status_dirut' => 'Approve',
+                    'tgl_status_dirut' => now()->addMinutes(rand(0, 60)),
                 ]);
                 // Send Email Double
                 $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->get();

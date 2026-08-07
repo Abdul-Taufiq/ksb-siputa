@@ -14,7 +14,7 @@
             </tr>
             <tr>
                 <th>Keperluan</th>
-                <td>: {{ $keperluan }}</td>
+                <td>: {{ $keperluan ?? 'Pengajuan' }}</td>
             </tr>
         </table> <br>
         <b>Telah Selesai</b> dengan Status <b>{{ $status_akhir }}</b>,

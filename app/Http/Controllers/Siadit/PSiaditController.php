@@ -139,20 +139,37 @@ class PSiaditController extends Controller
 
                         case 'Pembukuan':
                             $jabatan = $data->status_pembukuan;
-                            $statusAfter = $this->statusAfter($data, $jabatan, $statusDropdown);
-                            return $statusAfter;
+                            if ($data->keperluan !== 'Perubahan Data SPK' && $data->keperluan !== 'Penghapusan Data SPK') {
+                                $statusAfter = $this->statusAfter($data, $jabatan, $statusDropdown);
+                                return $statusAfter;
+                            } else {
+                                $status .= '<a class="btn btn-info btn-sm disabled">NotNeed</a>';
+                            }
                             break;
 
                         case 'Direktur Operasional':
                             $jabatan = $data->status_dirops;
-                            $statusAfter = $this->statusAfter($data, $jabatan, $statusDropdown);
-                            return $statusAfter;
+                            if ($data->keperluan !== 'Perubahan Data SPK' && $data->keperluan !== 'Penghapusan Data SPK') {
+                                $statusAfter = $this->statusAfter($data, $jabatan, $statusDropdown);
+                                return $statusAfter;
+                            } else {
+                                $status .= '<a class="btn btn-info btn-sm disabled">NotNeed</a>';
+                            }
                             break;
 
                         case 'TSI':
                             $jabatan = $data->status_tsi;
-                            $statusAfter = $this->statusAfter($data, $jabatan, $statusDropdown);
-                            return $statusAfter;
+                            if ($data->keperluan === 'Perubahan Data SPK' || $data->keperluan === 'Penghapusan Data SPK') {
+                                $statusAfter = $this->statusAfter($data, $jabatan, $statusDropdown);
+                                return $statusAfter;
+                            } else {
+                                if ($data->status_dirops == 'Approve') {
+                                    $statusAfter = $this->statusAfter($data, $jabatan, $statusDropdown);
+                                    return $statusAfter;
+                                } else {
+                                    $status .= '<a class="btn btn-info btn-sm disabled">NotNeed</a>';
+                                }
+                            }
                             break;
                     }
 
@@ -352,9 +369,72 @@ class PSiaditController extends Controller
                     'status_akhir' => 'Proses'
                 ]);
                 // Send Email Double
-                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->get();
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->get();
                 // pemberitahuan database
                 $url = route('siadit-perubahan.index');
+                $title = 'Terdapat Form Pengajuan Baru!';
+                $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
+                $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message, $this->subjek);
+                break;
+
+            case 'Pembukuan':
+                if ($data->status_pincab != null) {
+                    $data->update([
+                        'nama_pembukuan' => $nama,
+                        'status_pembukuan' => 'Approve',
+                        'tgl_status_pembukuan' => now(),
+                        'catatan_pembukuan' => $request->catatan,
+                        'pelanggaran_pembukuan' => $request->pelanggaran,
+                        'status_akhir' => 'Proses'
+                    ]);
+                } else {
+                    $data->update([
+                        'nama_pincab' => 'Ditarik Oleh User Pembukuan',
+                        'status_pincab' => '--',
+                        'tgl_status_pincab' => now(),
+                        'nama_pembukuan' => $nama,
+                        'status_pembukuan' => 'Approve',
+                        'tgl_status_pembukuan' => now(),
+                        'catatan_pembukuan' => $request->catatan,
+                        'pelanggaran_pembukuan' => $request->pelanggaran,
+                        'status_akhir' => 'Proses'
+                    ]);
+                }
+                // Send Email Single
+                $userPenerima = User::where('jabatan', 'Direktur Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
+                // pemberitahuan database
+                $url = route('siadit-perubahan.index');
+                $title = 'Terdapat Form Pengajuan Baru!';
+                $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
+                $this->emailServices->SendEmail($data, $userPenerima, $url, $title, $message, $this->subjek);
+                // send email untuk user satunya
+
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
+                    ->where('nama', '!=', $nama)->first();
+                // pemberitahuan database
+                $url = route('siadit-perubahan.index');
+                $title = 'Pengajuan Sudah Dikerjakan!';
+                $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
+                $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek_status);
+                break;
+
+            case 'Direktur Operasional':
+                $data->update([
+                    'nama_dirops' => $nama,
+                    'status_dirops' => 'Approve',
+                    'tgl_status_dirops' => now(),
+                    'pelanggaran_dirops' => $request->pelanggaran,
+                    'catatan_dirops' => $request->catatan,
+                    'status_akhir' => 'Proses',
+
+                    'nama_dirut' => 'Budi Darmawan',
+                    'status_dirut' => 'Approve',
+                    'tgl_status_dirut' => now()->addMinutes(rand(0, 60)),
+                ]);
+                // Send Email Double
+                $userPenerima = User::where('jabatan', 'TSI')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->get();
+                // pemberitahuan database
+                $url = route('perubahan-kredit.index');
                 $title = 'Terdapat Form Pengajuan Baru!';
                 $message = 'Pengajuan Tersebut Memerlukan Tindak Lanjut dari Anda!';
                 $this->emailServices->SendEmailDobel($data, $userPenerima, $url, $title, $message, $this->subjek);
@@ -446,7 +526,72 @@ class PSiaditController extends Controller
                 $title = 'Pengajuan Telah Selesai!';
                 $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
                 $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
+                break;
 
+            case 'Pembukuan':
+                if ($data->status_pincab != null) {
+                    $data->update([
+                        'nama_pembukuan' => $nama,
+                        'status_pembukuan' => 'Reject',
+                        'tgl_status_pembukuan' => now(),
+                        'catatan_pembukuan' => $request->catatan,
+                        'pelanggaran_pembukuan' => $request->pelanggaran,
+                        'status_akhir' => 'Ditolak',
+                        'tgl_status_akhir' => now()
+                    ]);
+                } else {
+                    $data->update([
+                        'nama_pincab' => 'Ditarik Oleh User Pembukuan',
+                        'status_pincab' => '--',
+                        'tgl_status_pincab' => now(),
+                        'nama_pembukuan' => $nama,
+                        'status_pembukuan' => 'Reject',
+                        'tgl_status_pembukuan' => now(),
+                        'catatan_pembukuan' => $request->catatan,
+                        'pelanggaran_pembukuan' => $request->pelanggaran,
+                        'status_akhir' => 'Ditolak',
+                        'tgl_status_akhir' => now()
+                    ]);
+                }
+                /// Send Email Single to Kaops cabang
+                $userPenerima = User::where('id_cabang', $data->id_cabang)
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
+                $status_akhir = 'Rejected';
+                // pemberitahuan database
+                $url = route('perubahan-kredit.index');
+                $title = 'Pengajuan Telah Selesai!';
+                $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
+
+                // send email untuk user satunya
+                $userPenerima = User::where('jabatan', 'Pembukuan')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')
+                    ->where('nama', '!=', $nama)->first();
+                // pemberitahuan database
+                $url = route('perubahan-kredit.index');
+                $title = 'Pengajuan Sudah Dikerjakan!';
+                $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
+                $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek_status);
+                break;
+
+            case 'Direktur Operasional':
+                $data->update([
+                    'nama_dirops' => $nama,
+                    'status_dirops' => 'Reject',
+                    'tgl_status_dirops' => now(),
+                    'pelanggaran_dirops' => $request->pelanggaran,
+                    'catatan_dirops' => $request->catatan,
+                    'status_akhir' => 'Ditolak',
+                    'tgl_status_akhir' => now()
+                ]);
+                // Send Email Single to Kaops cabang
+                $userPenerima = User::where('id_cabang', $data->id_cabang)
+                    ->where('jabatan', 'Kasi Operasional')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
+                $status_akhir = 'Rejected';
+                // pemberitahuan database
+                $url = route('perubahan-kredit.index');
+                $title = 'Pengajuan Telah Selesai!';
+                $message = 'Pengajuan Tersebut Telah Selesai Dengan Status: Rejected!';
+                $this->emailServices->SendEmailToKaops($data, $status_akhir, $userPenerima, $url, $title, $message, $this->subjek_status);
                 break;
 
             case 'TSI':

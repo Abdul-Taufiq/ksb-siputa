@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\{Artisan, Route, Auth};
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\{LoginController, UserController, HelperController, RegisterController, HomeController, LogActivityController, LogTrackingController, PLainnyaController, PushSubscriptionController, SharebiayaController};
 use App\Http\Controllers\Ecoll\{EcollPController, EcollRController};
+use App\Http\Controllers\Insentif\InsentifAOController;
+use App\Http\Controllers\Insentif\InsentifPenyelesaianController;
+use App\Http\Controllers\Insentif\SurtugController;
 use App\Http\Controllers\Inventaris\InventarisController as InventarisPengajuanController;
 use App\Http\Controllers\Inventaris\InventarisPenggantiController;
 use App\Http\Controllers\Inventaris\InventarisPenjualanController;
@@ -277,6 +280,26 @@ Route::group(['middleware' => ['permission', 'CekMaintenance']], function () {
 
     Route::get('notif', [HomeController::class, 'Notif'])->name('notif');
 
+    // Pengajuan Insentif
+    Route::group(['middleware' => ['auth']], function () {
+        Route::prefix('insentif')->group(function () {
+            Route::resource('ao', InsentifAOController::class);
+            Route::get('get-data-kredit', [InsentifAOController::class, 'getDataKredit']);
+            Route::get('get-detail-data-kredit', [InsentifAOController::class, 'getDataKredit']);
+            Route::patch('get-ao-status/{id}/{status}', [InsentifAOController::class, 'getStatus']);
+
+
+            Route::resource('surtug', SurtugController::class);
+            Route::get('get-kode-form', [SurtugController::class, 'getKodeForm']);
+            Route::patch('get-status/{id}/{status}', [SurtugController::class, 'getStatus']);
+
+            Route::resource('penyelesaian', InsentifPenyelesaianController::class);
+            Route::get('get-nama-form', [InsentifPenyelesaianController::class, 'getNamaForm']);
+            Route::get('get-detail-form', [InsentifPenyelesaianController::class, 'getDetailForm']);
+            Route::patch('get-penyelesaian-status/{id}/{status}', [InsentifPenyelesaianController::class, 'getStatus']);
+        });
+    });
+
     // PWA
     Route::get('/manifest.json', function () {
         return response()->json([
@@ -335,5 +358,5 @@ Route::group(['middleware' => ['permission', 'CekMaintenance']], function () {
 
         ]);
     });
-    Route::view('/offline', 'offline');
+    // Route::view('/offline', 'offline');
 });

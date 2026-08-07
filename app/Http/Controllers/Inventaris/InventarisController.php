@@ -756,15 +756,15 @@ class InventarisController extends Controller
                     'dipilih' => 'True'
                 ]);
                 $data->update([
-                    // 'nama_dirut' => $nama,
-                    // 'status_dirut' => 'Approve',
-                    'tgl_status_dirut' => now(),
+                    'nama_dirops' => $nama,
+                    'status_dirops' => 'Approve',
+                    'tgl_status_dirops' => now(),
                     'catatan_dirops' => $request->catatan,
                     'status_akhir' => 'Proses',
 
-                    'nama_dirut' => 'Eko Bambang Setiyoso',
+                    'nama_dirut' => 'Budi Darmawan',
                     'status_dirut' => 'Approve',
-                    // 'tgl_status_dirut' => now()->addMinutes(rand(0, 60)),
+                    'tgl_status_dirut' => now()->addMinutes(rand(0, 60)),
                 ]);
 
                 if ($data->jns_pembelian == 'Pembelian Dengan Speksifikasi KPM' && $data->kategori_barang == 'Elektronik') {
@@ -922,15 +922,15 @@ class InventarisController extends Controller
                 $waktuStatus = now()->addMinutes(rand(0, 60));
 
                 $data->update([
-                    'nama_dirut' => $nama,
-                    'status_dirut' => 'Reject',
-                    'tgl_status_dirut' => now(),
+                    'nama_dirops' => $nama,
+                    'status_dirops' => 'Reject',
+                    'tgl_status_dirops' => now(),
                     'catatan_dirops' => $request->catatan,
                     'status_akhir' => 'Ditolak',
 
-                    // 'nama_dirut' => 'Eko Bambang Setiyoso',
-                    // 'status_dirut' => 'Reject',
-                    // 'tgl_status_dirut' => $waktuStatus,
+                    'nama_dirut' => 'Budi Darmawan',
+                    'status_dirut' => 'Reject',
+                    'tgl_status_dirut' => $waktuStatus,
                     'tgl_status_akhir' =>  $waktuStatus,
                 ]);
                 // Send Email Single to Kaops cabang

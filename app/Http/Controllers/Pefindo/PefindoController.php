@@ -406,7 +406,7 @@ class PefindoController extends Controller
                     'catatan_dirops' => $request->catatan,
                     'status_akhir' => 'Proses',
 
-                    'nama_dirut' => 'Eko Bambang Setiyoso',
+                    'nama_dirut' => 'Budi Darmawan',
                     'status_dirut' => 'Approve',
                     'tgl_status_dirut' => now()->addMinutes(rand(0, 60)),
                 ]);

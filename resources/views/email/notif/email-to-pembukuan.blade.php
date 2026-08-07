@@ -15,7 +15,7 @@
             </tr>
             <tr>
                 <th>Keperluan</th>
-                <td>: {{ $keperluan }}</td>
+                <td>: {{ $keperluan ?? 'Pengajuan' }}</td>
             </tr>
         </table> <br>
         Cek aplikasi berbasis web sekarang untuk meninjau form pengajuan tersebut.

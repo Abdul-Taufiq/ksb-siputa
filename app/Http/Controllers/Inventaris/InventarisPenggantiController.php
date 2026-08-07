@@ -804,16 +804,15 @@ class InventarisPenggantiController extends Controller
                     'dipilih' => 'True'
                 ]);
                 $data->update([
-                    // 'nama_dirops' => $nama,
-                    // 'status_dirops' => 'Approve',
-                    // 'tgl_status_dirops' => now(),
+                    'nama_dirops' => $nama,
+                    'status_dirops' => 'Approve',
+                    'tgl_status_dirops' => now(),
                     'catatan_dirops' => $request->catatan,
                     'status_akhir' => 'Proses',
 
-                    'nama_dirut' => 'Eko Bambang Setiyoso',
+                    'nama_dirut' => 'Budi Darmawan',
                     'status_dirut' => 'Approve',
-                    'tgl_status_dirut' => now(),
-                    // 'tgl_status_dirut' => now()->addMinutes(rand(0, 60)),
+                    'tgl_status_dirut' => now()->addMinutes(rand(0, 60)),
                 ]);
 
                 if ($data->jns_pembelian == 'Pembelian Dengan Speksifikasi KPM' && $data->kategori_barang == 'Elektronik') {

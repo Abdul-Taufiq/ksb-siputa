@@ -426,7 +426,7 @@ class KreditController extends Controller
                 $url = route('perubahan-kredit.index');
                 $title = 'Pengajuan Sudah Dikerjakan!';
                 $message = 'Pengajuan Tersebut Sudah DiHandle oleh Saudara ' . auth()->user()->nama . '!';
-                // $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek_status);
+                $this->emailServices->SendEmailToUserLain($data, $userPenerima, $url, $title, $message, $this->subjek_status);
                 break;
 
             case 'Direktur Operasional':
@@ -438,7 +438,7 @@ class KreditController extends Controller
                     'catatan_dirops' => $request->catatan,
                     'status_akhir' => 'Proses',
 
-                    'nama_dirut' => 'Eko Bambang Setiyoso',
+                    'nama_dirut' => 'Budi Darmawan',
                     'status_dirut' => 'Approve',
                     'tgl_status_dirut' => now()->addMinutes(rand(0, 60)),
                 ]);

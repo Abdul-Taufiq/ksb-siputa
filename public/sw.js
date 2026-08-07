@@ -1,5 +1,5 @@
 // PWA
-const CACHE_NAME = "siputa-v1.0.0";
+const CACHE_NAME = "siputa-v1.0.0-dev";
 
 const ASSETS = [
     "/offline",

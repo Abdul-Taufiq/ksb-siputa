@@ -14,7 +14,7 @@
             </tr>
             <tr>
                 <th>Keperluan</th>
-                <td>: {{ $keperluan }}</td>
+                <td>: {{ $keperluan ?? 'Pengajuan' }}</td>
             </tr>
         </table> <br>
         Telah di Handle oleh saudara <strong>{{ auth()->user()->nama }}</strong> <br>

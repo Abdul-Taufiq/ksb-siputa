@@ -379,10 +379,6 @@ class EcollRController extends Controller
                     'tgl_status_pincab' => now(),
                     'catatan_pincab' => $request->catatan,
                     'status_akhir' => 'Proses',
-
-                    // 'nama_dirut' => 'Eko Bambang Setiyoso',
-                    // 'status_dirut' => 'Approve',
-                    // 'tgl_status_dirut' => now()->addMinutes(rand(0, 60)),
                 ]);
                 // Send Email Double
                 $userPenerima = User::where('jabatan', 'SDM')->where('email', 'not like', '%dummy%')->where('email', 'not like', '%alt%')->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->get();

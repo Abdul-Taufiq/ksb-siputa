@@ -158,9 +158,9 @@
                         auth()->user()->jabatan != 'Direktur Utama')
                     {{-- USER --}}
                     <li
-                        class="nav-item {{ request()->is('user-email-reset*', 'user-email-pengajuan*', 'user-siadit', 'user-ecoll*', 'reset-ecoll*', 'slik-pengajuan*', 'slik-reset*', 'pefindo-pengajuan*', 'pefindo-reset*', 'mso-pengajuan*', 'mso-reset*') ? 'active menu-is-opening menu-open' : '' }}">
+                        class="nav-item {{ request()->is('user-email-reset*', 'user-email-pengajuan*', 'user-siadit', 'user-ecoll*', 'reset-ecoll*', 'slik-pengajuan*', 'slik-reset*', 'pefindo-pengajuan*', 'pefindo-reset*', 'mso-pengajuan*', 'mso-reset*', 'user-websakep-*') ? 'active menu-is-opening menu-open' : '' }}">
                         <a href="#"
-                            class="nav-link  {{ request()->is('user-email-reset*', 'user-email-pengajuan*', 'user-siadit', 'user-ecoll*', 'reset-ecoll*', 'slik-pengajuan*', 'slik-reset*', 'pefindo-pengajuan*', 'pefindo-reset*', 'mso-pengajuan*', 'mso-reset*') ? 'active aria-expanded= "true"' : 'collapsed' }}">
+                            class="nav-link  {{ request()->is('user-email-reset*', 'user-email-pengajuan*', 'user-siadit', 'user-ecoll*', 'reset-ecoll*', 'slik-pengajuan*', 'slik-reset*', 'pefindo-pengajuan*', 'pefindo-reset*', 'mso-pengajuan*', 'mso-reset*', 'user-websakep-*') ? 'active aria-expanded= "true"' : 'collapsed' }}">
                             <i class="fa fa-address-book nav-icon" aria-hidden="true"></i>
                             <p>
                                 Form User
@@ -168,12 +168,12 @@
                             </p>
                         </a>
                         <ul
-                            class="nav nav-treeview  {{ request()->is('user-email-reset*', 'user-email-pengajuan*', 'user-siadit', 'user-ecoll*', 'reset-ecoll*', 'slik-pengajuan*', 'slik-reset*', 'pefindo-pengajuan*', 'pefindo-reset*', 'mso-pengajuan*', 'mso-reset*') ? 'style="display: block;"' : '' }}">
+                            class="nav nav-treeview  {{ request()->is('user-email-reset*', 'user-email-pengajuan*', 'user-siadit', 'user-ecoll*', 'reset-ecoll*', 'slik-pengajuan*', 'slik-reset*', 'pefindo-pengajuan*', 'pefindo-reset*', 'mso-pengajuan*', 'mso-reset*', 'user-websakep-*') ? 'style="display: block;"' : '' }}">
 
                             {{-- email --}}
                             {{-- <hr style="margin-left: 12px; margin-right: 15px;">
                             <p
-                                style="font-weight: bold; font-family: JetBrains Mono; font-size: 15px; margin-left: 20px;">
+                                style="font-weight: bold; font-family: JetBrains Mono; font-size: 13px; margin-left: 20px;">
                                 Email &rarr;
                             </p>
                             <li class="nav-item">
@@ -194,7 +194,7 @@
                             {{-- siadit --}}
                             <hr style="margin-left: 12px; margin-right: 5px;">
                             <p
-                                style="font-weight: bold; font-family: JetBrains Mono; font-size: 15px; margin-left: 20px;">
+                                style="font-weight: bold; font-family: JetBrains Mono; font-size: 13px; margin-left: 20px;">
                                 Si-ADiT &rarr;
                             </p>
                             <li class="nav-item">
@@ -208,7 +208,7 @@
                             {{-- MBS --}}
                             <hr style="margin-left: 12px; margin-right: 5px;">
                             <p
-                                style="font-weight: bold; font-family: JetBrains Mono; font-size: 15px; margin-left: 20px;">
+                                style="font-weight: bold; font-family: JetBrains Mono; font-size: 13px; margin-left: 20px;">
                                 MBS &rarr;
                             </p>
                             <li class="nav-item">
@@ -229,7 +229,7 @@
                             {{-- Ecoll --}}
                             <hr style="margin-left: 12px; margin-right: 5px;">
                             <p
-                                style="font-weight: bold; font-family: JetBrains Mono; font-size: 15px; margin-left: 20px;">
+                                style="font-weight: bold; font-family: JetBrains Mono; font-size: 13px; margin-left: 20px;">
                                 Ecoll &rarr;
                             </p>
                             <li class="nav-item">
@@ -250,7 +250,7 @@
                             {{-- Slik --}}
                             <hr style="margin-left: 12px; margin-right: 5px;">
                             <p
-                                style="font-weight: bold; font-family: JetBrains Mono; font-size: 15px; margin-left: 20px;">
+                                style="font-weight: bold; font-family: JetBrains Mono; font-size: 13px; margin-left: 20px;">
                                 SLIK &rarr;
                             </p>
                             <li class="nav-item">
@@ -260,79 +260,33 @@
                                     <p>User SLIK</p>
                                 </a>
                             </li>
-                            {{-- <li class="nav-item">
-                                    <a href="/slik-reset" class="nav-link {{ Request::is('slik-reset*') ? 'active' : '' }}">
+                            <hr style="margin-left: 12px; margin-right: 5px;">
+                            <p
+                                style="font-weight: bold; font-family: JetBrains Mono; font-size: 13px; margin-left: 20px;">
+                                WebSakep &rarr;
+                            </p>
+                            {{-- new websakep --}}
+                            @if (auth()->user()->jabatan != 'Sekretariat' && auth()->user()->jabatan != 'Direktur Utama')
+                                {{-- Websakep --}}
+                                <li class="nav-item">
+                                    <a href="/user-websakep-pengajuan"
+                                        class="nav-link {{ Request::is('user-websakep-pengajuan*') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Pengajuan WebSakep</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/user-websakep-reset"
+                                        class="nav-link {{ Request::is('user-websakep-reset*') ? 'active' : '' }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Reset Password</p>
                                     </a>
-                                </li> --}}
-
-                            {{-- Pefindo --}}
-                            {{-- <hr style="margin-left: 12px; margin-right: 5px;">
-                            <p
-                                style="font-weight: bold; font-family: JetBrains Mono; font-size: 15px; margin-left: 20px;">
-                                Pefindo &rarr;
-                            </p>
-                            <li class="nav-item">
-                                <a href="/pefindo-pengajuan"
-                                    class="nav-link {{ Request::is('pefindo-pengajuan*') ? 'active' : '' }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>User Pefindo</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/pefindo-reset"
-                                    class="nav-link {{ Request::is('pefindo-reset*') ? 'active' : '' }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Reset Password</p>
-                                </a>
-                            </li>
-                            <hr style="margin-left: 12px; margin-right: 5px;"> --}}
+                                </li>
+                            @endif
 
                         </ul>
                     </li>
                     {{-- end USER --}}
-                @endif
-
-                {{-- new websakep --}}
-                @if (auth()->user()->jabatan != 'Sekretariat' && auth()->user()->jabatan != 'Direktur Utama')
-                    <li
-                        class="nav-item {{ request()->is('user-websakep-*') ? 'active menu-is-opening menu-open' : '' }}">
-                        <a href="#"
-                            class="nav-link  {{ request()->is('user-websakep-*') ? 'active aria-expanded= "true"' : 'collapsed' }}">
-                            <i class="fa fa-address-book nav-icon" aria-hidden="true"></i>
-                            <p>
-                                WebSakep
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul
-                            class="nav nav-treeview  {{ request()->is('user-websakep-*') ? 'style="display: block;"' : '' }}">
-
-                            {{-- Websakep --}}
-                            <hr style="margin-left: 12px; margin-right: 15px;">
-                            <p
-                                style="font-weight: bold; font-family: JetBrains Mono; font-size: 15px; margin-left: 20px;">
-                                WebSakep &rarr;
-                            </p>
-                            <li class="nav-item">
-                                <a href="/user-websakep-pengajuan"
-                                    class="nav-link {{ Request::is('user-websakep-pengajuan*') ? 'active' : '' }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Pengajuan WebSakep</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/user-websakep-reset"
-                                    class="nav-link {{ Request::is('user-websakep-reset*') ? 'active' : '' }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Reset Password</p>
-                                </a>
-                            </li>
-
-                            <hr style="margin-left: 12px; margin-right: 5px;">
-                        </ul>
-                    </li>
                 @endif
 
 
@@ -504,6 +458,7 @@
                 </li>
                 {{-- End Pengajuan Inventaris --}}
 
+
                 {{-- Service IT --}}
                 @if (auth()->user()->jabatan != 'Direktur Utama')
                     <li
@@ -565,6 +520,44 @@
                 @endif
                 {{-- End Share Biaya --}}
 
+
+                {{-- Pengajuan Insentif --}}
+                <li class="nav-item {{ request()->is('insentif*') ? 'active menu-is-opening menu-open' : '' }}">
+                    <a href="#"
+                        class="nav-link  {{ request()->is('insentif*') ? 'active aria-expanded= "true"' : 'collapsed' }}">
+                        <i class="fa fa-gift nav-icon"></i>
+                        <p>
+                            Pengajuan Insentif
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview  {{ request()->is('insentif*') ? 'style="display: block;"' : '' }}">
+                        <li class="nav-item">
+                            <a href="/insentif/surtug"
+                                class="nav-link {{ Request::is('insentif/surtug*') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Surat Tugas NPL</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/insentif/penyelesaian"
+                                class="nav-link {{ Request::is('insentif/penyelesaian*') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Ins. Penyelesaian NPL</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/insentif/ao"
+                                class="nav-link {{ Request::is('insentif/ao*') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Insentif AO</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                {{-- End Pengajuan Inventaris --}}
+
+
                 {{-- Pengajuan Lainnya --}}
                 <li class="nav-item {{ request()->is('pengajuan-lainnya*') ? 'menu-open' : '' }}">
                     <a href="/pengajuan-lainnya"
@@ -576,6 +569,7 @@
                     </a>
                 </li>
                 {{-- End Pengajuan Lainnya --}}
+
 
                 {{-- Log Activity --}}
                 <li class="nav-item {{ request()->is('log-activity*') ? 'menu-open' : '' }}">
