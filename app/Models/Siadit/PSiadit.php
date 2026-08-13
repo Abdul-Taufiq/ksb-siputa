@@ -12,8 +12,14 @@ class PSiadit extends Model
     protected $connection = 'ksb_sdm';
     protected $table = 'tb_siadit_perubahan';
     protected $dates = [
-        'created_at', 'updated_at', 'tgl_status_pincab', 'tgl_status_sdm',
-        'tgl_status_dirops', 'tgl_status_akhir', 'tgl_status_tsi'
+        'created_at',
+        'updated_at',
+        'tgl_status_pincab',
+        'tgl_status_sdm',
+        'tgl_status_dirops',
+        'tgl_status_akhir',
+        'tgl_status_tsi',
+        'tgl_status_pembukuan'
     ];
     protected $primaryKey = 'id_siadit_perubahan';
     protected $guarded = ['id_siadit_perubahan'];
