@@ -251,7 +251,7 @@
                         {{ $penyelesaian->catatan_komersial }}
                     </td>
                 </tr>
-                <tr>
+                {{-- <tr>
                     <th>Dirkom</th>
                     <td>:</td>
                     <td>
@@ -266,7 +266,7 @@
                     <td>
                         {{ $penyelesaian->catatan_dirkom }}
                     </td>
-                </tr>
+                </tr> --}}
                 <tr>
                     <th>SDM</th>
                     <td>:</td>

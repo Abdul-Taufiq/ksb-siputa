@@ -267,7 +267,7 @@
                                 {{ $insenAO->catatan_komersial }}
                             </td>
                         </tr>
-                        <tr>
+                        {{-- <tr>
                             <th>Dirkom</th>
                             <td>:</td>
                             <td>
@@ -282,7 +282,7 @@
                             <td>
                                 {{ $insenAO->catatan_dirkom }}
                             </td>
-                        </tr>
+                        </tr> --}}
                         <tr>
                             <th>SDM</th>
                             <td>:</td>

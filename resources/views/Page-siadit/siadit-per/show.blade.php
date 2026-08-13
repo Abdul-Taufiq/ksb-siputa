@@ -92,6 +92,16 @@
                     </td>
                 </tr>
                 <tr>
+                    <th>Pembukuan Approve?</th>
+                    <td> {{ $pSiadit->status_pembukuan }} -
+                        {{ $pSiadit->tgl_status_pembukuan ? $pSiadit->tgl_status_pembukuan->translatedFormat('d F Y, H:i') : ' ' }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Catatan Pembukuan</th>
+                    <td> {{ $pSiadit->catatan_pembukuan }} </td>
+                </tr>
+                <tr>
                     <th>DirOps Approve?</th>
                     <td> {{ $pSiadit->status_dirops }} -
                         {{ $pSiadit->tgl_status_dirops ? $pSiadit->tgl_status_dirops->translatedFormat('d F Y, H:i') : ' ' }}
