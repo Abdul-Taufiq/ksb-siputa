@@ -342,6 +342,7 @@ class BantuanTSIController extends Controller
 
     public function show(BantuanTSI $bantuanTSI)
     {
+        $kode = $bantuanTSI->kode_form;
         $notifikasi = auth()->user()->unreadNotifications
             ->filter(function ($item) use ($kode) {
                 return $item->id === request('id') || $item->data['kode_form'] === $kode;
