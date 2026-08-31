@@ -147,7 +147,7 @@
                 <tr>
                     <th>Dirut Approve?</th>
                     <td>
-                        {{ $penjualan->status_dirut }} -
+                        {{ $penjualan->nama_dirut }} - {{ $penjualan->status_dirut }} -
                         {{ $penjualan->tgl_status_dirut ? $penjualan->tgl_status_dirut->translatedFormat('d F Y, H:i') : ' ' }}
                     </td>
                 </tr>

@@ -146,7 +146,7 @@
                 <tr>
                     <th>Dirut Approve?</th>
                     <td>
-                        {{ $inventaris->status_dirut }} -
+                        {{ $inventaris->nama_dirut }} - {{ $inventaris->status_dirut }} -
                         {{ $inventaris->tgl_status_dirut ? $inventaris->tgl_status_dirut->translatedFormat('d F Y, H:i') : ' ' }}
                     </td>
                 </tr>

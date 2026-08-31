@@ -213,7 +213,13 @@ class InventarisController extends Controller
 
                         case 'Direktur Utama':
                             if ($data->status_dirops != null) {
-                                $status .= '<a class="btn btn-success btn-sm disabled">Finish</a>';
+                                if ($data->status_akhir == 'Selesai') {
+                                    $status .= '<a class="btn btn-success btn-sm disabled">Finish</a>';
+                                } else {
+                                    $jabatan = $data->status_dirut;
+                                    $statusAfter = $this->statusAfter($data, $jabatan, $statusDropdown);
+                                    return $statusAfter;
+                                }
                             } else if ($data->status_tsi != null) {
                                 $jabatan = $data->status_dirut;
                                 $statusAfter = $this->statusAfter($data, $jabatan, $statusDropdown);
