@@ -194,6 +194,8 @@ $(document).ready(function () {
         $("#modalHeader").text("DETAIL DATA - " + kode_form);
         $("#frameDetail").attr("src", "/insentif/penyelesaian/" + Id); //merubah link frame
 
+        $(".btnPrint").attr("id", Id);
+
         // Tambahkan event listener untuk menangkap penutupan modal
         $("#" + modalId).on("hidden.bs.modal", function () {
             // Kembalikan ID modal ke nilai default

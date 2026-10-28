@@ -7,13 +7,48 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
     <!-- Theme style -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    @if (request()->routeIs('print-penyelesaian'))
+        <link rel="stylesheet" href="{{ public_path('style-for-print-dompdf.css') }}">
+        <style>
+            @font-face {
+                font-family: "Tahoma";
+                font-style: normal;
+                font-weight: normal;
+                src: url("{{ public_path('fonts/tahoma.ttf') }}") format("truetype");
+            }
+
+            @font-face {
+                font-family: "Tahoma";
+                font-style: normal;
+                font-weight: bold;
+                src: url("{{ public_path('fonts/tahomabd.ttf') }}") format("truetype");
+            }
+
+            body {
+                font-family: Tahoma, sans-serif;
+                margin: 1cm 0.5cm 0.5cm 0.5cm;
+
+                font-size: 11pt;
+                line-height: 12pt;
+            }
+        </style>
+    @else
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    @endif
 
     <style>
         body {
             font-family: 'JetBrains Mono';
             font-size: 9pt;
+        }
+
+        .table-primary,
+        .table-primary th,
+        .table-primary td {
+            background-color: #cfe2ff !important;
+            color: #000;
+            border-color: #cfe2ff !important;
         }
     </style>
 </head>
@@ -199,7 +234,7 @@
         </div>
         <div class="card-body">
             <table class="table table-sm table-responsive table-striped">
-                <tr>
+                <tr class="table-primary">
                     <th style="width: 10%">#</th>
                     <th style="width: 1%"></th>
                     <th style="width: 25%">Nama</th>

@@ -63,43 +63,45 @@ class EmailServices
     {
         $emails = $userPenerima->pluck('email')->toArray();
 
-        try {
-            Mail::send('email.notif.email-pengajuan',  [
-                'kc' => $data->cabang->cabang,
-                'kode_form' => $data->kode_form,
-                'keperluan' => $data->keperluan
-            ], function ($message) use ($emails, $subjek) {
-                $message->from(config('mail.from.address'), 'KSB | Si-Puta');
-                $message->to($emails[0]); // penerima utama
-                $message->cc(array_slice($emails, 1)); // sisanya jadi CC
-                $message->subject($subjek);
-            });
-        } catch (\Throwable $e) {
-            Log::error('Gagal mengirim Email Notification', [
-                'user_id' => $userPenerima->id,
-                'email' => $userPenerima->email,
-                'kode_form' => $data->kode_form,
-                'message' => $e->getMessage(),
-            ]);
+        if (count($emails) > 0) {
+            try {
+                Mail::send('email.notif.email-pengajuan',  [
+                    'kc' => $data->cabang->cabang,
+                    'kode_form' => $data->kode_form,
+                    'keperluan' => $data->keperluan
+                ], function ($message) use ($emails, $subjek) {
+                    $message->from(config('mail.from.address'), 'KSB | Si-Puta');
+                    $message->to($emails[0]); // penerima utama
+                    $message->cc(array_slice($emails, 1)); // sisanya jadi CC
+                    $message->subject($subjek);
+                });
+            } catch (\Throwable $e) {
+                Log::error('Gagal mengirim Email Notification', [
+                    'user_id' => $userPenerima->id,
+                    'email' => $userPenerima->email,
+                    'kode_form' => $data->kode_form,
+                    'message' => $e->getMessage(),
+                ]);
+            }
+
+            // pemberitahuan database
+            Notification::send($userPenerima, new NotifikasiPengajuan($data, $url, $title, $message));
+
+            $this->pushNotificationService->send(
+                $userPenerima,
+                [
+                    'title' => 'KSB | Si-Puta',
+                    'body' => sprintf(
+                        "%s\nKode Form: %s",
+                        $message,
+                        $data->kode_form
+                    ),
+                    'url' => $url . '?kode=' . ($data->kode_form),
+                    'tag'   => 'NEED ACTION FROM YOU',
+                    'icon'  => '/icon.png',
+                ]
+            );
         }
-
-        // pemberitahuan database
-        Notification::send($userPenerima, new NotifikasiPengajuan($data, $url, $title, $message));
-
-        $this->pushNotificationService->send(
-            $userPenerima,
-            [
-                'title' => 'KSB | Si-Puta',
-                'body' => sprintf(
-                    "%s\nKode Form: %s",
-                    $message,
-                    $data->kode_form
-                ),
-                'url' => $url . '?kode=' . ($data->kode_form),
-                'tag'   => 'NEED ACTION FROM YOU',
-                'icon'  => '/icon.png',
-            ]
-        );
     }
 
 
@@ -153,43 +155,47 @@ class EmailServices
         if ($userPenerima instanceof Collection) {
             $emails = $userPenerima->pluck('email')->toArray();
 
-            try {
-                Mail::send('email.notif.email-dikerjakan',  [
-                    'kc' => $data->cabang->cabang,
-                    'kode_form' => $data->kode_form,
-                    'keperluan' => $data->keperluan
-                ], function ($message) use ($emails, $subjek) {
-                    $message->from(config('mail.from.address'), 'KSB | Si-Puta');
-                    $message->to($emails[0]); // penerima utama
-                    $message->cc(array_slice($emails, 1)); // sisanya jadi CC
-                    $message->subject($subjek);
-                });
-            } catch (\Throwable $e) {
-                Log::error('Gagal mengirim Email Notification', [
-                    'user_id' => $userPenerima->id,
-                    'email' => $userPenerima->email,
-                    'kode_form' => $data->kode_form,
-                    'message' => $e->getMessage(),
-                ]);
+            if (count($emails) > 0) {
+                try {
+                    Mail::send('email.notif.email-dikerjakan',  [
+                        'kc' => $data->cabang->cabang,
+                        'kode_form' => $data->kode_form,
+                        'keperluan' => $data->keperluan
+                    ], function ($message) use ($emails, $subjek) {
+                        $message->from(config('mail.from.address'), 'KSB | Si-Puta');
+                        $message->to($emails[0]); // penerima utama
+                        $message->cc(array_slice($emails, 1)); // sisanya jadi CC
+                        $message->subject($subjek);
+                    });
+                } catch (\Throwable $e) {
+                    Log::error('Gagal mengirim Email Notification', [
+                        'user_id' => $userPenerima->id,
+                        'email' => $userPenerima->email,
+                        'kode_form' => $data->kode_form,
+                        'message' => $e->getMessage(),
+                    ]);
+                }
             }
         } else {
-            try {
-                Mail::send('email.notif.email-dikerjakan',  [
-                    'kc' => $data->cabang->cabang,
-                    'kode_form' => $data->kode_form,
-                    'keperluan' => $data->keperluan
-                ], function ($message) use ($userPenerima, $subjek) {
-                    $message->from(config('mail.from.address'), 'KSB | Si-Puta');
-                    $message->to($userPenerima->email);
-                    $message->subject($subjek);
-                });
-            } catch (\Throwable $e) {
-                Log::error('Gagal mengirim Email Notification', [
-                    'user_id' => $userPenerima->id,
-                    'email' => $userPenerima->email,
-                    'kode_form' => $data->kode_form,
-                    'message' => $e->getMessage(),
-                ]);
+            if ($userPenerima) {
+                try {
+                    Mail::send('email.notif.email-dikerjakan',  [
+                        'kc' => $data->cabang->cabang,
+                        'kode_form' => $data->kode_form,
+                        'keperluan' => $data->keperluan
+                    ], function ($message) use ($userPenerima, $subjek) {
+                        $message->from(config('mail.from.address'), 'KSB | Si-Puta');
+                        $message->to($userPenerima->email);
+                        $message->subject($subjek);
+                    });
+                } catch (\Throwable $e) {
+                    Log::error('Gagal mengirim Email Notification', [
+                        'user_id' => $userPenerima->id,
+                        'email' => $userPenerima->email,
+                        'kode_form' => $data->kode_form,
+                        'message' => $e->getMessage(),
+                    ]);
+                }
             }
         }
 
@@ -255,7 +261,7 @@ class EmailServices
     {
         $emails = $userPenerima->pluck('email')->toArray();
 
-        if ($emails !== null) {
+        if (count($emails) > 0) {
             try {
                 Mail::send('email.notif.email-status-akhir',  [
                     'kc' => $data->cabang->cabang,

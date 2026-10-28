@@ -23,7 +23,7 @@ class UpdateStatus
     public function updateStatus(Request $request, $data, $payload, $status)
     {
         $nama = auth()->user()->nama;
-        $jabatan = auth()->user()->sub_jabatan;
+        $jabatan = auth()->user()->jabatan;
         $nama_field = '';
 
 
@@ -46,6 +46,7 @@ class UpdateStatus
                 break;
             case 'Staff Komersial Pusat':
             case 'Staff Komersial':
+            case 'Staff Pusat':
             case 'Analis Pusat':
                 $nama_field = 'komersial';
                 break;
@@ -66,6 +67,7 @@ class UpdateStatus
             'status_akhir' => $payload['status_akhir']
         ]);
 
+
         // cek payload jabatan next nya apa
         if ($payload['jabatan_next'] != null) {
             $jabatan_next = $payload['jabatan_next'];
@@ -73,16 +75,17 @@ class UpdateStatus
             // cek harus pakai get() apa first()
             if ($jabatan_next == 'Pembukuan' || $jabatan_next == 'SDM' || $jabatan_next == 'TSI') {
                 # code...
-                $userNext = User::where('jabatan', $payload['jabatan_next'])
+                $userNext = User::where('jabatan', $jabatan_next)
                     ->where('email', 'not like', '%dummy%')
                     ->where('email', 'not like', '%alt%')->where('status', 'Aktif')
                     ->where('email', 'like', '%@gmail.com')->get();
             } else {
-                $userNext = User::where('jabatan', $payload['jabatan_next'])
+                $userNext = User::where('jabatan', $jabatan_next)
                     ->where('email', 'not like', '%dummy%')
                     ->where('email', 'not like', '%alt%')
                     ->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
             }
+
 
             // cek data dari get() atau first()
             if ($userNext instanceof Collection) {

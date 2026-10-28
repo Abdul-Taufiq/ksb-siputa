@@ -10,6 +10,7 @@ use App\Models\MasterInsentif\InsSurtug;
 use App\Models\MasterInsentif\InsSurtugDeb;
 use App\Services\Insentif\PembagianServices;
 use App\Services\UpdateStatus;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -225,7 +226,7 @@ class InsentifPenyelesaianController extends Controller
 
                 if ($status != 'Approve') {
                     $payload['status_akhir'] = 'Selesai';
-                    $this->updateStatus->infoStatusEnd($data, $payload);
+                    // $this->updateStatus->infoStatusEnd($data, $payload);
                 }
 
                 $this->updateStatus->updateStatus($request, $data, $payload, $status);
@@ -244,7 +245,7 @@ class InsentifPenyelesaianController extends Controller
                 }
 
                 $this->updateStatus->updateStatus($request, $data, $payload, $status);
-                $this->updateStatus->infoStatusEndDouble($data, $payload);
+                // $this->updateStatus->infoStatusEndDouble($data, $payload);
                 break;
 
             default:
@@ -257,6 +258,30 @@ class InsentifPenyelesaianController extends Controller
         $this->LogActivity($data, $LogAksi);
 
         return redirect(route('penyelesaian.index'))->with('AlertSuccess', "Berhasil Memperbaruhi Status!");
+    }
+
+
+    public function print($id)
+    {
+        $ids = base64_decode($id);
+        $insPenyelesaian = InsPenyelesaian::findOrFail($ids);
+        $pembagian = InsPembagian::where('id_ins_penyelesaian', $insPenyelesaian->id)->get();
+
+        $pdf = Pdf::loadView(
+            'Page-Insentif-Penyelesaian.show',
+            [
+                'title' => 'Print Insentif Penyelesaian',
+                'penyelesaian' => $insPenyelesaian,
+                'pembagian' => $pembagian
+            ]
+        );
+        $pdf->setPaper('A4', 'potrait')
+            ->setOption([
+                'isHtml5ParserEnabled' => true,
+                'isPhpEnabled' => true,
+            ]);
+
+        return $pdf->stream('Print Insentif Penyelesaian.pdf');
     }
 
 

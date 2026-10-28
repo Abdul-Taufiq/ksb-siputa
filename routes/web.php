@@ -287,16 +287,19 @@ Route::group(['middleware' => ['permission', 'CekMaintenance']], function () {
             Route::get('get-data-kredit', [InsentifAOController::class, 'getDataKredit']);
             Route::get('get-detail-data-kredit', [InsentifAOController::class, 'getDataKredit']);
             Route::patch('get-ao-status/{id}/{status}', [InsentifAOController::class, 'getStatus']);
+            Route::get('print-insentif-ao/{id}', [InsentifAOController::class, 'print'])->name('print-insen-ao');
 
 
             Route::resource('surtug', SurtugController::class);
             Route::get('get-kode-form', [SurtugController::class, 'getKodeForm']);
             Route::patch('get-status/{id}/{status}', [SurtugController::class, 'getStatus']);
+            Route::get('print-surtug/{id}', [SurtugController::class, 'print'])->name('print-surtug');
 
             Route::resource('penyelesaian', InsentifPenyelesaianController::class);
             Route::get('get-nama-form', [InsentifPenyelesaianController::class, 'getNamaForm']);
             Route::get('get-detail-form', [InsentifPenyelesaianController::class, 'getDetailForm']);
             Route::patch('get-penyelesaian-status/{id}/{status}', [InsentifPenyelesaianController::class, 'getStatus']);
+            Route::get('print-penyelesaian/{id}', [InsentifPenyelesaianController::class, 'print'])->name('print-penyelesaian');
         });
     });
 

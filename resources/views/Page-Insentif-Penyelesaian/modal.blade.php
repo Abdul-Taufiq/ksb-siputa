@@ -57,6 +57,10 @@
                 <iframe id="frameDetail" type="" width="100%" height="400px"></iframe>
             </div>
             <div class="modal-footer">
+                <button class="btn btn-primary btnPrint" type="button">
+                    <i class="fa fa-print" aria-hidden="true"></i> &nbsp;
+                    Cetak
+                </button>
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Kembali</button>
             </div>
         </div>

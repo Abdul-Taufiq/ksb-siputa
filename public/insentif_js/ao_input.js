@@ -37,12 +37,15 @@ $(document).ready(function () {
 function autoFill(i) {
     document.getElementById(`nama_${i}`).addEventListener("input", function () {
         let nama_ao = document.getElementById("nama_ao").value;
+        let periode = document.getElementById("periode").value;
         let query = this.value;
 
         // Mulai cari jika pengguna sudah mengetik minimal 2 karakter
         if (query.length >= 2) {
+            console.log(periode);
+
             fetch(
-                `/insentif/get-data-kredit?nama_ao=${nama_ao}&nama_deb=${query}`,
+                `/insentif/get-data-kredit?nama_ao=${nama_ao}&nama_deb=${query}&periode=${periode}`,
             )
                 .then((response) => response.json())
                 .then((data) => {

@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class InsentifAOController extends Controller
 {
@@ -51,8 +52,32 @@ class InsentifAOController extends Controller
     {
         $nama_ao = $request->get('nama_ao');
         $nama_deb = $request->get('nama_deb');
-        $awal = now()->startOfMonth();
-        $akhir = now()->endOfMonth();
+        $bulan = [
+            'JANUARI' => 1,
+            'FEBRUARI' => 2,
+            'MARET' => 3,
+            'APRIL' => 4,
+            'MEI' => 5,
+            'JUNI' => 6,
+            'JULI' => 7,
+            'AGUSTUS' => 8,
+            'SEPTEMBER' => 9,
+            'OKTOBER' => 10,
+            'NOVEMBER' => 11,
+            'DESEMBER' => 12,
+        ];
+
+        [$namaBulan, $tahun] = explode(' ', strtoupper($request->periode));
+
+        $awal = Carbon::create($tahun, $bulan[$namaBulan], 1)->startOfMonth();
+        $akhir = Carbon::create($tahun, $bulan[$namaBulan], 1)->endOfMonth();
+
+
+        // dd(
+        //     $request->periode,
+        //     $awal,
+        //     $akhir
+        // );
 
         $query = DB::connection('ksb_kredit')
             ->table('debitur')
@@ -225,7 +250,8 @@ class InsentifAOController extends Controller
                 $payload['jabatan_sama'] = 'SDM';
 
                 if ($status != 'Approve') {
-                    $this->updateStatus->infoStatusEnd($data, $payload);
+                    $payload['status_akhir'] = 'Selesai';
+                    // $this->updateStatus->infoStatusEnd($data, $payload);
                 }
 
                 $this->updateStatus->updateStatus($request, $data, $payload, $status);
@@ -243,7 +269,7 @@ class InsentifAOController extends Controller
                 }
 
                 $this->updateStatus->updateStatus($request, $data, $payload, $status);
-                $this->updateStatus->infoStatusEndDouble($data, $payload);
+                // $this->updateStatus->infoStatusEndDouble($data, $payload);
                 break;
 
             default:
@@ -256,6 +282,30 @@ class InsentifAOController extends Controller
         $this->LogActivity($data, $LogAksi);
 
         return redirect(route('ao.index'))->with('AlertSuccess', "Berhasil Memperbaruhi Status!");
+    }
+
+
+    public function print($id)
+    {
+        $ids = base64_decode($id);
+        $insen = InsAO::findorfail($ids);
+        $debAo = InsAODeb::where('id_insen_ao', $insen->id)->orderBy('nama', 'asc')->get();
+
+        $pdf = Pdf::loadView(
+            'Page-Insentif-AO.show',
+            [
+                'title' => 'Print Insentif AO An.' . $insen->nama_ao,
+                'insenAO' => $insen,
+                'debAo' => $debAo,
+            ]
+        );
+        $pdf->setPaper('A4', 'potrait')
+            ->setOption([
+                'isHtml5ParserEnabled' => true,
+                'isPhpEnabled' => true,
+            ]);
+
+        return $pdf->stream('Print Insentif AO An.' . $insen->nama_ao . '.pdf');
     }
 
 

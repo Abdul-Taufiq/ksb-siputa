@@ -98,7 +98,7 @@ class InsenAOServices
 
                         case 'SDM':
                             $jabatan = $data->status_sdm;
-                            $before_status = $data->status_dirkom;
+                            $before_status = $data->status_komersial;
                             $statusAfter = $this->statusAndLogServices->statusAfter($before_status, $jabatan, $statusDropdown);
                             return $statusAfter;
                             break;

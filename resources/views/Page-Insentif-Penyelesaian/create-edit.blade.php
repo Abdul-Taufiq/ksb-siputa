@@ -84,7 +84,7 @@
                             <div class="row ml-2 mb-2">
                                 <div class="col-md-4 mb-2">
                                     <div class="form-group">
-                                        <label for="kode_form_surtug">Kode Form Terkait</label>
+                                        <label for="kode_form_surtug">Kode Form (Surtug) Terkait</label>
                                         <input type="text" name="kode_form_surtug" id="kode_form_surtug"
                                             class="form-control form-control-sm input" list="kode_datalist"
                                             value="{{ $penyelesaian->kode_form_surtug ?? null }}" required>
@@ -93,7 +93,7 @@
                                 </div>
                                 <div class="col-md-4 mb-2">
                                     <div class="form-group">
-                                        <label for="nama">Nama</label>
+                                        <label for="nama">Nama Debitur</label>
                                         <input type="text" name="nama" id="nama"
                                             class="form-control form-control-sm input" list="nama_datalist"
                                             value="{{ $penyelesaian->nama ?? null }}" required>

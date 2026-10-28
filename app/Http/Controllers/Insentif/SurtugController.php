@@ -11,6 +11,7 @@ use App\Services\EmailServices;
 use App\Services\Insentif\SurtugServices;
 use App\Services\StatusAndLogServices;
 use App\Services\UpdateStatus;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -175,6 +176,28 @@ class SurtugController extends Controller
         return redirect(route('surtug.index'))->with('AlertSuccess', "Pengajuan Berhasil Dilakukan Perubahan Status!");
     }
 
+
+    public function print($id)
+    {
+        $ids = base64_decode($id);
+        $surtug = InsSurtug::findorfail($ids);
+        $debsur = InsSurtugDeb::where('id_surtug', $surtug->id)->orderBy('nama', 'asc')->get();
+        $pdf = Pdf::loadView(
+            'Page-Insentif-Surtug.show',
+            [
+                'title' => 'Print Surat Tugas An ' . $surtug->nama_pic,
+                'surtug' => $surtug,
+                'debsur' => $debsur
+            ]
+        );
+        $pdf->setPaper('A4', 'potrait')
+            ->setOption([
+                'isHtml5ParserEnabled' => true,
+                'isPhpEnabled' => true,
+            ]);
+
+        return $pdf->stream('Print Surat Tugas An ' . $surtug->nama_pic . '.pdf');
+    }
 
 
     // Log activity

@@ -7,8 +7,35 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
     <!-- Theme style -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    @if (request()->routeIs('print-insen-ao'))
+        <link rel="stylesheet" href="{{ public_path('style-for-print-dompdf.css') }}">
+        <style>
+            @font-face {
+                font-family: "Tahoma";
+                font-style: normal;
+                font-weight: normal;
+                src: url("{{ public_path('fonts/tahoma.ttf') }}") format("truetype");
+            }
+
+            @font-face {
+                font-family: "Tahoma";
+                font-style: normal;
+                font-weight: bold;
+                src: url("{{ public_path('fonts/tahomabd.ttf') }}") format("truetype");
+            }
+
+            body {
+                font-family: Tahoma, sans-serif;
+                margin: 1cm 0.5cm 0.5cm 0.5cm;
+
+                font-size: 11pt;
+                line-height: 12pt;
+            }
+        </style>
+    @else
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    @endif
 
     <style>
         body {
@@ -18,6 +45,14 @@
 
         table td {
             font-size: 12px;
+        }
+
+        .table-primary,
+        .table-primary th,
+        .table-primary td {
+            background-color: #cfe2ff !important;
+            color: #000;
+            border-color: #cfe2ff !important;
         }
     </style>
 </head>
@@ -32,11 +67,11 @@
                 <div class="col-md-6">
                     <table class="table table-sm table-responsive table-striped">
                         <tr>
-                            <th style="width: 35%">Kode Form</th>
+                            <th style="width: 20%">Kode Form</th>
                             <td>: {{ $insenAO->kode_form }}</td>
                         </tr>
                         <tr>
-                            <th style="width: 35%">Periode</th>
+                            <th style="width: 20%">Periode</th>
                             <td>: {{ $insenAO->periode }}</td>
                         </tr>
                     </table>
@@ -44,12 +79,12 @@
                 <div class="col-md-6">
                     <table class="table table-sm table-responsive table-striped">
                         <tr>
-                            <th style="width: 35%">Nama AO</th>
+                            <th style="width: 20%">Nama AO</th>
                             <td>: {{ $insenAO->nama_ao }}
                             </td>
                         </tr>
                         <tr>
-                            <th style="width: 35%">Target</th>
+                            <th style="width: 20%">Target</th>
                             <td>: {{ 'Rp' . number_format($insenAO->target, 0, ',', '.') }}
                             </td>
                         </tr>
@@ -62,15 +97,15 @@
             <div class="row mb-2">
                 <div class="col-md-12">
                     <table class="table table-sm table-responsive table-striped table-bordered">
-                        <thead>
+                        <thead class="table-primary">
                             <tr>
-                                <th>NO</th>
-                                <th style="width: 10%">TGL REALISASI</th>
-                                <th>DATA DEBITUR</th>
-                                <th>NOMINAL (Rp)</th>
-                                <th>BIAYA (Rp)</th>
+                                <th style="width: 4%">NO</th>
+                                <th style="width: 11%">TGL REALISASI</th>
+                                <th style="width: 20%">DATA DEBITUR</th>
+                                <th style="width: 17%">NOMINAL (Rp)</th>
+                                <th style="width: 20%">BIAYA (Rp)</th>
                                 <th style="width: 15%">STATUS / NAMA REFERAL</th>
-                                <th style="width: 10%">INSENTIF REFERAL</th>
+                                <th style="width: 13%">INSENTIF REFERAL</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -85,8 +120,8 @@
                                     </td>
                                     <td>{{ number_format($item->nominal, 0, ',', '.') }}</td>
                                     <td>
-                                        <b>Biaya Adm: </b> {{ number_format($item->biaya_adm, 0, ',', '.') }} <br>
-                                        <b>Biaya Survey: </b> {{ number_format($item->biaya_survey, 0, ',', '.') }}
+                                        <b>Adm: </b> {{ number_format($item->biaya_adm, 0, ',', '.') }} <br>
+                                        <b>Survey: </b> {{ number_format($item->biaya_survey, 0, ',', '.') }}
                                         <br>
                                         <b>Adm + Survey: </b> {{ number_format($item->total_adm_survey, 0, ',', '.') }}
                                     </td>
@@ -121,7 +156,7 @@
             <div class="row mb-2">
                 <div class="col-md-12">
                     <table class="table table-sm table-responsive table-striped table-bordered">
-                        <thead>
+                        <thead class="table-primary">
                             <tr>
                                 <th style="width: 30%">TARGET</th>
                                 <th>NOMINAL (Rp)</th>
@@ -171,7 +206,7 @@
             <div class="row mb-2">
                 <div class="col-md-12">
                     <table class="table table-sm table-responsive table-striped table-bordered">
-                        <thead>
+                        <thead class="table-primary">
                             <tr>
                                 <th colspan="2">TARGET</th>
                             </tr>
@@ -215,7 +250,7 @@
                 </div>
                 <div class="card-body">
                     <table class="table table-sm table-responsive table-striped">
-                        <tr>
+                        <tr class="table-primary">
                             <th style="width: 10%">#</th>
                             <th style="width: 1%"></th>
                             <th style="width: 25%">Nama</th>
