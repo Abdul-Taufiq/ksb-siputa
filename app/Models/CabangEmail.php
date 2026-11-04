@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CabangEmail extends Model
 {
     use HasFactory;
-    protected $connection = 'ksb_sdm';
+    //
     protected $table = 'cabang';
     protected $primaryKey = 'id_cabang';
 }

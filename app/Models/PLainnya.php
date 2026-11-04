@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PLainnya extends Model
 {
     use HasFactory;
-    protected $connection = 'ksb_sdm';
+    //
     protected $table = 'tb_pengajuan_lainnya';
     protected $dates = [
         'created_at',

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class UserP extends Model
 {
     use HasFactory;
-    protected $connection = 'ksb_sdm';
+    //
     protected $table = 'tb_msop';
     protected $dates = [
         'created_at',

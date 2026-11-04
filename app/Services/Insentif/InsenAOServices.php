@@ -134,6 +134,11 @@ class InsenAOServices
                                         <i class="fa fa-edit"></i></a>';
                             }
                             break;
+                        case 'Staff Komersial Pusat':
+                            $button .= '<a href="' . route('ao.edit', base64_encode($data->id)) . '"
+                                                        class="btn btn-warning btn-sm edit btn-table">
+                                                    <i class="fa fa-edit"></i></a>';
+                            break;
 
                         default:
                             $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
@@ -151,7 +156,7 @@ class InsenAOServices
 
     public function store(Request $request)
     {
-        $cabang = DB::connection('ksb_sdm')
+        $cabang = DB::connection('mysql')
             ->table('cabang')
             ->where('id_cabang', auth()->user()->id_cabang)
             ->value('kode_spk');
@@ -221,6 +226,7 @@ class InsenAOServices
         $insenAO = new InsAO();
         $insenAO->id_cabang = auth()->user()->id_cabang;
         $insenAO->kode_form = $nomer;
+        $insenAO->nip = $request->nip;
         $insenAO->nama_ao = $request->nama_ao;
         $insenAO->periode = $request->periode;
         $insenAO->target = $this->normalizeNumber($request->target);
@@ -254,6 +260,7 @@ class InsenAOServices
         for ($i = 1; $i <= 30; $i++) {
             if ($request->has('nama_' . $i) && $request->input('nama_' . $i)) {
                 $aoDeb = new InsAODeb();
+                $aoDeb->id_cabang = auth()->user()->id_cabang;
                 $aoDeb->id_insen_ao = $insenAO->id;
                 $aoDeb->tgl_realisasi = $request->input('tgl_realisasi_' . $i);
                 $aoDeb->nama = $request->input('nama_' . $i);
@@ -304,6 +311,7 @@ class InsenAOServices
     public function update(Request $request, $id)
     {
         $insenAO = InsAO::findOrFail(base64_decode($id));
+        $insenAO->nip = $request->nip;
         $insenAO->nama_ao = $request->nama_ao;
         $insenAO->periode = $request->periode;
         $insenAO->target = $this->normalizeNumber($request->target);
@@ -339,6 +347,7 @@ class InsenAOServices
                 if ($request->has('id_debca_' . $i) && $request->input('id_debca_' . $i)) {
                     $aoDeb = InsAODeb::findOrFail(base64_decode($request->input('id_debca_' . $i)));
                     if ($request->input('aksi_' . $i) == 'Edit') {
+                        $aoDeb->id_cabang = auth()->user()->id_cabang;
                         $aoDeb->tgl_realisasi = $request->input('tgl_realisasi_' . $i);
                         $aoDeb->nama = $request->input('nama_' . $i);
                         $aoDeb->norek = $request->input('norek_' . $i);
@@ -357,6 +366,7 @@ class InsenAOServices
                 } else {
                     $aoDeb = new InsAODeb();
                     $aoDeb->id_insen_ao = $insenAO->id;
+                    $aoDeb->id_cabang = auth()->user()->id_cabang;
                     $aoDeb->tgl_realisasi = $request->input('tgl_realisasi_' . $i);
                     $aoDeb->nama = $request->input('nama_' . $i);
                     $aoDeb->norek = $request->input('norek_' . $i);

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class PEcoll extends Model
 {
     use HasFactory;
-    protected $connection = 'ksb_sdm';
+    //
     protected $table = 'tb_pembatalan_ecoll';
     protected $primaryKey = 'id_ecoll';
     protected $dates = [

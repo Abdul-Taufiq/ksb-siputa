@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class LogActivity extends Model
 {
     use HasFactory;
-    protected $connection = 'ksb_sdm';
+    //
     protected $table = 'log_activity';
     protected $dates = ['created_at', 'updated_at'];
     protected $primaryKey = 'id_log';

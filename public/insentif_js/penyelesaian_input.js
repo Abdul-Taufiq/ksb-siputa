@@ -256,7 +256,7 @@ function toNumber(value) {
 
 // Fungsi untuk mengubah angka ke format Rupiah
 function setFormatRupiah(angka) {
-    return angka.toLocaleString("id-ID");
+    return Math.round(angka).toLocaleString("id-ID");
 }
 
 // Tambahkan event listener ke semua input

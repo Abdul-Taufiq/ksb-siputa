@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class InsAODeb extends Model
 {
     use HasFactory;
-    protected $connection = 'ksb_sdm';
+    //
     protected $table = 'tb_insen_ao_deb';
     protected $dates = [
         'tgl_realisasi',
@@ -21,6 +21,6 @@ class InsAODeb extends Model
 
     public function insDebitur(): BelongsTo
     {
-        return $this->belongsTo(InsAO::class, 'id_ins_ao', 'id');
+        return $this->belongsTo(InsAO::class, 'id_insen_ao', 'id');
     }
 }

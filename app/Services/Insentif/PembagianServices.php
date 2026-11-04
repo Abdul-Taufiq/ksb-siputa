@@ -42,22 +42,32 @@ class PembagianServices
         }
 
 
+
         if ($request->ajax()) {
             // query
-            $query = InsPenyelesaian::query()
-                ->when($user->level === 'MEDIUM USER', fn($q) => $q->where('id_cabang', $user->id_cabang));
+            $query = InsPenyelesaian::when($user->level === 'MEDIUM USER', fn($q)
+            => $q->where('id_cabang', $user->id_cabang));
 
-            // filter
+            // Filter
             if (!empty($request->kode)) {
                 $data = $query->where('kode_form', $kode);
-            } elseif (!empty($request->min)) {
-                $data = $query->whereBetween('created_at', [$awal, $akhir]);
-            } elseif (!empty($request->id_cabang)) {
-                $data = $query->when($request->id_cabang != 99, fn($query) => $query->where('id_cabang', $request->id_cabang));
             } else {
                 $data = $query;
             }
 
+            // tanggal
+            if (!empty($request->min)) {
+                $data = $query->whereBetween('created_at', [$awal, $akhir]);
+            }
+
+            // cabang
+            if (!empty($request->id_cabang)) {
+                if ($user->level === 'MEDIUM USER') {
+                    $data = $query->where('id_cabang', $user->id_cabang);
+                } else {
+                    $data = $query->when($request->id_cabang != 99, fn($query) => $query->where('id_cabang', $request->id_cabang));
+                }
+            }
 
             return DataTables::of($data)
                 ->addColumn('cabang', function ($data) {
@@ -134,6 +144,12 @@ class PembagianServices
                             }
                             break;
 
+                        case 'Staff Komersial Pusat':
+                            $button .= '<a href="' . route('penyelesaian.edit', base64_encode($data->id)) . '"
+                                                        class="btn btn-warning btn-sm edit btn-table">
+                                                    <i class="fa fa-edit"></i></a>';
+                            break;
+
                         default:
                             $button .= '<a class="edit btn btn-warning btn-sm edit-post disabled"><i class="fa fa-edit"></i></a>';
                             break;
@@ -151,7 +167,7 @@ class PembagianServices
 
     public function store(Request $request)
     {
-        $cabang = DB::connection('ksb_sdm')
+        $cabang = DB::connection('mysql')
             ->table('cabang')
             ->where('id_cabang', auth()->user()->id_cabang)
             ->value('kode_spk');

@@ -16,6 +16,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.2",
+        "maatwebsite/excel": "^3.1",
         "mews/captcha": "^3.2",
         "minishlink/web-push": "^9.0",
         "yajra/laravel-datatables": "9.0"

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class InsPembagian extends Model
 {
     use HasFactory;
-    protected $connection = 'ksb_sdm';
+    //
     protected $table = 'tb_insen_pembagian';
     protected $dates = [
         'created_at',
@@ -18,7 +18,7 @@ class InsPembagian extends Model
     protected $primaryKey = 'id';
     protected $guarded = ['id'];
 
-    public function insDebitur(): BelongsTo
+    public function penyelesaian(): BelongsTo
     {
         return $this->belongsTo(InsPenyelesaian::class, 'id_ins_penyelesaian', 'id');
     }

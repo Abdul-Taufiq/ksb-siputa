@@ -9,11 +9,18 @@ use Illuminate\Database\Eloquent\Model;
 class EmailPe extends Model
 {
     use HasFactory;
-    protected $connection = 'ksb_sdm';
+    //
     protected $table = 'tb_email_p';
     protected $dates = [
-        'created_at', 'updated_at', 'aktif', 'non_aktif', 'tgl_status_pincab',
-        'tgl_status_sdm', 'tgl_status_dirops', 'tgl_status_akhir', 'tgl_status_tsi'
+        'created_at',
+        'updated_at',
+        'aktif',
+        'non_aktif',
+        'tgl_status_pincab',
+        'tgl_status_sdm',
+        'tgl_status_dirops',
+        'tgl_status_akhir',
+        'tgl_status_tsi'
     ];
     protected $primaryKey = 'id_pengajuan';
     protected $guarded = ['id_pengajuan'];

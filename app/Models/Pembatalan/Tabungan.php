@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Tabungan extends Model
 {
     use HasFactory;
-    protected $connection = 'ksb_sdm';
+    //
     protected $table = 'tb_pembatalan_tabungan';
     protected $primaryKey = 'id_tabungan';
     protected $dates = [

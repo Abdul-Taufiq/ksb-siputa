@@ -63,15 +63,15 @@ return [
             ]) : [],
         ],
 
-        'ksb_sdm' => [
+        'myuser' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_SDM_HOST', '127.0.0.1'),
-            'port' => env('DB_SDM_PORT', '3306'),
-            'database' => env('DB_SDM_DATABASE', 'forge'),
-            'username' => env('DB_SDM_USERNAME', 'forge'),
-            'password' => env('DB_SDM_PASSWORD', ''),
-            'unix_socket' => env('DB_SDM_SOCKET', ''),
+            'host' => env('DB_USER_HOST', '127.0.0.1'),
+            'port' => env('DB_USER_PORT', '3306'),
+            'database' => env('DB_USER_DATABASE', 'forge'),
+            'username' => env('DB_USER_USERNAME', 'forge'),
+            'password' => env('DB_USER_PASSWORD', ''),
+            'unix_socket' => env('DB_USER_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',

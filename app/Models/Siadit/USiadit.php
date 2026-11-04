@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class USiadit extends Model
 {
     use HasFactory;
-    protected $connection = 'ksb_sdm';
+    //
     protected $table = 'tb_siadit_user';
     protected $dates = [
         'created_at',

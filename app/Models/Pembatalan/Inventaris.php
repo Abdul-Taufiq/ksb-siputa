@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Inventaris extends Model
 {
     use HasFactory;
-    protected $connection = 'ksb_sdm';
+    //
     protected $table = 'tb_pembatalan_inventaris';
     protected $primaryKey = 'id_inventaris';
     protected $dates = [

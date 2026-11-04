@@ -13,6 +13,7 @@ use App\Models\Notifikasi\DatabaseNotification;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+    protected $connection = 'myuser';
     /**
      * The attributes that are mass assignable.
      *

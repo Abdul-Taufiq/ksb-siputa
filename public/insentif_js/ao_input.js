@@ -325,6 +325,7 @@ document.addEventListener("input", function (event) {
     if (event.target.id.startsWith("biaya_adm_")) {
         updateTotalBiayaAdm();
         updateTotalAdmSurvey(); // karena adm ikut total adm_survey
+        insenPerDeb();
     }
 
     if (event.target.id.startsWith("nominal_")) {
@@ -334,10 +335,12 @@ document.addEventListener("input", function (event) {
     if (event.target.id.startsWith("biaya_survey_")) {
         updateTotalBiayaSurvey();
         updateTotalAdmSurvey(); // survey ikut total adm_survey
+        insenPerDeb();
     }
 
     if (event.target.id.startsWith("total_adm_survey_")) {
         updateTotalAdmSurvey();
+        insenPerDeb();
     }
 
     if (event.target.id.startsWith("putusan_")) {
@@ -346,6 +349,12 @@ document.addEventListener("input", function (event) {
 
     if (event.target.id.startsWith("aksi_")) {
         updateIfDelete();
+    }
+
+    if (event.target.id.startsWith("persen_insentif_")) {
+        insenPerDeb();
+        totalInsentif();
+        insentifFinal();
     }
 });
 
@@ -366,6 +375,7 @@ document.addEventListener("change", function (event) {
     if (event.target.id.startsWith("biaya_adm_")) {
         updateTotalBiayaAdm();
         updateTotalAdmSurvey();
+        insenPerDeb();
     }
 
     if (event.target.id.startsWith("nominal_")) {
@@ -374,11 +384,13 @@ document.addEventListener("change", function (event) {
 
     if (event.target.id.startsWith("biaya_survey_")) {
         updateTotalBiayaSurvey();
+        insenPerDeb();
         updateTotalAdmSurvey();
     }
 
     if (event.target.id.startsWith("total_adm_survey_")) {
         updateTotalAdmSurvey();
+        insenPerDeb();
     }
 
     if (event.target.id.startsWith("putusan_")) {
@@ -388,6 +400,12 @@ document.addEventListener("change", function (event) {
 
     if (event.target.id.startsWith("aksi_")) {
         updateIfDelete();
+    }
+
+    if (event.target.id.startsWith("persen_insentif_")) {
+        insenPerDeb();
+        totalInsentif();
+        insentifFinal();
     }
 });
 
@@ -480,14 +498,60 @@ document
         }
     });
 
+// hitung insentif per debitur
+function insenPerDeb() {
+    document.querySelectorAll("[id^='total_adm_survey_']").forEach((input) => {
+        let total = 0;
+        // ambil nomor urutnya
+        let counter = input.id.replace("total_adm_survey_", "");
+        let insentifDeb = document.getElementById(`insentif_deb_${counter}`);
+        let putusan = document.getElementById(`putusan_${counter}`);
+
+        // cari status yang pasangannya
+        let status = document.getElementById(
+            `status_insentif_${counter}`,
+        )?.value;
+
+        // hitungan untuk status insentif
+        // jika YA, ikut dijumlah
+        if (status === "YA") {
+            let totalAdmSurvey = toAngka(input.dataset.rawValue || input.value);
+
+            if (putusan.value === "PUSAT") {
+                total = totalAdmSurvey * 0.5 * 0.08;
+            } else {
+                total = totalAdmSurvey * 0.08;
+            }
+        } else if (status === "KHUSUS") {
+            let persenInput = document.getElementById(
+                `persen_insentif_${counter}`,
+            );
+            let persenValue = toAngka(persenInput.value);
+            let totalAdmSurvey = toAngka(input.dataset.rawValue || input.value);
+
+            if (putusan.value === "PUSAT") {
+                let totalpst = totalAdmSurvey * 0.5;
+                total = ((totalpst * persenValue) / 100) * 0.08;
+            } else {
+                total = ((totalAdmSurvey * persenValue) / 100) * 0.08;
+            }
+        } else {
+            total = 0;
+        }
+
+        insentifDeb.value = setRpId(total);
+        insentifDeb.classList.remove("is-invalid");
+        insentifDeb.classList.add("is-valid");
+    });
+}
+
 // update perhitungan insentif Result
 let perhitungan_insentif = document.getElementById("perhitungan_insentif");
 function totalInsentif() {
-    insPutusan =
-        (toAngka(totalAdmSurvey.value) - toAngka(totalAdmSurveyPst.value)) *
-        0.08;
-    insPutusanPst = toAngka(totalAdmSurveyPst.value) * 0.5 * 0.08;
-    total = insPutusan + insPutusanPst;
+    let total = 0;
+    document.querySelectorAll("[id^='insentif_deb_']").forEach((input) => {
+        total += toAngka(input.dataset.rawValue || input.value);
+    });
 
     perhitungan_insentif.value = setRpId(total);
     perhitungan_insentif.classList.remove("is-invalid");
@@ -588,6 +652,28 @@ function updateNomReferal() {
         refEl.dispatchEvent(new Event("input", { bubbles: true }));
     });
 
+    totalInsentif();
+    insentifFinal();
+}
+
+// trigger insentif per debitur jika status insentif KHUSUS
+function flexInsentif(counter) {
+    let selectopt = $(`#status_insentif_${counter}`).val();
+    let persen_insentif = document.getElementById(
+        `head_persen_insentif_${counter}`,
+    );
+
+    if (selectopt === "KHUSUS") {
+        persen_insentif.classList.remove("d-none");
+        $(persen_insentif).find(".form-control").prop("required", true);
+        $(persen_insentif).find(".form-select").prop("required", true);
+    } else {
+        persen_insentif.classList.add("d-none");
+        $(persen_insentif).find(".form-control").prop("required", false);
+        $(persen_insentif).find(".form-select").prop("required", false);
+    }
+
+    insenPerDeb();
     totalInsentif();
     insentifFinal();
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Insentif;
 
+use App\Exports\InsenAoExport;
 use App\Http\Controllers\Controller;
 use App\Models\LogActivity;
 use App\Models\MasterInsentif\InsAO;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
 
 class InsentifAOController extends Controller
 {
@@ -67,17 +69,18 @@ class InsentifAOController extends Controller
             'DESEMBER' => 12,
         ];
 
-        [$namaBulan, $tahun] = explode(' ', strtoupper($request->periode));
+        $periode = explode(' ', strtoupper(trim($request->periode)));
+
+        if (count($periode) < 2) {
+            return response()->json([
+                'message' => 'Format periode tidak valid'
+            ], 422);
+        }
+
+        [$namaBulan, $tahun] = $periode;
 
         $awal = Carbon::create($tahun, $bulan[$namaBulan], 1)->startOfMonth();
         $akhir = Carbon::create($tahun, $bulan[$namaBulan], 1)->endOfMonth();
-
-
-        // dd(
-        //     $request->periode,
-        //     $awal,
-        //     $akhir
-        // );
 
         $query = DB::connection('ksb_kredit')
             ->table('debitur')
@@ -99,15 +102,19 @@ class InsentifAOController extends Controller
             ->where('kredit.id_cabang', auth()->user()->id_cabang)
             ->where('kredit.petugas_penerima', $nama_ao)
             ->where('kredit.status_akhir', 'DISETUJUI')
-            ->whereBetween('kredit.tgl_awal', [$awal, $akhir])
+            ->whereBetween('kredit.tgl_awal', [
+                $awal->format('Y-m-d'),
+                $akhir->format('Y-m-d')
+            ])
             ->where('debitur.nama_debitur', 'LIKE', '%' . $nama_deb . '%');
 
         // cek route
-        if ($request->is('insentif/get-detail-data-kredit')) {
+        if ($request->routeIs('insentif.get-detail-data-kredit')) {
             $data = $query->first(); // hanya satu object
         } else {
             $data = $query->limit(20)->get(); // array of objects
         }
+
 
         return response()->json($data);
     }
@@ -306,6 +313,36 @@ class InsentifAOController extends Controller
             ]);
 
         return $pdf->stream('Print Insentif AO An.' . $insen->nama_ao . '.pdf');
+    }
+
+
+    public function printExcel($cabang, $tgl_awal, $tgl_akhir)
+    {
+        $awal = Carbon::parse($tgl_awal)->startOfDay();
+        $akhir = Carbon::parse($tgl_akhir)->endOfDay();
+
+        $insen = InsAO::with('cabang', 'insDebitur')
+            ->when($cabang, function ($query) use ($cabang) {
+                switch ($cabang) {
+                    case 'undefined':
+                        $query->where('id_cabang', auth()->user()->id_cabang);
+                        break;
+                    case 'null':
+                        $query->whereNotNull('id_cabang');
+                        break;
+                    case '99':
+                        $query->whereNotNull('id_cabang');
+                        break;
+                    default:
+                        $query->where('id_cabang', $cabang);
+                        break;
+                }
+            })
+            ->whereBetween('created_at', [$awal, $akhir])
+            ->get();
+
+
+        return Excel::download(new InsenAoExport($insen), 'Insentif_AO_' . $awal->format('d-m-Y') . '_sampai_' . $akhir->format('d-m-Y') . '.xlsx');
     }
 
 

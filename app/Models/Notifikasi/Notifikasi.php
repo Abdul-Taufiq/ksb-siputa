@@ -11,7 +11,7 @@ class Notifikasi extends Model
 {
     // TIDAK DIBUTUHKAN
     use HasFactory, Notifiable;
-    protected $connection = 'ksb_sdm';
+    //
     protected $table = 'notifications';
     protected $dates = [
         'created_at',

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Pslik extends Model
 {
     use HasFactory;
-    protected $connection = 'ksb_sdm';
+    //
     protected $table = 'tb_slik';
     protected $dates = [
         'created_at',

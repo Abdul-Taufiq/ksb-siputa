@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Pefindo extends Model
 {
     use HasFactory;
-    protected $connection = 'ksb_sdm';
+    //
     protected $table = 'tb_pefindo';
     protected $dates = [
         'created_at',

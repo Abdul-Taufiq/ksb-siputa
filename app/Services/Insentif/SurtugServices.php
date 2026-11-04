@@ -102,8 +102,14 @@ class SurtugServices
                             } else {
                                 $button .= '<a href="' . route('surtug.edit', base64_encode($data->id)) . '"
                                             class="btn btn-warning btn-sm edit btn-table">
-                                        <i class="fa fa-edit"></i></a>';
+                                            <i class="fa fa-edit"></i></a>';
                             }
+                            break;
+
+                        case 'Staff Komersial Pusat':
+                            $button .= '<a href="' . route('surtug.edit', base64_encode($data->id)) . '"
+                                            class="btn btn-warning btn-sm edit btn-table">
+                                            <i class="fa fa-edit"></i></a>';
                             break;
 
                         default:
@@ -122,7 +128,7 @@ class SurtugServices
 
     public function store(Request $request)
     {
-        $cabang = DB::connection('ksb_sdm')
+        $cabang = DB::connection('mysql')
             ->table('cabang')
             ->where('id_cabang', auth()->user()->id_cabang)
             ->value('kode_spk');

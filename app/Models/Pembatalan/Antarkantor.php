@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Antarkantor extends Model
 {
     use HasFactory;
-    protected $connection = 'ksb_sdm';
+    //
     protected $table = 'tb_pembatalan_antar_kantor';
     protected $primaryKey = 'id_antar_kantor';
     protected $dates = [

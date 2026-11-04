@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Antarbank extends Model
 {
     use HasFactory;
-    protected $connection = 'ksb_sdm';
+    //
     protected $table = 'tb_pembatalan_antar_bank';
     protected $primaryKey = 'id_antar_bank';
     protected $dates = [

@@ -84,9 +84,13 @@
                                             <input type="date" name="max" id="max" class="form-control">
                                         </div>
                                     </div>
-                                    <div class="btn-group mb-2">
+                                    <div class="btn-group mb-2 mr-2">
                                         <button id="btn-filter" class="btn btn-success">Filter</button>
                                         <button id="btn-refresh" class="btn btn-info">Refresh</button>
+                                    </div>
+                                    <div class="btn-group mb-2">
+                                        <button id="btn-excel" class="btn btn-primary"><i
+                                                class="fa-solid fa-file-arrow-down"></i> Export to Excel</button>
                                     </div>
                                 </div>
                             </div>
@@ -156,6 +160,47 @@
                         window.open('/insentif/print-penyelesaian/' + idEncrypt, '_blank');
                     }
                 });
+            });
+        });
+
+        $(document).on("click", "#btn-excel", function() {
+            let min = $("#min").val();
+            let max = $("#max").val();
+            let id_cabang = $("#id_cabang").val();
+
+            if (!min || !max) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Tanggal awal dan akhir harus diisi!',
+                });
+                return;
+            }
+
+            if (new Date(max) < new Date(min)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Tanggal akhir tidak boleh lebih kecil dari tanggal awal!',
+                });
+                return;
+            }
+
+            Swal.fire({
+                title: 'Konfirmasi Cetak Form?',
+                text: 'Apakah Anda yakin ingin mencetak Form?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Cetak!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.open('/insentif/print-insentif-penyelesaian-excel/' + id_cabang + '/' + min +
+                        '/' + max,
+                        '_blank');
+                }
             });
         });
     </script>

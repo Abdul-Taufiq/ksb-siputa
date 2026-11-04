@@ -9,10 +9,12 @@ use Illuminate\Database\Eloquent\Model;
 class PemeliharaanHistory extends Model
 {
     use HasFactory;
-    protected $connection = 'ksb_sdm';
+    //
     protected $table = 'tb_pemeliharaan_history';
     protected $dates = [
-        'created_at', 'updated_at', 'tgl_dilaksanakan'
+        'created_at',
+        'updated_at',
+        'tgl_dilaksanakan'
     ];
     protected $primaryKey = 'id_pemeliharaan_history';
 

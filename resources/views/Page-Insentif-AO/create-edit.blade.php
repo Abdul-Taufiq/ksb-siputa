@@ -84,6 +84,13 @@
                             <div class="row ml-2 mb-2">
                                 <div class="col-md-4">
                                     <div class="form-group">
+                                        <label for="nip">NIP (Nomor Induk Pegawai)</label>
+                                        <input type="text" class="form-control form-control-sm input" required
+                                            id="nip" name="nip" value="{{ $insenAo->nip ?? null }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
                                         <label for="nama_ao">Nama AO</label>
                                         <input type="text" class="form-control form-control-sm input" required
                                             id="nama_ao" name="nama_ao" value="{{ $insenAo->nama_ao ?? null }}">
@@ -179,8 +186,8 @@
                                             <div class="form-group">
                                                 <label for="norek_{{ $loop->iteration }}">Norek</label>
                                                 <input type="text" class="form-control form-control-sm input" required
-                                                    id="norek_{{ $loop->iteration }}" name="norek_{{ $loop->iteration }}"
-                                                    value="{{ $item->norek }}">
+                                                    id="norek_{{ $loop->iteration }}"
+                                                    name="norek_{{ $loop->iteration }}" value="{{ $item->norek }}">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -287,6 +294,41 @@
                                                     <option value="PUSAT"
                                                         {{ $item->putusan == 'PUSAT' ? 'selected' : null }}>PUSAT</option>
                                                 </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="wajib" for="status_insentif_{{ $loop->iteration }}">Status
+                                                    Insentif</label>
+                                                <select name="status_insentif_{{ $loop->iteration }}"
+                                                    id="status_insentif_{{ $loop->iteration }}"
+                                                    class="form-select form-select-sm input" required
+                                                    onchange="flexInsentif({{ $loop->iteration }})">
+                                                    <option selected value="YA"
+                                                        {{ $item->status_insentif == 'YA' ? 'selected' : null }}>YA
+                                                    </option>
+                                                    <option value="TIDAK"
+                                                        {{ $item->status_insentif == 'TIDAK' ? 'selected' : null }}>TIDAK
+                                                    </option>
+                                                    <option value="KHUSUS"
+                                                        {{ $item->status_insentif == 'KHUSUS' ? 'selected' : null }}>KHUSUS
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 d-none" id="head_persen_insentif_{{ $loop->iteration }}">
+                                            <div class="form-group">
+                                                <label class="wajib"
+                                                    for="persen_insentif_{{ $loop->iteration }}">Persentase Insentif
+                                                    (Khusus)
+                                                </label>
+                                                <div class="input-group input-group-sm">
+                                                    <input type="text" class="form-control form-control-sm input setRp"
+                                                        id="persen_insentif_{{ $loop->iteration }}"
+                                                        name="persen_insentif_{{ $loop->iteration }}" required
+                                                        value="{{ number_format($item->persen_insentif, 0, ',', '.') ?? '0' }}">
+                                                    <span class="input-group-text">%</span>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -401,6 +443,39 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="wajib" for="status_insentif_1">Status Insentif</label>
+                                            <select name="status_insentif_1" id="status_insentif_1"
+                                                class="form-select form-select-sm input" required
+                                                onchange="flexInsentif(1)">
+                                                <option selected value="YA">YA</option>
+                                                <option value="TIDAK">TIDAK</option>
+                                                <option value="KHUSUS">KHUSUS</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 d-none" id="head_persen_insentif_1">
+                                        <div class="form-group">
+                                            <label class="wajib" for="persen_insentif_1">Persentase Insentif
+                                                (Khusus)</label>
+                                            <div class="input-group input-group-sm">
+                                                <input type="text" class="form-control form-control-sm input setRp"
+                                                    id="persen_insentif_1" name="persen_insentif_1" value="0">
+                                                <span class="input-group-text">%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="wajib" for="insentif_deb_1">Insentif per Debitur</label>
+                                            <div class="input-group input-group-sm">
+                                                <span class="input-group-text">Rp</span>
+                                                <input type="text" class="form-control form-control-sm input setRp"
+                                                    id="insentif_deb_1" name="insentif_deb_1" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="col-md-12">
                                         <hr>
                                     </div>
@@ -470,6 +545,9 @@
                                                 required readonly>
                                             <input type="hidden" name="total_biaya_admin_survey_pst"
                                                 id="total_biaya_admin_survey_pst">
+                                            <input type="hidden" id="kondisi_final" name="kondisi_final">
+                                            <input type="hidden" id="dikurangi_kondisi_final"
+                                                name="dikurangi_kondisi_final">
                                         </div>
                                     </div>
                                 </div>
@@ -486,6 +564,7 @@
                                     </div>
                                 </div>
                             </div>
+
 
                             {{-- par npl --}}
                             <br>

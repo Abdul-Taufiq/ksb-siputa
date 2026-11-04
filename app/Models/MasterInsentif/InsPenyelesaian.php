@@ -12,7 +12,7 @@ class InsPenyelesaian extends Model
 {
 
     use HasFactory;
-    protected $connection = 'ksb_sdm';
+    //
     protected $table = 'tb_insen_penyelesaian_lpkb';
     protected $dates = [
         'created_at',
@@ -34,6 +34,6 @@ class InsPenyelesaian extends Model
 
     public function pembagian(): HasMany
     {
-        return $this->hasMany(InsPembagian::class, 'id_ins_debitur', 'id');
+        return $this->hasMany(InsPembagian::class, 'id_ins_penyelesaian', 'id');
     }
 }

@@ -285,9 +285,10 @@ Route::group(['middleware' => ['permission', 'CekMaintenance']], function () {
         Route::prefix('insentif')->group(function () {
             Route::resource('ao', InsentifAOController::class);
             Route::get('get-data-kredit', [InsentifAOController::class, 'getDataKredit']);
-            Route::get('get-detail-data-kredit', [InsentifAOController::class, 'getDataKredit']);
+            Route::get('get-detail-data-kredit', [InsentifAOController::class, 'getDataKredit'])->name('insentif.get-detail-data-kredit');
             Route::patch('get-ao-status/{id}/{status}', [InsentifAOController::class, 'getStatus']);
             Route::get('print-insentif-ao/{id}', [InsentifAOController::class, 'print'])->name('print-insen-ao');
+            Route::get('print-insentif-ao-excel/{cabang}/{tgl_awal}/{tgl_akhir}', [InsentifAOController::class, 'printExcel'])->name('print-insen-ao-excel');
 
 
             Route::resource('surtug', SurtugController::class);
@@ -300,6 +301,7 @@ Route::group(['middleware' => ['permission', 'CekMaintenance']], function () {
             Route::get('get-detail-form', [InsentifPenyelesaianController::class, 'getDetailForm']);
             Route::patch('get-penyelesaian-status/{id}/{status}', [InsentifPenyelesaianController::class, 'getStatus']);
             Route::get('print-penyelesaian/{id}', [InsentifPenyelesaianController::class, 'print'])->name('print-penyelesaian');
+            Route::get('print-insentif-penyelesaian-excel/{cabang}/{tgl_awal}/{tgl_akhir}', [InsentifPenyelesaianController::class, 'printExcel'])->name('print-insen-penyelesaian-excel');
         });
     });
 
@@ -361,5 +363,5 @@ Route::group(['middleware' => ['permission', 'CekMaintenance']], function () {
 
         ]);
     });
-    // Route::view('/offline', 'offline');
+    Route::view('/offline', 'offline');
 });

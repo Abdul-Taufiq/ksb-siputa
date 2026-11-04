@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class BarangBaru extends Model
 {
     use HasFactory;
-    protected $connection = 'ksb_sdm';
+    //
     protected $table = 'tb_barang_pembanding_baru';
     protected $dates = [
         'created_at',

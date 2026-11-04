@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class EcollR extends Model
 {
     use HasFactory;
-    protected $connection = 'ksb_sdm';
+    //
     protected $table = 'tb_ecoll_r';
     protected $dates = [
         'created_at',

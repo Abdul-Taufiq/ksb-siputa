@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class BarangBaruPengganti extends Model
 {
     use HasFactory;
-    protected $connection = 'ksb_sdm';
+    //
     protected $table = 'tb_barang_pembanding_pengganti';
     protected $dates = [
-        'created_at', 'updated_at'
+        'created_at',
+        'updated_at'
     ];
     protected $primaryKey = 'id_barang_pembanding_pengganti';
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Insentif;
 
+use App\Exports\InsenPenyelesaianExport;
 use App\Http\Controllers\Controller;
 use App\Models\LogActivity;
 use App\Models\MasterInsentif\InsPembagian;
@@ -13,7 +14,9 @@ use App\Services\UpdateStatus;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Maatwebsite\Excel\Facades\Excel;
 
 class InsentifPenyelesaianController extends Controller
 {
@@ -30,9 +33,9 @@ class InsentifPenyelesaianController extends Controller
 
     public function index(Request $request)
     {
-        $user = auth()->user();
+        $user = Auth::user();
         $awal = Carbon::parse($request->min)->startOfDay();
-        $akhir = Carbon::parse($request->min)->endOfDay();
+        $akhir = Carbon::parse($request->max)->endOfDay();
         $kode = $request->kode;
 
         if ($request->ajax()) {
@@ -282,6 +285,37 @@ class InsentifPenyelesaianController extends Controller
             ]);
 
         return $pdf->stream('Print Insentif Penyelesaian.pdf');
+    }
+
+
+    public function printExcel($cabang, $tgl_awal, $tgl_akhir)
+    {
+        $awal = Carbon::parse($tgl_awal)->startOfDay();
+        $akhir = Carbon::parse($tgl_akhir)->endOfDay();
+
+        $insen = InsPenyelesaian::with('cabang', 'pembagian')
+            ->when($cabang, function ($query) use ($cabang) {
+                switch ($cabang) {
+                    case 'undefined':
+                        $query->where('id_cabang', auth()->user()->id_cabang);
+                        break;
+                    case 'null':
+                        $query->whereNotNull('id_cabang');
+                        break;
+                    case '99':
+                        $query->whereNotNull('id_cabang');
+                        break;
+                    default:
+                        $query->where('id_cabang', $cabang);
+                        break;
+                }
+            })
+            ->whereBetween('created_at', [$awal, $akhir])
+            ->get();
+
+        // return view('Page-Insentif-Penyelesaian.export-excel', ['insen' => $insen]);
+
+        return Excel::download(new InsenPenyelesaianExport($insen), 'Insentif_Penyelesaian_' . $awal->format('d-m-Y') . '_sampai_' . $akhir->format('d-m-Y') . '.xlsx');
     }
 
 

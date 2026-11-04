@@ -135,6 +135,39 @@ function tambahDeb() {
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="wajib" for="status_insentif_${counter}">Status Insentif</label>
+                            <select name="status_insentif_${counter}" id="status_insentif_${counter}"
+                                class="form-select form-select-sm input is-valid" required onchange="flexInsentif(${counter})">
+                                <option selected value="YA">YA</option>
+                                <option value="TIDAK">TIDAK</option>
+                                <option value="KHUSUS">KHUSUS</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-none" id="head_persen_insentif_${counter}">
+                        <div class="form-group">
+                            <label class="wajib" for="persen_insentif_${counter}">Persentase Insentif
+                                (Khusus)</label>
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control form-control-sm input setRp is-invalid"
+                                id="persen_insentif_${counter}" name="persen_insentif_${counter}" required
+                                value="0">
+                                <span class="input-group-text">%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="wajib" for="insentif_deb_${counter}">Insentif per Debitur</label>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text">Rp</span>
+                                <input type="text" class="form-control form-control-sm input setRp"
+                                    id="insentif_deb_${counter}" name="insentif_deb_${counter}" readonly>
+                            </div>
+                        </div>
+                    </div>
                 </div>
         `;
 

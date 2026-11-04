@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class InsAO extends Model
 {
     use HasFactory;
-    protected $connection = 'ksb_sdm';
+    //
     protected $table = 'tb_insen_ao';
     protected $dates = [
         'created_at',
@@ -30,8 +30,8 @@ class InsAO extends Model
         return $this->belongsTo(Cabang::class, 'id_cabang', 'id_cabang');
     }
 
-    public function pembagian(): HasMany
+    public function insDebitur(): HasMany
     {
-        return $this->hasMany(InsAODeb::class, 'id_ins_ao', 'id');
+        return $this->hasMany(InsAODeb::class, 'id_insen_ao', 'id');
     }
 }

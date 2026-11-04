@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Akuntansi extends Model
 {
     use HasFactory;
-    protected $connection = 'ksb_sdm';
+    //
     protected $table = 'tb_pembatalan_akuntansi';
     protected $primaryKey = 'id_akuntansi';
     protected $dates = [

@@ -79,6 +79,12 @@ class UpdateStatus
                     ->where('email', 'not like', '%dummy%')
                     ->where('email', 'not like', '%alt%')->where('status', 'Aktif')
                     ->where('email', 'like', '%@gmail.com')->get();
+            } else if ($jabatan_next == 'Pimpinan Cabang') {
+                $userNext = User::where('jabatan', $jabatan_next)
+                    ->where('id_cabang', $data->id_cabang)
+                    ->where('email', 'not like', '%dummy%')
+                    ->where('email', 'not like', '%alt%')
+                    ->where('status', 'Aktif')->where('email', 'like', '%@gmail.com')->first();
             } else {
                 $userNext = User::where('jabatan', $jabatan_next)
                     ->where('email', 'not like', '%dummy%')

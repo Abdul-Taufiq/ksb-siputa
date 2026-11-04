@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class PDeposito extends Model
 {
     use HasFactory;
-    protected $connection = 'ksb_sdm';
+    //
     protected $table = 'tb_pembatalan_deposito';
     protected $primaryKey = 'id_deposito';
     protected $dates = [

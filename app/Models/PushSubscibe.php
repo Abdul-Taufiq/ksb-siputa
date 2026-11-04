@@ -9,7 +9,7 @@ use Minishlink\WebPush\Subscription;
 class PushSubscibe extends Model
 {
     use HasFactory;
-    protected $connection = 'ksb_sdm';
+    //
     protected $table = 'push_notification';
     protected $dates = ['created_at', 'updated_at', 'unsubscribed_at', 'last_used_at'];
     protected $primaryKey = 'id';

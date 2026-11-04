@@ -86,6 +86,11 @@ function loadtable(min, max, id_cabang, cari) {
                 {
                     data: "nama_ao",
                     name: "nama_ao",
+                    render: function (data, type, row) {
+                        if (type === "display") {
+                            return `${row.nama_ao}<br><small>NIP: ${row.nip}</small>`;
+                        }
+                    },
                 },
                 {
                     data: "hasil",

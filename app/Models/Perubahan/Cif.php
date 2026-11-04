@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Cif extends Model
 {
     use HasFactory;
-    protected $connection = 'ksb_sdm';
+    //
     protected $table = 'tb_perubahan_cif';
     protected $primaryKey = 'id_cif';
     protected $dates = [
