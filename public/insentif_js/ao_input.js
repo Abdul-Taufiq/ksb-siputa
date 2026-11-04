@@ -530,7 +530,8 @@ function insenPerDeb() {
             let totalAdmSurvey = toAngka(input.dataset.rawValue || input.value);
 
             if (putusan.value === "PUSAT") {
-                let totalpst = totalAdmSurvey * 0.5;
+                // let totalpst = totalAdmSurvey * 0.5;
+                let totalpst = totalAdmSurvey;
                 total = ((totalpst * persenValue) / 100) * 0.08;
             } else {
                 total = ((totalAdmSurvey * persenValue) / 100) * 0.08;

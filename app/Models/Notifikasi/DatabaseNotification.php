@@ -9,5 +9,6 @@ use Illuminate\Notifications\DatabaseNotification as BaseDatabaseNotification;
 class DatabaseNotification extends BaseDatabaseNotification
 {
     use HasFactory;
+    protected $connection = 'mysql';
     //
 }
