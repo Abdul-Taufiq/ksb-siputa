@@ -233,7 +233,7 @@ class PemeliharaanController extends Controller
 
     public function store(Request $request)
     {
-        $cabang = DB::connection('mysql') // Assuming 'mysql' is the default connection in your database.php configuration
+        $cabang = DB::connection('myuser') // Assuming 'mysql' is the default connection in your database.php configuration
             ->table('tb_cabang')
             // ->select('kode', 'nama_pincab') // jika ada select tertentu diakhiri ->first() atau get()
             ->where('id_cabang', auth()->user()->id_cabang)
@@ -481,7 +481,7 @@ class PemeliharaanController extends Controller
 
 
         // NEW INPUT
-        $cabang = DB::connection('mysql') // Assuming 'mysql' is the default connection in your database.php configuration
+        $cabang = DB::connection('myuser') // Assuming 'mysql' is the default connection in your database.php configuration
             ->table('tb_cabang')
             // ->select('kode', 'nama_pincab') // jika ada select tertentu diakhiri ->first() atau get()
             ->where('id_cabang', auth()->user()->id_cabang)

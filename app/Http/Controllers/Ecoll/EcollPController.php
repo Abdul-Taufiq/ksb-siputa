@@ -236,7 +236,7 @@ class EcollPController extends Controller
 
     public function store(Request $request)
     {
-        $cabang = DB::connection('mysql')->table('tb_cabang')
+        $cabang = DB::connection('myuser')->table('tb_cabang')
             // ->select('kode', 'nama_pincab') // jika ada select tertentu diakhiri ->first() atau get()
             ->where('id_cabang', auth()->user()->id_cabang)
             ->value('kode');

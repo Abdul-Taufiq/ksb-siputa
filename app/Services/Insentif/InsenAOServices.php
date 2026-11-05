@@ -156,7 +156,7 @@ class InsenAOServices
 
     public function store(Request $request)
     {
-        $cabang = DB::connection('mysql')
+        $cabang = DB::connection('myuser')
             ->table('cabang')
             ->where('id_cabang', auth()->user()->id_cabang)
             ->value('kode_spk');

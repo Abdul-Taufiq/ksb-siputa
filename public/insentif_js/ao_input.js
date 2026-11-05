@@ -532,9 +532,9 @@ function insenPerDeb() {
             if (putusan.value === "PUSAT") {
                 // let totalpst = totalAdmSurvey * 0.5;
                 let totalpst = totalAdmSurvey;
-                total = ((totalpst * persenValue) / 100) * 0.08;
+                total = (totalpst * persenValue) / 100;
             } else {
-                total = ((totalAdmSurvey * persenValue) / 100) * 0.08;
+                total = (totalAdmSurvey * persenValue) / 100;
             }
         } else {
             total = 0;

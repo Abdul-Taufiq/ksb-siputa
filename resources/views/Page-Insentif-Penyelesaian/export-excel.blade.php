@@ -12,19 +12,19 @@
     <table>
         <thead style="background-color: skyblue">
             <tr>
-                <th style="width: 200px; font-weight: bold;">Kode Form</th>
-                <th style="width: 200px; font-weight: bold;">Nama Debitur</th>
-                <th style="width: 150px; font-weight: bold;">id employee*</th>
-                <th style="width: 200px; font-weight: bold;">full name</th>
-                <th style="width: 150px; font-weight: bold;">branch</th>
-                <th style="width: 150px; font-weight: bold;">organization</th>
-                <th style="width: 150px; font-weight: bold;">job position</th>
-                <th style="width: 150px; font-weight: bold;">job level</th>
-                <th style="width: 150px; font-weight: bold;">employment status</th>
-                <th style="width: 150px; font-weight: bold;">component id*</th>
-                <th style="width: 200px; font-weight: bold;">component name</th>
-                <th style="width: 200px; font-weight: bold;">old amount</th>
-                <th style="width: 200px; font-weight: bold;">new amount*</th>
+                <th style="width: 250px; font-weight: bold;">Kode Form</th>
+                <th style="width: 250px; font-weight: bold;">Nama Debitur</th>
+                <th style="width: 200px; font-weight: bold;">id employee*</th>
+                <th style="width: 250px; font-weight: bold;">full name</th>
+                <th style="width: 200px; font-weight: bold;">branch</th>
+                <th style="width: 200px; font-weight: bold;">organization</th>
+                <th style="width: 200px; font-weight: bold;">job position</th>
+                <th style="width: 200px; font-weight: bold;">job level</th>
+                <th style="width: 200px; font-weight: bold;">employment status</th>
+                <th style="width: 200px; font-weight: bold;">component id*</th>
+                <th style="width: 250px; font-weight: bold;">component name</th>
+                <th style="width: 250px; font-weight: bold;">old amount</th>
+                <th style="width: 250px; font-weight: bold;">new amount*</th>
 
             </tr>
         </thead>
