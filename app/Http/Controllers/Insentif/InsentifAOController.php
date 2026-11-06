@@ -323,19 +323,19 @@ class InsentifAOController extends Controller
 
         $insen = InsAO::with('cabang', 'insDebitur')
             ->when($cabang, function ($query) use ($cabang) {
-                switch ($cabang) {
-                    case 'undefined':
-                        $query->where('id_cabang', auth()->user()->id_cabang);
-                        break;
-                    case 'null':
-                        $query->whereNotNull('id_cabang');
-                        break;
-                    case '99':
-                        $query->whereNotNull('id_cabang');
-                        break;
-                    default:
-                        $query->where('id_cabang', $cabang);
-                        break;
+
+                if ($cabang === 'undefined') {
+
+                    $query->where(
+                        'id_cabang',
+                        auth()->user()->id_cabang
+                    );
+                } elseif (in_array($cabang, ['null', '99'])) {
+
+                    $query->whereNotNull('id_cabang');
+                } else {
+
+                    $query->where('id_cabang', $cabang);
                 }
             })
             ->whereBetween('created_at', [$awal, $akhir])

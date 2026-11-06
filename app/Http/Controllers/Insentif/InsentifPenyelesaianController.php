@@ -293,27 +293,26 @@ class InsentifPenyelesaianController extends Controller
         $awal = Carbon::parse($tgl_awal)->startOfDay();
         $akhir = Carbon::parse($tgl_akhir)->endOfDay();
 
-        $insen = InsPenyelesaian::with('cabang', 'pembagian')
+        $$insen = InsPenyelesaian::with(['cabang', 'pembagian'])
             ->when($cabang, function ($query) use ($cabang) {
-                switch ($cabang) {
-                    case 'undefined':
-                        $query->where('id_cabang', auth()->user()->id_cabang);
-                        break;
-                    case 'null':
-                        $query->whereNotNull('id_cabang');
-                        break;
-                    case '99':
-                        $query->whereNotNull('id_cabang');
-                        break;
-                    default:
-                        $query->where('id_cabang', $cabang);
-                        break;
+
+                if ($cabang === 'undefined') {
+
+                    $query->where(
+                        'id_cabang',
+                        auth()->user()->id_cabang
+                    );
+                } elseif (in_array($cabang, ['null', '99'])) {
+
+                    $query->whereNotNull('id_cabang');
+                } else {
+
+                    $query->where('id_cabang', $cabang);
                 }
             })
             ->whereBetween('created_at', [$awal, $akhir])
             ->get();
 
-        // return view('Page-Insentif-Penyelesaian.export-excel', ['insen' => $insen]);
 
         return Excel::download(new InsenPenyelesaianExport($insen), 'Insentif_Penyelesaian_' . $awal->format('d-m-Y') . '_sampai_' . $akhir->format('d-m-Y') . '.xlsx');
     }

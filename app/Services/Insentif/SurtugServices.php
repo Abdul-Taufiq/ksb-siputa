@@ -50,12 +50,22 @@ class SurtugServices
             // Filter
             if (!empty($request->kode)) {
                 $data = $query->where('kode_form', $kode);
-            } elseif (!empty($request->min)) {
-                $data = $query->whereBetween('created_at', [$awal, $akhir]);
-            } elseif (!empty($request->id_cabang)) {
-                $data = $query->when($request->id_cabang != 99, fn($query) => $query->where('id_cabang', $request->id_cabang));
             } else {
                 $data = $query;
+            }
+
+            // tanggal
+            if (!empty($request->min)) {
+                $data = $query->whereBetween('created_at', [$awal, $akhir]);
+            }
+
+            // cabang
+            if (!empty($request->id_cabang)) {
+                if ($user->level === 'MEDIUM USER') {
+                    $data = $query->where('id_cabang', $user->id_cabang);
+                } else {
+                    $data = $query->when($request->id_cabang != 99, fn($query) => $query->where('id_cabang', $request->id_cabang));
+                }
             }
 
 
